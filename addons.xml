@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
-<addon id="plugin.video.adulthideout" name="AdultHideout" version="0.6.1" provider-name="Vashiel">
+<addon id="plugin.video.adulthideout" name="AdultHideout" version="0.6.2" provider-name="Vashiel">
     <requires>
     </requires>
     <extension point="xbmc.python.pluginsource"
@@ -95,7 +95,7 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
 
 <addon id="plugin.video.fantasticc"
        name="Fantasti.cc"
-       version="2.3.34"
+       version="2.3.35"
        provider-name="xbmc-adult">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>

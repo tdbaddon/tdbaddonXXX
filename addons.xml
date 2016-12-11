@@ -95,7 +95,7 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
 
 <addon id="plugin.video.fantasticc"
        name="Fantasti.cc"
-       version="2.3.35"
+       version="2.3.36"
        provider-name="xbmc-adult">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
@@ -389,7 +389,7 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
 
 <addon
   id="plugin.video.videodevil"
-  version="1.7.144"
+  version="1.7.145"
   name="VideoDevil"
   provider-name="xbmc-adult">
   <requires>

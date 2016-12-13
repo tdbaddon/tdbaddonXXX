@@ -41,7 +41,7 @@ def PTList(url, page=1, onelist=None):
     except:
         utils.notify('Oh oh','It looks like this website is down.')
         return None
-    match = re.compile(r'<div class="(?:visible-xs|thumb-overlay)+">\s+<img src=.*?data-original="([^"]+)" title="([^"]+)"[^>]+>(.*?)duration">[^\d]+([^\t\n\r]+)', re.DOTALL | re.IGNORECASE).findall(listhtml)
+    match = re.compile(r'<div class="(?:visible-xs|thumb-overlay)+"[^>]*?>\s+<img src=.*?data-original="([^"]+)" title="([^"]+)"[^>]+>(.*?)duration">[^\d]+([^\t\n\r]+)', re.DOTALL | re.IGNORECASE).findall(listhtml)
     for img, name, hd, duration in match:
         name = utils.cleantext(name)
         if hd.find('HD') > 0:

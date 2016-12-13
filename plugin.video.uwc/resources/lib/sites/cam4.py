@@ -47,12 +47,12 @@ def clean_database(showdialog=True):
     conn = sqlite3.connect(xbmc.translatePath("special://database/Textures13.db"))
     try:
         with conn:
-            list = conn.execute("SELECT id, cachedurl FROM texture WHERE url LIKE '%%%s%%';" % ".systemcdn.net")
+            list = conn.execute("SELECT id, cachedurl FROM texture WHERE url LIKE '%%%s%%';" % ".cam4s.com")
             for row in list:
                 conn.execute("DELETE FROM sizes WHERE idtexture LIKE '%s';" % row[0])
                 try: os.remove(xbmc.translatePath("special://thumbnails/" + row[1]))
                 except: pass
-            conn.execute("DELETE FROM texture WHERE url LIKE '%%%s%%';" % ".systemcdn.net")
+            conn.execute("DELETE FROM texture WHERE url LIKE '%%%s%%';" % ".cam4s.com")
             if showdialog:
                 utils.notify('Finished','Cam4 images cleared')
     except:

@@ -42,6 +42,7 @@ def List(url):
     match = re.compile('<h2><a href="([^"]+)".*?title="([^"]+)">.+?<img src="([^"]+)".+? width="', re.DOTALL).findall(listhtml)
     for videopage, name, img in match:
         name = utils.cleantext(name)
+        img = img.replace('/i/','/t/')
         utils.addDownLink(name, videopage, 372, img, '')
     try:
         nextp = re.compile('<span class=\'current\'>.+?</span><a class="page larger" href="([^"]+)"').findall(listhtml)

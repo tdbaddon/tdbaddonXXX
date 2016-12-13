@@ -1,3 +1,9 @@
+[B]Version 1.1.46[/B]
+Fixed: Porntrex, Freeomovie
+Fixed: MyFreeCams, Cam4
+Removed: Unused files
+
+
 [B]Version 1.1.45[/B]
 Added: Xhamster (thanks hdgdl)
 Fixed: VPorn, Camsoda, Cam4, Naked, Xtheatre, Porntrex

@@ -22,7 +22,7 @@ __scriptname__ = "Ultimate Whitecream"
 __author__ = "Whitecream"
 __scriptid__ = "plugin.video.uwc"
 __credits__ = "Whitecream, Fr33m1nd, anton40, NothingGnome"
-__version__ = "1.1.46"
+__version__ = "1.1.47"
 
 import urllib
 import urllib2
@@ -346,6 +346,7 @@ def PLAYVIDEO(url, name, download=None):
 def playvideo(videosource, name, download=None, url=None):
     import urlresolver
     hosts = []
+    videourl=None
     if re.search('openload\.(?:co|io)?/', videosource, re.DOTALL | re.IGNORECASE):
         hosts.append('OpenLoad')
     if re.search('oload\.(?:co|io)?/', videosource, re.DOTALL | re.IGNORECASE):
@@ -472,14 +473,15 @@ def playvideo(videosource, name, download=None, url=None):
         jlurl = re.compile(r'jetload\.tv/([^"]+)', re.DOTALL | re.IGNORECASE).findall(videosource)
         jlurl = chkmultivids(jlurl)
         jlurl = "http://jetload.tv/" + jlurl
-        progress.update( 50, "", "Loading Jetload", "Sending it to urlresolver" )
-        video = urlresolver.resolve(jlurl)
-        if video:
-            progress.update( 80, "", "Loading Jetload", "Found the video" )
-            videourl = video
-        # jlsrc = getHtml(jlurl, url)
-        # videourl = re.compile(r'file: "([^"]+)', re.DOTALL | re.IGNORECASE).findall(jlsrc)
-        # videourl = videourl[0]
+        progress.update( 50, "", "Loading Jetload", "" )
+        #progress.update( 50, "", "Loading Jetload", "Sending it to urlresolver" )
+        #video = urlresolver.resolve(jlurl)
+        #if video:
+        #    progress.update( 80, "", "Loading Jetload", "Found the video" )
+        #    videourl = video
+        jlsrc = getHtml(jlurl, url)
+        videourl = re.compile(r'file: "([^"]+)', re.DOTALL | re.IGNORECASE).findall(jlsrc)
+        videourl = videourl[0]
 
     elif vidhost == 'Videowood':
         progress.update( 40, "", "Loading Videowood", "" )
@@ -549,7 +551,11 @@ def playvideo(videosource, name, download=None, url=None):
         dsurl = chkmultivids(dsurl)
         videourl = dsurl
     progress.close()
-    playvid(videourl, name, download)
+    if videourl:
+        playvid(videourl, name, download)
+    else:
+        notify('Oh oh','Couldn\'t find a link')
+        return
 
 
 def playvid(videourl, name, download=None):
@@ -676,6 +682,7 @@ def parse_query(query):
 
 
 def cleantext(text):
+    text = text.replace('&amp;','&')
     text = text.replace('&#8211;','-')
     text = text.replace('&ndash;','-')
     text = text.replace('&#038;','&')
@@ -684,7 +691,6 @@ def cleantext(text):
     text = text.replace('&#8230;','...')
     text = text.replace('&quot;','"')
     text = text.replace('&#039;','`')
-    text = text.replace('&amp;','&')
     text = text.replace('&ntilde;','ñ')
     text = text.replace('&rsquo;','\'')
     return text
@@ -899,11 +905,13 @@ def addKeyword(keyword):
 
 
 def delallKeyword():
-    conn = sqlite3.connect(favoritesdb)
-    c = conn.cursor()
-    c.execute("DELETE FROM keywords;")
-    conn.commit()
-    conn.close()
+    yes = dialog.yesno('Warning','This will clear all the keywords', 'Continue?', nolabel='No', yeslabel='Yes')
+    if yes:
+        conn = sqlite3.connect(favoritesdb)
+        c = conn.cursor()
+        c.execute("DELETE FROM keywords;")
+        conn.commit()
+        conn.close()
 
 @url_dispatcher.register('904', ['keyword'])
 def delKeyword(keyword):

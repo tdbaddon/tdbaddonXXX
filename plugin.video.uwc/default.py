@@ -77,7 +77,9 @@ def INDEXS():
     utils.addDir('[COLOR hotpink]XXX Streams (eu)[/COLOR]','http://xxxstreams.eu/',410,os.path.join(imgDir, 'xxxstreams.png'),'')
     utils.addDir('[COLOR hotpink]XXX Streams (org)[/COLOR]','http://xxxstreams.org/',420,os.path.join(imgDir, 'xxxsorg.png'),'')
     utils.addDir('[COLOR hotpink]K18[/COLOR]','http://k18.co/',230,os.path.join(imgDir, 'k18.png'),'')
-    utils.addDir('[COLOR hotpink]Sexix[/COLOR]','http://sexix.net/',450,os.path.join(imgDir, 'sexix.png'),'') 
+    utils.addDir('[COLOR hotpink]Sexix[/COLOR]','http://sexix.net/',450,os.path.join(imgDir, 'sexix.png'),'')
+    utils.addDir('[COLOR hotpink]HDPoz[/COLOR]','http://hdpoz.com/',510,'','')
+
     utils.addDir('[COLOR hotpink]One list, to watch them all[/COLOR]','',5,'',1)
     xbmcplugin.endOfDirectory(utils.addon_handle, cacheToDisc=False)
 
@@ -133,12 +135,10 @@ def INDEXH():
 
 @utils.url_dispatcher.register('5', ['page'])
 def ONELIST(page=1):
-    print page
     watchxxxfree.WXFList('http://www.watchxxxfree.com/page/1/',page, True)
     hdporn.PAQList('http://www.pornaq.com/page/1/',page, True)
     hdporn.PAQList('http://www.porn00.org/page/1/',page, True)
     porntrex.PTList('http://www.porntrex.com/videos?o=mr&page=1',page, True)
-    streampleasure.SPList('http://streampleasure.com/page/1/?filtre=date&cat=0',page, True)
     npage = page + 1
     utils.addDir('[COLOR hotpink]Next page ('+ str(npage) +')[/COLOR]','',5,'',npage)
     xbmcplugin.endOfDirectory(utils.addon_handle)
@@ -150,7 +150,7 @@ def OpenDownloadFolder(url):
 
 
 if not addon.getSetting('uwcage') == 'true':
-    age = dialog.yesno('WARNING :This addon contains adult material.','You may enter only if you are at least 18 years of age.', nolabel='Exit', yeslabel='Enter')
+    age = dialog.yesno('WARNING: This addon contains adult material.','You may enter only if you are at least 18 years of age.', nolabel='Exit', yeslabel='Enter')
     if age:
         addon.setSetting('uwcage','true')
 else:

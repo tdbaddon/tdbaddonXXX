@@ -74,7 +74,7 @@ def Search(url, keyword=None):
 @utils.url_dispatcher.register('393', ['url'])
 def Categories(url):
     cathtml = utils.getHtml(url, '')
-    match = re.compile(r'<div class="category-wrapper">\s*?<a href="([^"]+)"\s*?alt="([^"]+)">\s*?<img src="([^"]+)"', re.DOTALL).findall(cathtml)
+    match = re.compile(r'<div class="category-wrapper">\s*?<a href="([^"]+)"\s*?alt="([^"]+)"[^>]+>\s*?<img src="([^"]+)"', re.DOTALL).findall(cathtml)
     for catpage, name, img in match:
         if '?' in catpage:
             utils.addDir(name, 'http://www.pornhub.com' + catpage + "&o=cm", 391, img, '')

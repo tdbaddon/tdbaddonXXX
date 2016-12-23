@@ -459,7 +459,7 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
 
 <addon id="plugin.video.xnxxcom"
 	     name="XNXX.com"
-	     version="1.04"
+	     version="1.05"
 	     provider-name="Echo Coder">
   <requires>
     <import addon="script.module.requests" />

@@ -69,6 +69,13 @@ def MAIN_MENU():
 		name = "[COLOR blue]" + title + "[/COLOR]"
 		common.addDir(name,url,31,icon,fanart)
 
+	kodi_name = common.GET_KODI_VERSION()
+
+	if kodi_name == "Jarvis":
+		xbmc.executebuiltin('Container.SetViewMode(50)')
+	elif kodi_name == "Krypton":
+		xbmc.executebuiltin('Container.SetViewMode(55)')
+	else: xbmc.executebuiltin('Container.SetViewMode(50)')
 	
 def PICTURE_MENU():
 	
@@ -87,6 +94,14 @@ def PICTURE_MENU():
 		name = "[COLOR blue]" + title + "[/COLOR]"
 		common.addDir(name,url,35,icon,fanart)
 
+	kodi_name = common.GET_KODI_VERSION()
+
+	if kodi_name == "Jarvis":
+		xbmc.executebuiltin('Container.SetViewMode(50)')
+	elif kodi_name == "Krypton":
+		xbmc.executebuiltin('Container.SetViewMode(55)')
+	else: xbmc.executebuiltin('Container.SetViewMode(50)')
+
 def STORY_MENU():
 	
 	result = common.open_url('http://sexstories.com')
@@ -102,6 +117,14 @@ def STORY_MENU():
 		url = "http://www.sexstories.com" + url4
 		name = "[COLOR blue]" + title + "[/COLOR]"
 		common.addDir(name,url,39,icon,fanart)
+
+	kodi_name = common.GET_KODI_VERSION()
+
+	if kodi_name == "Jarvis":
+		xbmc.executebuiltin('Container.SetViewMode(50)')
+	elif kodi_name == "Krypton":
+		xbmc.executebuiltin('Container.SetViewMode(55)')
+	else: xbmc.executebuiltin('Container.SetViewMode(50)')
 
 def GET_CONTENT(url):
 
@@ -128,6 +151,7 @@ def GET_CONTENT(url):
 		iconimage=re.compile('<img src="(.+?)"').findall(item)[0]
 		name = "[COLOR blue]" + title + "[/COLOR]"
 		name = name.replace('"','')
+		name = common.CLEANUP(name)
 		url2 = name + '|SPLIT|' + url
 		common.addLink(resolution + name,url2,33,iconimage,iconimage)
 
@@ -149,7 +173,13 @@ def GET_CONTENT(url):
 				url = "http://www.xnxx.com/home/1"
 				common.addDir('[COLOR yellow]Next Page >>[/COLOR]',url,31,next_icon,fanart)
 
-	xbmc.executebuiltin('Container.SetViewMode(500)')
+	kodi_name = common.GET_KODI_VERSION()
+
+	if kodi_name == "Jarvis":
+		xbmc.executebuiltin('Container.SetViewMode(500)')
+	elif kodi_name == "Krypton":
+		xbmc.executebuiltin('Container.SetViewMode(52)')
+	else: xbmc.executebuiltin('Container.SetViewMode(500)')
 
 def PICTURE_CONTENT(url):
 	
@@ -169,6 +199,14 @@ def PICTURE_CONTENT(url):
 		name = "[COLOR blue]" + title + "[/COLOR]"
 		common.addDir(name,url,36,image,image)
 
+	kodi_name = common.GET_KODI_VERSION()
+
+	if kodi_name == "Jarvis":
+		xbmc.executebuiltin('Container.SetViewMode(500)')
+	elif kodi_name == "Krypton":
+		xbmc.executebuiltin('Container.SetViewMode(52)')
+	else: xbmc.executebuiltin('Container.SetViewMode(500)')
+
 def LIST_STORIES(url):
 	
 	result = common.open_url(url)
@@ -187,6 +225,14 @@ def LIST_STORIES(url):
 		title = common.CLEANUP(title)
 		name = "[COLOR blue]" + title + " by " + author +"[/COLOR]"
 		common.addLink(name,url,40,icon,fanart)
+
+	kodi_name = common.GET_KODI_VERSION()
+
+	if kodi_name == "Jarvis":
+		xbmc.executebuiltin('Container.SetViewMode(50)')
+	elif kodi_name == "Krypton":
+		xbmc.executebuiltin('Container.SetViewMode(55)')
+	else: xbmc.executebuiltin('Container.SetViewMode(50)')
 
 def DISPLAY_STORY(url):
 	
@@ -220,6 +266,14 @@ def SCRAPE_GALLERY(url):
 		i = i + 1
 		image=re.compile('src="(.+?)"').findall(item)[0]
 		common.addLink("[COLOR blue]Picture " + str(i) + "[/COLOR]",image,37,image,image)
+
+	kodi_name = common.GET_KODI_VERSION()
+
+	if kodi_name == "Jarvis":
+		xbmc.executebuiltin('Container.SetViewMode(500)')
+	elif kodi_name == "Krypton":
+		xbmc.executebuiltin('Container.SetViewMode(52)')
+	else: xbmc.executebuiltin('Container.SetViewMode(500)')
 
 def DISPLAY_PICTURE(url):
 
@@ -300,7 +354,7 @@ def PLAY_URL(name,url,iconimage):
 		liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
 		dp.close()
 		xbmc.Player ().play(url, liz, False)
-	
+		quit()
 	else:
 		dp.close()
 		quit()

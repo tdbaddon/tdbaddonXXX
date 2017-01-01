@@ -7,7 +7,5 @@
 		<setting type="lsep" label="[COLOR=red]DOWNLOAD LOCATION[/COLOR]"/>
 		<setting id="download_location" type="folder" label="[COLOR pink]Download Location:[/COLOR]" default="special://home\userdata\addon_data\plugin.video.xxx-o-dus\Downloads\"/>
 		<setting type="lsep" label=" "/>
-		<setting type="lsep" label="[COLOR=red]AUTO CHECK FOR UPDATES ON ADDON STARTUP[/COLOR]"/>
-		<setting id="update_setting" type="bool" label="[COLOR pink]Auto Check for Updates?:[/COLOR]" default="true"/>
 	</category>
 </settings>

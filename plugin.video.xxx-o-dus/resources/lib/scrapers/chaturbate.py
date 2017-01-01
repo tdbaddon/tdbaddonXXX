@@ -27,8 +27,8 @@ import datetime
 AddonTitle     = "[COLOR red]XXX-O-DUS[/COLOR]"
 dialog         = xbmcgui.Dialog()
 addon_id       = 'plugin.video.xxx-o-dus'
-fanart         = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/chaturbate/chaturbate/fanart.jpg'))
-icon           = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/chaturbate/chaturbate/icon.png'))
+fanart         = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/chaturbate/fanart.jpg'))
+icon           = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/chaturbate/icon.png'))
 next_icon      = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/chaturbate/next.png'))
 twitter_icon   = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/chaturbate/twitter.png'))
 pc_icon        = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/chaturbate/pc.png'))
@@ -78,7 +78,13 @@ def MAIN_MENU():
 
 	POP_NOW(BASE)
 
-	xbmc.executebuiltin('Container.SetViewMode(50)')
+	kodi_name = common.GET_KODI_VERSION()
+
+	if kodi_name == "Jarvis":
+		xbmc.executebuiltin('Container.SetViewMode(50)')
+	elif kodi_name == "Krypton":
+		xbmc.executebuiltin('Container.SetViewMode(55)')
+	else: xbmc.executebuiltin('Container.SetViewMode(50)')
 
 def POP_NOW(url):
 
@@ -141,7 +147,13 @@ def GET_CONTENT(url):
 			common.addDir('[COLOR pink]Next Page >>[/COLOR]',url,1,next_icon,fanart)       
 	except:pass
 
-	xbmc.executebuiltin('Container.SetViewMode(500)')
+	kodi_name = common.GET_KODI_VERSION()
+
+	if kodi_name == "Jarvis":
+		xbmc.executebuiltin('Container.SetViewMode(500)')
+	elif kodi_name == "Krypton":
+		xbmc.executebuiltin('Container.SetViewMode(52)')
+	else: xbmc.executebuiltin('Container.SetViewMode(500)')
 
 def SEARCH():
 
@@ -165,40 +177,21 @@ def PLAY_URL(name,url,iconimage):
 	string = str(match).replace('\\','').replace('(','').replace(')','')
 	url = re.compile("playsinline autoplay><source src='(.+?)'").findall(string)[0]
 
-	url2 = url + '|Referer=' + orig_url
-	dp.close()
-
-	if not os.path.exists(F4M):
-		dialog.ok('[COLOR red]F4M TESTER NOT INSTALLED![/COLOR]', "This addon works best with F4M Tester Installed. Please install F4M from the Shani Repo at http://fusion.tvaddons.ag")
+	if os.path.exists(F4M):
+		url2 = 'plugin://plugin.video.f4mTester/?streamtype=HLSRETRY&amp;name='+name+'&amp;url='+url+'&amp;iconImage='+iconimage
 	else:
+		url2 = url + '|Referer=' + orig_url
+	dp.close()
+			
+	history_on_off  = plugintools.get_setting("history_setting")
+	if history_on_off == "true":	
+		date_now = datetime.datetime.now().strftime("%d-%m-%Y")
+		time_now = datetime.datetime.now().strftime("%H:%M")
+		a=open(HISTORY_FILE).read()
+		b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<date>'+str(date_now)+'</date>\n<time>'+str(time_now)+'</time>\n<name>'+str(name)+'</name>\n<link>'+str(url2)+'</link>\n<site>Chaturbate</site>\n<icon>'+str(iconimage)+'</icon>\n</item>\n')
+		f= open(HISTORY_FILE, mode='w')
+		f.write(str(b))
+		f.close()
 	
-		choice = dialog.select("[COLOR red]Play link using....[/COLOR]", ['[COLOR pink]F4M Tester[/COLOR]','[COLOR pink]Kodi Player[/COLOR]'])
-
-		if choice == 0:
-			url2 = 'plugin://plugin.video.f4mTester/?streamtype=HLSRETRY&amp;name='+name+'&amp;url='+url+'&amp;iconImage='+iconimage
-			history_on_off  = plugintools.get_setting("history_setting")
-			if history_on_off == "true":	
-				date_now = datetime.datetime.now().strftime("%d-%m-%Y")
-				time_now = datetime.datetime.now().strftime("%H:%M")
-				a=open(HISTORY_FILE).read()
-				b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<date>'+str(date_now)+'</date>\n<time>'+str(time_now)+'</time>\n<name>'+str(name)+'</name>\n<link>'+str(url2)+'</link>\n<site>Chaturbate</site>\n<icon>'+str(iconimage)+'</icon>\n</item>\n')
-				f= open(HISTORY_FILE, mode='w')
-				f.write(str(b))
-				f.close()
-			liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
-			xbmc.Player ().play(url2, liz, False)
-
-		elif choice == 1:
-			history_on_off  = plugintools.get_setting("history_setting")
-			if history_on_off == "true":	
-				date_now = datetime.datetime.now().strftime("%d-%m-%Y")
-				time_now = datetime.datetime.now().strftime("%H:%M")
-				a=open(HISTORY_FILE).read()
-				b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<date>'+str(date_now)+'</date>\n<time>'+str(time_now)+'</time>\n<name>'+str(name)+'</name>\n<link>'+str(url2)+'</link>\n<site>Chaturbate</site>\n<icon>'+str(iconimage)+'</icon>\n</item>\n')
-				f= open(HISTORY_FILE, mode='w')
-				f.write(str(b))
-				f.close()
-			liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
-			xbmc.Player ().play(url2, liz, False)
-		else:
-			quit()
+	liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
+	xbmc.Player ().play(url2, liz, False)

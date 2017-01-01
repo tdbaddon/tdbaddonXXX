@@ -90,6 +90,14 @@ def MAIN_MENU():
 			common.addDir("[COLOR red]Total Videos: [COLOR white]" + str(videos) + "[/COLOR]",NEW_VIDS,42,icon,fanart)
 		except: pass
 
+	kodi_name = common.GET_KODI_VERSION()
+
+	if kodi_name == "Jarvis":
+		xbmc.executebuiltin('Container.SetViewMode(50)')
+	elif kodi_name == "Krypton":
+		xbmc.executebuiltin('Container.SetViewMode(55)')
+	else: xbmc.executebuiltin('Container.SetViewMode(50)')
+
 def GET_CONTENT(url):
 
 	nextpage = 0
@@ -125,7 +133,13 @@ def GET_CONTENT(url):
 			common.addDir('[COLOR white]Next Page >>[/COLOR]',np,42,next_icon,fanart)       
 		except:pass
 
-	xbmc.executebuiltin('Container.SetViewMode(500)')
+	kodi_name = common.GET_KODI_VERSION()
+
+	if kodi_name == "Jarvis":
+		xbmc.executebuiltin('Container.SetViewMode(500)')
+	elif kodi_name == "Krypton":
+		xbmc.executebuiltin('Container.SetViewMode(52)')
+	else: xbmc.executebuiltin('Container.SetViewMode(500)')
 
 def SEARCH():
 
@@ -201,7 +215,7 @@ def PLAY_URL(name,url,iconimage):
 		liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
 		dp.close()
 		xbmc.Player ().play(url, liz, False)
-	
+		quit()
 	else:
 		dp.close()
 		quit()

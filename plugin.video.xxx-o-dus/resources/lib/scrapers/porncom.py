@@ -59,6 +59,14 @@ def MAIN_MENU():
 		url = 'http://porn.com' + url
 		common.addDir(name,url,61,icon_cat,fanart)
 
+	kodi_name = common.GET_KODI_VERSION()
+
+	if kodi_name == "Jarvis":
+		xbmc.executebuiltin('Container.SetViewMode(50)')
+	elif kodi_name == "Krypton":
+		xbmc.executebuiltin('Container.SetViewMode(55)')
+	else: xbmc.executebuiltin('Container.SetViewMode(50)')
+
 def GET_CONTENT(url):
 
 	nextpage = 0
@@ -110,7 +118,13 @@ def GET_CONTENT(url):
 			common.addDir('[COLOR red]Next Page >>[/COLOR]',url,61,next_icon,fanart)       
 		except:pass
 
-	xbmc.executebuiltin('Container.SetViewMode(500)')
+	kodi_name = common.GET_KODI_VERSION()
+
+	if kodi_name == "Jarvis":
+		xbmc.executebuiltin('Container.SetViewMode(500)')
+	elif kodi_name == "Krypton":
+		xbmc.executebuiltin('Container.SetViewMode(52)')
+	else: xbmc.executebuiltin('Container.SetViewMode(500)')
 
 def SEARCH():
 
@@ -268,7 +282,7 @@ def PLAY_URL(name,url,iconimage):
 		liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
 		dp.close()
 		xbmc.Player ().play(url, liz, False)
-	
+		quit()
 	else:
 		dp.close()
 		quit()

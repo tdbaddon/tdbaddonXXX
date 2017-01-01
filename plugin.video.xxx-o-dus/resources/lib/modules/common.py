@@ -23,23 +23,27 @@ import re
 
 AddonTitle     = "[COLOR red]XXX-O-DUS[/COLOR]"
 
-def get_params():
-        param=[]
-        paramstring=sys.argv[2]
-        if len(paramstring)>=2:
-                params=sys.argv[2]
-                cleanedparams=params.replace('?','')
-                if (params[len(params)-1]=='/'):
-                        params=params[0:len(params)-2]
-                pairsofparams=cleanedparams.split('&')
-                param={}
-                for i in range(len(pairsofparams)):
-                        splitparams={}
-                        splitparams=pairsofparams[i].split('=')
-                        if (len(splitparams))==2:
-                                param[splitparams[0]]=splitparams[1]
-                               
-        return param
+def GET_KODI_VERSION():
+
+	xbmc_version=xbmc.getInfoLabel("System.BuildVersion")
+	version=float(xbmc_version[:4])
+	if version >= 11.0 and version <= 11.9:
+		codename = 'Eden'
+	elif version >= 12.0 and version <= 12.9:
+		codename = 'Frodo'
+	elif version >= 13.0 and version <= 13.9:
+		codename = 'Gotham'
+	elif version >= 14.0 and version <= 14.9:
+		codename = 'Helix'
+	elif version >= 15.0 and version <= 15.9:
+		codename = 'Isengard'
+	elif version >= 16.0 and version <= 16.9:
+		codename = 'Jarvis'
+	elif version >= 17.0 and version <= 17.9:
+		codename = 'Krypton'
+	else: codename = "Decline"
+	
+	return codename
 
 def CLEANUP(text):
 

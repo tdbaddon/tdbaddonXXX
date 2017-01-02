@@ -58,6 +58,9 @@ def CLEANUP(text):
 	text = text.replace('&quot;','"')
 	text = text.replace('&rsquo;',"'")
 	text = text.replace('&amp;',"&")
+	text = text.replace('&#8211;',"&")
+	text = text.replace('&#8217;',"'")
+	text = text.replace('&#038;',"&")
 
 	return text
 

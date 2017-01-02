@@ -41,7 +41,7 @@ DOWNLOADS_FILE   = xbmc.translatePath(os.path.join('special://home/userdata/addo
 
 def MAIN_MENU():
 
-	common.addDir("[COLOR crimson]SEARCH[/COLOR]","url",52,search_icon,fanart)
+	common.addDir("[COLOR red][B]SEARCH[/B][/COLOR]","url",52,search_icon,fanart)
 
 	result = common.open_url('http://www.pornhd.com/category')
 	match = re.compile('<div class="tag-150-container">(.+?)<div class="footer-zone">',re.DOTALL).findall(result)
@@ -51,7 +51,7 @@ def MAIN_MENU():
 		url=re.compile('<a href="(.+?)">').findall(item)[0]
 		title=re.compile('alt="(.+?)"').findall(item)[0]
 		icon_cat=re.compile('data-original="(.+?)"').findall(item)[0]
-		name = "[COLOR deepskyblue]" + title + "[/COLOR]"
+		name = "[COLOR white]" + title + "[/COLOR]"
 		name = common.CLEANUP(name)
 		url = 'http://pornhd.com' + url
 		common.addDir(name,url,51,icon_cat,fanart)
@@ -80,7 +80,7 @@ def GET_CONTENT(url):
 		url=re.compile('humb" href="(.+?)" >').findall(item)[0]
 		iconimage=re.compile('data-original="(.+?)"').findall(item)[0]
 		url = "http://pornhd.com" + str(url)
-		name = "[COLOR deepskyblue]" + title + "[/COLOR]"
+		name = "[COLOR white]" + title + "[/COLOR]"
 		name = common.CLEANUP(name)
 		url2 = name + '|SPLIT|' + url
 		common.addLink(name,url2,53,iconimage,iconimage)
@@ -115,7 +115,7 @@ def SEARCH():
 def PLAY_URL(name,url,iconimage):
 
 	name,url = url.split('|SPLIT|')
-	name = name.replace('[COLOR deepskyblue]','').replace('[/COLOR]','').replace(' - ','')
+	name = name.replace('[COLOR white]','').replace('[/COLOR]','').replace(' - ','')
 	ref_url = url
 	dp = common.GET_LUCKY()
 	result = common.open_url(url)

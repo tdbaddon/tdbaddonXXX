@@ -43,7 +43,7 @@ DOWNLOADS_FILE   = xbmc.translatePath(os.path.join('special://home/userdata/addo
 
 def MAIN_MENU():
 
-	common.addDir("[COLOR red]SEARCH[/COLOR]","url",52,search_icon,fanart)
+	common.addDir("[COLOR red][B]SEARCH[/B][/COLOR]","url",52,search_icon,fanart)
 
 	result = common.open_url('http://www.porn.com/categories')
 	match = re.compile('<div class="main"><h1>Featured Categories</h1>(.+?)<h2>All Categories</h2>',re.DOTALL).findall(result)
@@ -54,7 +54,7 @@ def MAIN_MENU():
 		title=re.compile('title="(.+?)"').findall(item)[0]
 		icon_cat=re.compile('<img src="(.+?)"').findall(item)[0]
 		title = title.replace("porn",'')
-		name = "[COLOR ghostwhite]" + title + "[/COLOR]"
+		name = "[COLOR white]" + title + "[/COLOR]"
 		name = common.CLEANUP(name)
 		url = 'http://porn.com' + url
 		common.addDir(name,url,61,icon_cat,fanart)

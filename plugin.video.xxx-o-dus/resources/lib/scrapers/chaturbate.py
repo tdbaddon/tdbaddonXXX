@@ -61,16 +61,16 @@ def MAIN_MENU():
 			name = "[COLOR white]" + title + "[/COLOR]"
 			common.addDir(name,url,21,featured_icon,fanart)
 		elif "female" in title.lower():
-			name = "[COLOR white]FEMALES[/COLOR]"
+			name = "[COLOR white]Females[/COLOR]"
 			common.addDir(name,url,21,female_icon,fanart)
 		elif "male" in title.lower():
-			name = "[COLOR white]MALES[/COLOR]"
+			name = "[COLOR white]Males[/COLOR]"
 			common.addDir(name,url,21,male_icon,fanart)
 		elif "couple" in title.lower():
-			name = "[COLOR white]COUPLES[/COLOR]"
+			name = "[COLOR white]Couples[/COLOR]"
 			common.addDir(name,url,21,couple_icon,fanart)
 		elif "trans" in title.lower():
-			name = "[COLOR white]TRANSEXUAL[/COLOR]"
+			name = "[COLOR white]Transexual[/COLOR]"
 			common.addDir(name,url,21,trans_icon,fanart)
 
 

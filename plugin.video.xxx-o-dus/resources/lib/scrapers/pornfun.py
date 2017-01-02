@@ -42,11 +42,11 @@ LONGEST_VIDS      = 'http://pornfun.com/longest/'
 
 def MAIN_MENU():
 
-	common.addDir("[COLOR deeppink]SEARCH[/COLOR]","url",82,icon,fanart)
-	common.addDir("[COLOR pink][I]LATEST VIDEOS[/I][/COLOR]",LATEST_VIDS,81,icon,fanart)
-	common.addDir("[COLOR pink][I]MOST POPULAR[/I][/COLOR]",POPULAR_VIDS,81,icon,fanart)
-	common.addDir("[COLOR pink][I]TOP RATED[/I][/COLOR]",TOP_VIDS,81,icon,fanart)
-	common.addDir("[COLOR pink][I]LONGEST VIDEOS[/I][/COLOR]",LONGEST_VIDS,81,icon,fanart)
+	common.addDir("[COLOR red][B]SEARCH[/B][/COLOR]","url",82,icon,fanart)
+	common.addDir("[COLOR pink][I]Latest Videos[/I][/COLOR]",LATEST_VIDS,81,icon,fanart)
+	common.addDir("[COLOR pink][I]Most Popular[/I][/COLOR]",POPULAR_VIDS,81,icon,fanart)
+	common.addDir("[COLOR pink][I]Top Rated[/I][/COLOR]",TOP_VIDS,81,icon,fanart)
+	common.addDir("[COLOR pink][I]Longest Videos[/I][/COLOR]",LONGEST_VIDS,81,icon,fanart)
 
 	result = common.open_url('http://pornfun.com/categories/')
 	

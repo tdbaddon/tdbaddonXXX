@@ -45,14 +45,14 @@ featured_url   = 'http://www.xnxx.com'
 def MAIN_MENU():
 
 				
-	common.addDir("[COLOR yellow]SEARCH[/COLOR]","url",32,search_icon,fanart)
-	common.addDir("[COLOR royalblue][I]FEATURED VIDEOS[/I][/COLOR]",featured_url,31,icon,fanart)
-	common.addDir("[COLOR royalblue][I]NEW VIDEOS[/I][/COLOR]",NEW_VIDS,31,icon,fanart)
-	common.addDir("[COLOR royalblue][I]HOT VIDEOS[/I][/COLOR]",HOT_VIDS,31,icon,fanart)
-	common.addDir("[COLOR royalblue][I]BEST OF[/I][/COLOR]",BEST_VIDS,31,icon,fanart)
-	common.addDir("[COLOR royalblue][I]TOP HITS[/I][/COLOR]",HITS_VIDS,31,icon,fanart)
-	common.addDir("[COLOR royalblue][I]PICTURES[/I][/COLOR]",featured_url,34,icon,fanart)
-	common.addDir("[COLOR royalblue][I]STORIES[/I][/COLOR]",featured_url,38,icon,fanart)
+	common.addDir("[COLOR red][B]SEARCH[/B][/COLOR]","url",32,search_icon,fanart)
+	common.addDir("[COLOR pink][I]Featured Videos[/I][/COLOR]",featured_url,31,icon,fanart)
+	common.addDir("[COLOR pink][I]New Videos[/I][/COLOR]",NEW_VIDS,31,icon,fanart)
+	common.addDir("[COLOR pink][I]Hot Videos[/I][/COLOR]",HOT_VIDS,31,icon,fanart)
+	common.addDir("[COLOR pink][I]Best of[/I][/COLOR]",BEST_VIDS,31,icon,fanart)
+	common.addDir("[COLOR pink][I]Top Hits[/I][/COLOR]",HITS_VIDS,31,icon,fanart)
+	common.addDir("[COLOR pink][I]Pictures[/I][/COLOR]",featured_url,34,icon,fanart)
+	common.addDir("[COLOR pink][I]Stories[/I][/COLOR]",featured_url,38,icon,fanart)
 
 	result = common.open_url('http://www.xnxx.com')
 	
@@ -66,7 +66,7 @@ def MAIN_MENU():
 		url3 = url
 		url4 = url3.replace('\\','')
 		url = "http://www.xnxx.com/" + url4
-		name = "[COLOR blue]" + title + "[/COLOR]"
+		name = "[COLOR white]" + title + "[/COLOR]"
 		common.addDir(name,url,31,icon,fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
@@ -91,7 +91,7 @@ def PICTURE_MENU():
 		url3 = url
 		url4 = url3.replace('\\','')
 		url = "http://multi.xnxx.com" + url4
-		name = "[COLOR blue]" + title + "[/COLOR]"
+		name = "[COLOR white]" + title + "[/COLOR]"
 		common.addDir(name,url,35,icon,fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
@@ -115,7 +115,7 @@ def STORY_MENU():
 		url3 = url
 		url4 = url3.replace('\\','')
 		url = "http://www.sexstories.com" + url4
-		name = "[COLOR blue]" + title + "[/COLOR]"
+		name = "[COLOR white]" + title + "[/COLOR]"
 		common.addDir(name,url,39,icon,fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
@@ -149,7 +149,7 @@ def GET_CONTENT(url):
 			resolution = "[COLOR yellow]" + str(res) + "[/COLOR] - "
 		url=re.compile('<a href="(.+?)"').findall(item)[0]
 		iconimage=re.compile('<img src="(.+?)"').findall(item)[0]
-		name = "[COLOR blue]" + title + "[/COLOR]"
+		name = "[COLOR white]" + title + "[/COLOR]"
 		name = name.replace('"','')
 		name = common.CLEANUP(name)
 		url2 = name + '|SPLIT|' + url
@@ -196,7 +196,7 @@ def PICTURE_CONTENT(url):
 		url3 = url
 		url4 = url3.replace('//','')
 		url = "http://multi.xnxx.com" + url4
-		name = "[COLOR blue]" + title + "[/COLOR]"
+		name = "[COLOR white]" + title + "[/COLOR]"
 		common.addDir(name,url,36,image,image)
 
 	kodi_name = common.GET_KODI_VERSION()
@@ -223,7 +223,7 @@ def LIST_STORIES(url):
 		url4 = url3.replace('\\','')
 		url = "http://www.sexstories.com" + url4
 		title = common.CLEANUP(title)
-		name = "[COLOR blue]" + title + " by " + author +"[/COLOR]"
+		name = "[COLOR white]" + title + " by " + author +"[/COLOR]"
 		common.addLink(name,url,40,icon,fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
@@ -265,7 +265,7 @@ def SCRAPE_GALLERY(url):
 	for item in match2:
 		i = i + 1
 		image=re.compile('src="(.+?)"').findall(item)[0]
-		common.addLink("[COLOR blue]Picture " + str(i) + "[/COLOR]",image,37,image,image)
+		common.addLink("[COLOR white]Picture " + str(i) + "[/COLOR]",image,37,image,image)
 
 	kodi_name = common.GET_KODI_VERSION()
 
@@ -295,7 +295,7 @@ def SEARCH():
 def PLAY_URL(name,url,iconimage):
 
 	name,url = url.split('|SPLIT|')
-	name = name.replace('[COLOR blue]','').replace('[/COLOR]','').replace(' - ','')
+	name = name.replace('[COLOR white]','').replace('[/COLOR]','').replace(' - ','')
 	dp = common.GET_LUCKY()
 	url = "http://www.xnxx.com/" + url
 	ref_url = url

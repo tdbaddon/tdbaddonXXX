@@ -52,12 +52,12 @@ MOST_DIS       = 'http://www.youporn.com/most_discussed/'
 
 def MAIN_MENU():
 
-	common.addDir("[COLOR yellow]SEARCH[/COLOR]","url",72,search_icon,fanart)
-	common.addDir("[COLOR pink][I]NEW VIDEOS[/I][/COLOR]",NEW_VIDS,71,new_icon,fanart)
-	common.addDir("[COLOR pink][I]TOP RATED[/I][/COLOR]",TOP_VIDS,71,top_icon,fanart)
-	common.addDir("[COLOR pink][I]MOST VIEWED[/I][/COLOR]",MOST_VIEW,71,viewed_icon,fanart)
-	common.addDir("[COLOR pink][I]MOST FAVORITED[/I][/COLOR]",MOST_FAV,71,fav_icon,fanart)
-	common.addDir("[COLOR pink][I]MOST DISCUSSED[/I][/COLOR]",MOST_DIS,71,discussed_icon,fanart)
+	common.addDir("[COLOR red][B]SEARCH[/B][/COLOR]","url",72,search_icon,fanart)
+	common.addDir("[COLOR pink][I]New Videos[/I][/COLOR]",NEW_VIDS,71,new_icon,fanart)
+	common.addDir("[COLOR pink][I]Top Rated[/I][/COLOR]",TOP_VIDS,71,top_icon,fanart)
+	common.addDir("[COLOR pink][I]Most Viewed[/I][/COLOR]",MOST_VIEW,71,viewed_icon,fanart)
+	common.addDir("[COLOR pink][I]Most Favourited[/I][/COLOR]",MOST_FAV,71,fav_icon,fanart)
+	common.addDir("[COLOR pink][I]Most Discussed[/I][/COLOR]",MOST_DIS,71,discussed_icon,fanart)
 
 	result = common.open_url('http://www.youporn.com/categories')
 	
@@ -81,7 +81,7 @@ def MAIN_MENU():
 		url3 = url
 		url4 = url3.replace('\\','')
 		url = "http://www.youporn.com" + url4
-		name = "[COLOR rose]" + title + " - " + number + "[/COLOR]"
+		name = "[COLOR white]" + title + " - " + number + "[/COLOR]"
 		common.addDir(name,url,71,icon_cat,fanart)
 		
 	try:
@@ -115,9 +115,9 @@ def GET_CONTENT(url):
 			url=re.compile('<a href="(.+?)"').findall(item)[0]
 			iconimage=re.compile('<img src="(.+?)"').findall(item)[0]
 			if "icon-hd-text" in item:
-				name = "[COLOR orangered]HD[/COLOR][COLOR rose] - " + title + "[/COLOR]"
+				name = "[COLOR orangered]HD[/COLOR][COLOR white] - " + title + "[/COLOR]"
 			else:
-				name = "[COLOR yellow]SD[/COLOR][COLOR rose] - " + title + "[/COLOR]"
+				name = "[COLOR yellow]SD[/COLOR][COLOR white] - " + title + "[/COLOR]"
 			name = name.replace("'",'')
 			name = common.CLEANUP(name)
 			url2 = name + '|SPLIT|' + url
@@ -158,7 +158,7 @@ def SEARCH():
 def PLAY_URL(name,url,iconimage):
 
 	name,url = url.split('|SPLIT|')
-	name = name.replace("[COLOR orangered]HD[/COLOR][COLOR rose] - ",'').replace("[COLOR yellow]SD[/COLOR][COLOR rose] - ",'').replace('[/COLOR]','').replace(' - ','')
+	name = name.replace("[COLOR orangered]HD[/COLOR][COLOR white] - ",'').replace("[COLOR yellow]SD[/COLOR][COLOR white] - ",'').replace('[/COLOR]','').replace(' - ','')
 	dp = common.GET_LUCKY()
 	url = "http://www.youporn.com" + url
 	ref_url = url

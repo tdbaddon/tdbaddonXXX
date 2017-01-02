@@ -42,11 +42,11 @@ MOST_VIEW      = 'https://xhamster.com/rankings/weekly-top-viewed.html'
 
 def MAIN_MENU():
 
-	common.addDir("[COLOR ghostwhite]SEARCH[/COLOR]","url",12,icon,fanart)
-	common.addDir("[COLOR white][I]50 NEWEST VIDEOS[/I][/COLOR]",NEW_VIDS,11,icon,fanart)
-	common.addDir("[COLOR white][I]TOP RATED[/I][/COLOR]",TOP_VIDS,11,icon,fanart)
-	common.addDir("[COLOR white][I]MOST VIEWED[/I][/COLOR]",MOST_VIEW,11,icon,fanart)
-	common.addDir("[COLOR white][I]MOST COMMENTED[/I][/COLOR]",MOST_COM,11,icon,fanart)
+	common.addDir("[COLOR red][B]SEARCH[/B][/COLOR]","url",12,icon,fanart)
+	common.addDir("[COLOR pink][I]50 Newest Videos[/I][/COLOR]",NEW_VIDS,11,icon,fanart)
+	common.addDir("[COLOR pink][I]Top Rated[/I][/COLOR]",TOP_VIDS,11,icon,fanart)
+	common.addDir("[COLOR pink][I]Most Viewed[/I][/COLOR]",MOST_VIEW,11,icon,fanart)
+	common.addDir("[COLOR pink][I]Most Commented[/I][/COLOR]",MOST_COM,11,icon,fanart)
 
 	result = common.open_url('https://www.xhamster.com')
 	match = re.compile('<div class="head" data-block="channels-straight">(.+?)<a href="https://xhamster.com/channels.php" class="bottom">',re.DOTALL).findall(result)
@@ -58,7 +58,7 @@ def MAIN_MENU():
 		try:
 			title=re.compile('href=".+?">(.+?)<').findall(item)[0]
 			url=re.compile('href="(.+?)">.+?<').findall(item)[0]
-			name = "[COLOR snowwhite]" + title + "[/COLOR]"
+			name = "[COLOR white]" + title + "[/COLOR]"
 			name = common.CLEANUP(name)
 			if not "<" in name:
 				common.addDir(name,url,11,icon,fanart)

@@ -52,12 +52,12 @@ RECOM          = 'http://www.redtube.com/recommended/'
 
 def MAIN_MENU():
 
-	common.addDir("[COLOR white]SEARCH[/COLOR]","url",43,search_icon,fanart)
-	common.addDir("[COLOR red][I]NEWEST[/I][/COLOR]",NEW_VIDS,42,new_icon,fanart)
-	common.addDir("[COLOR red][I]RECOMMENDED[/I][/COLOR]",RECOM,42,discussed_icon,fanart)
-	common.addDir("[COLOR red][I]TOP RATED[/I][/COLOR]",TOP_VIDS,42,top_icon,fanart)
-	common.addDir("[COLOR red][I]MOST VIEWED[/I][/COLOR]",MOST_VIEW,42,viewed_icon,fanart)
-	common.addDir("[COLOR red][I]MOST FAVORITED[/I][/COLOR]",MOST_FAV,42,fav_icon,fanart)
+	common.addDir("[COLOR red][B]SEARCH[/B][/COLOR]","url",43,search_icon,fanart)
+	common.addDir("[COLOR pink][I]Newest[/I][/COLOR]",NEW_VIDS,42,new_icon,fanart)
+	common.addDir("[COLOR pink][I]Recommended[/I][/COLOR]",RECOM,42,discussed_icon,fanart)
+	common.addDir("[COLOR pink][I]Top Rated[/I][/COLOR]",TOP_VIDS,42,top_icon,fanart)
+	common.addDir("[COLOR pink][I]Most Viewed[/I][/COLOR]",MOST_VIEW,42,viewed_icon,fanart)
+	common.addDir("[COLOR pink][I]Most Favourited[/I][/COLOR]",MOST_FAV,42,fav_icon,fanart)
 
 	result = common.open_url('http://www.redtube.com/categories')
 	
@@ -79,15 +79,15 @@ def MAIN_MENU():
 		url3 = url
 		url4 = url3.replace('\\','')
 		url = "http://www.redtube.com" + url4
-		name = "[COLOR red]" + title + " [COLOR white] - " + c + "[/COLOR]"
+		name = "[COLOR white]" + title + " [COLOR white] - " + c + " Videos[/COLOR]"
 		name = common.CLEANUP(name)
 		common.addDir(name,url,42,icon_cat,fanart)
 		
 	try:
-		common.addDir("[COLOR red]Total Videos: [COLOR white]{:,}".format(videos) + "[/COLOR]",NEW_VIDS,42,icon,fanart)
+		common.addDir("[COLOR white]Total Videos: [COLOR white]{:,}".format(videos) + "[/COLOR]",NEW_VIDS,42,icon,fanart)
 	except:
 		try:
-			common.addDir("[COLOR red]Total Videos: [COLOR white]" + str(videos) + "[/COLOR]",NEW_VIDS,42,icon,fanart)
+			common.addDir("[COLOR white]Total Videos: [COLOR white]" + str(videos) + "[/COLOR]",NEW_VIDS,42,icon,fanart)
 		except: pass
 
 	kodi_name = common.GET_KODI_VERSION()
@@ -121,7 +121,7 @@ def GET_CONTENT(url):
 			url = "http://www.redtube.com" + str(url)
 			percent = "[COLOR red]" + rating + "[/COLOR]"
 			name = "[COLOR white] - " + title + "[/COLOR]"
-			views = "[COLOR grey] | [I]" + video_views + "[/I][/COLOR]"
+			views = "[COLOR grey] | [I]" + video_views + " Views[/I][/COLOR]"
 			name = common.CLEANUP(name)
 			url2 = name + '|SPLIT|' + url + '|SPLIT|' + icon
 			common.addLink(percent + name + views,url2,44,icon,fanart)

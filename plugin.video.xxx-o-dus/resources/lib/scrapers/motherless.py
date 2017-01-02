@@ -45,6 +45,7 @@ def MAIN_MENU():
 		url=re.compile('href="(.+?)" title=".+?">.+?<').findall(item)[0]
 		name=re.compile('href=".+?" title=".+?">(.+?)<').findall(item)[0]
 		url = "http://www.motherless.com" + url
+		name = "[COLOR white]" + name + "[/COLOR]"
 		common.addDir(name,url,91,icon,fanart)
 
 	kodi_name = common.GET_KODI_VERSION()

@@ -181,7 +181,7 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
   </extension>
 </addon>
 
-<addon id="plugin.video.jizzplanet" name="Jizz Planet" version="1.0.0" provider-name="Cosmix, tvaddons.ag">
+<addon id="plugin.video.jizzplanet" name="Jizz Planet" version="1.1.0" provider-name="Cosmix, tvaddons.ag">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0" />
 		<import addon="plugin.video.youtube" version="5.2.1" optional="true" />
@@ -196,10 +196,17 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
 	<extension point="xbmc.addon.metadata">
 		<summary lang="en">Jizz Planet</summary>
 		<description lang="en">Jizz Planet - adult based playlists from sites all over the web.</description>
+		<news>- Cosmetics</news>
+		<assets>
+			<icon>icon.png</icon>
+			<fanart>fanart.jpg</fanart>
+			<screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
+			<screenshot>resources/screenshots/screenshot-02.jpg</screenshot>
+			<screenshot>resources/screenshots/screenshot-03.jpg</screenshot>
+		</assets>
 		<platform>all</platform>
 		<forum></forum>
 		<website></website>
-		<news>- Initial version</news>
 	</extension>
 </addon>
 
@@ -483,7 +490,7 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
 
 <addon id="plugin.video.xxx-o-dus"
 	     name="XXX-O-DUS"
-	     version="1.04"
+	     version="1.05"
 	     provider-name="Echo Coder">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
@@ -504,6 +511,13 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
     <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
     <website>http://www.echocoder.com/repo</website>
     <email>echocoder@protonmail.com</email>
+    <assets>
+        <icon>icon.png</icon>
+        <fanart>fanart.jpg</fanart>
+        <screenshot>resources/art/screenshots/screenshot-01.png</screenshot>
+        <screenshot>resources/art/screenshots/screenshot-02.png</screenshot>
+        <screenshot>resources/art/screenshots/screenshot-03.png</screenshot>
+    </assets>
   </extension>
 </addon>
 
@@ -528,18 +542,21 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
 
 <addon id="plugin.video.youporn"
 	     name="YouPorn"
-	     version="1.02"
+	     version="2.00"
 	     provider-name="Echo Coder">
   <requires>
+	<import addon="xbmc.python" version="2.1.0" />
     <import addon="script.module.requests" />
   </requires>
-  <extension point="xbmc.python.pluginsource" library="default.py">
-        <provides>video</provides>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>video</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
-    <summary lang="en">OVER 18 ONLY - Support is available on Twitter @echo_coding</summary>
-    <description lang="en">OVER 18 ONLY - Support is available on Twitter @echo_coding</description>
+    <summary lang="en">OVER 18 ONLY - Support is available on Twitter @EchoCoding</summary>
+    <description lang="en">YouPorn Scraping by Echo Coder
+
+Skin and code for skin by Demonstratorz</description>
     <disclaimer lang="en"></disclaimer>
     <language></language>
     <platform>all</platform>

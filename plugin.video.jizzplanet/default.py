@@ -19,33 +19,20 @@
 
 
 import urlparse,sys,re
+
 params = dict(urlparse.parse_qsl(sys.argv[2].replace('?','')))
 
+action = params.get('action')
 
-try:
-    action = params['action']
-except:
-    action = None
-try:
-    content = params['content']
-except:
-    content = None
-try:
-    name = params['name']
-except:
-    name = None
-try:
-    url = params['url']
-except:
-    url = None
-try:
-    image = params['image']
-except:
-    image = None
-try:
-    fanart = params['fanart']
-except:
-    fanart = None
+content = params.get('content')
+
+name = params.get('name')
+
+url = params.get('url')
+
+image = params.get('image')
+
+fanart = params.get('fanart')
 
 
 if action == None:
@@ -56,6 +43,10 @@ elif action == 'directory':
     from resources.lib.indexers import jizzplanet
     jizzplanet.indexer().get(url)
 
+elif action == 'qdirectory':
+    from resources.lib.indexers import jizzplanet
+    jizzplanet.indexer().getq(url)
+
 elif action == 'xdirectory':
     from resources.lib.indexers import jizzplanet
     jizzplanet.indexer().getx(url)
@@ -64,13 +55,17 @@ elif action == 'developer':
     from resources.lib.indexers import jizzplanet
     jizzplanet.indexer().developer()
 
+elif action == 'tvtuner':
+    from resources.lib.indexers import jizzplanet
+    jizzplanet.indexer().tvtuner(url)
+
+elif 'youtube' in str(action):
+    from resources.lib.indexers import jizzplanet
+    jizzplanet.indexer().youtube(url, action)
+
 elif action == 'play':
     from resources.lib.indexers import jizzplanet
     jizzplanet.player().play(url, content)
-
-elif action == 'regex':
-    from resources.lib.indexers import jizzplanet
-    jizzplanet.player().play(url, content, False)
 
 elif action == 'browser':
     from resources.lib.indexers import jizzplanet
@@ -87,6 +82,10 @@ elif action == 'addSearch':
 elif action == 'delSearch':
     from resources.lib.indexers import jizzplanet
     jizzplanet.indexer().delSearch()
+
+elif action == 'queueItem':
+    from resources.lib.modules import control
+    control.queueItem()
 
 elif action == 'openSettings':
     from resources.lib.modules import control
@@ -135,3 +134,5 @@ elif action == 'trailer':
 elif action == 'clearCache':
     from resources.lib.modules import cache
     cache.clear()
+
+

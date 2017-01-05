@@ -1,2 +1,2 @@
-[B]1.0.0[/B]
-- Initial version
+[B]1.1.0[/B]
+- Cosmetics

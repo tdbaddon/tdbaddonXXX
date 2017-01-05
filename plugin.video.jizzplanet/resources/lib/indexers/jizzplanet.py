@@ -18,7 +18,7 @@
 '''
 
 
-import os,re,sys,hashlib,urllib,urlparse,json,base64,random
+import os,re,sys,hashlib,urllib,urlparse,json,base64,random,datetime
 import xbmc
 
 try: from sqlite3 import dbapi2 as database
@@ -26,22 +26,27 @@ except: from pysqlite2 import dbapi2 as database
 
 from resources.lib.modules import cache
 from resources.lib.modules import metacache
-from resources.lib.modules import control
 from resources.lib.modules import client
+from resources.lib.modules import control
+from resources.lib.modules import regex
+from resources.lib.modules import trailer
 from resources.lib.modules import workers
+from resources.lib.modules import youtube
 from resources.lib.modules import views
 
 
 
 class indexer:
     def __init__(self):
-        self.list = []
+        self.list = [] ; self.hash = []
 
 
     def root(self):
         try:
+            regex.clear()
             url = 'http://cosmix.offshorepastebin.com/Weblinks/adult/xxxmain.xml'
             self.list = self.phoenix_list(url)
+            for i in self.list: i.update({'content': 'addons'})
             self.addDirectory(self.list)
             return self.list
         except:
@@ -58,21 +63,24 @@ class indexer:
             pass
 
 
-    def getx(self, url, worker=False):
+    def getq(self, url):
         try:
-            self.list = self.phoenix_list('', result=url)
-            if worker == True: self.worker()
-            self.addDirectory(self.list)
+            self.list = self.phoenix_list(url)
+            self.worker()
+            self.addDirectory(self.list, queue=True)
             return self.list
         except:
             pass
 
 
-    def gety(self, url, worker=False):
+    def getx(self, url, worker=False):
         try:
+            r, x = re.findall('(.+?)\|regex=(.+?)$', url)[0]
+            x = regex.fetch(x)
+            r += urllib.unquote_plus(x)
+            url = regex.resolve(r)
             self.list = self.phoenix_list('', result=url)
-            if worker == True: self.worker()
-            self.addDirectory(self.list, queue=True)
+            self.addDirectory(self.list)
             return self.list
         except:
             pass
@@ -82,7 +90,81 @@ class indexer:
         try:
             url = os.path.join(control.dataPath, 'testings.xml')
             f = control.openFile(url) ; result = f.read() ; f.close()
-            self.getx(result)
+            self.list = self.phoenix_list('', result=result)
+            for i in self.list: i.update({'content': 'videos'})
+            self.addDirectory(self.list)
+            return self.list
+        except:
+            pass
+
+
+    def youtube(self, url, action):
+        try:
+            key = trailer.trailer().key_link.split('=', 1)[-1]
+
+            if 'PlaylistTuner' in action:
+                self.list = cache.get(youtube.youtube(key=key).playlist, 1, url)
+            elif 'Playlist' in action:
+                self.list = cache.get(youtube.youtube(key=key).playlist, 1, url, True)
+            elif 'ChannelTuner' in action:
+                self.list = cache.get(youtube.youtube(key=key).videos, 1, url)
+            elif 'Channel' in action:
+                self.list = cache.get(youtube.youtube(key=key).videos, 1, url, True)
+
+            if 'Tuner' in action:
+                for i in self.list: i.update({'name': i['title'], 'poster': i['image'], 'action': 'plugin', 'folder': False})
+                if 'Tuner2' in action: self.list = sorted(self.list, key=lambda x: random.random())
+                self.addDirectory(self.list, queue=True)
+            else:
+                for i in self.list: i.update({'name': i['title'], 'poster': i['image'], 'nextaction': action, 'action': 'play', 'folder': False})
+                self.addDirectory(self.list)
+
+            return self.list
+        except:
+            pass
+
+
+    def tvtuner(self, url):
+        try:
+            preset = re.findall('<preset>(.+?)</preset>', url)[0]
+
+            today = ((datetime.datetime.utcnow() - datetime.timedelta(hours = 5))).strftime('%Y-%m-%d')
+            today = int(re.sub('[^0-9]', '', str(today)))
+
+            url, imdb, tvdb, tvshowtitle, year, thumbnail, fanart = re.findall('<url>(.+?)</url>', url)[0], re.findall('<imdb>(.+?)</imdb>', url)[0], re.findall('<tvdb>(.+?)</tvdb>', url)[0], re.findall('<tvshowtitle>(.+?)</tvshowtitle>', url)[0], re.findall('<year>(.+?)</year>', url)[0], re.findall('<thumbnail>(.+?)</thumbnail>', url)[0], re.findall('<fanart>(.+?)</fanart>', url)[0]
+
+            tvm = client.request('http://api.tvmaze.com/lookup/shows?thetvdb=%s' % tvdb)
+            if tvm  == None: tvm = client.request('http://api.tvmaze.com/lookup/shows?imdb=%s' % imdb)
+            tvm ='http://api.tvmaze.com/shows/%s/episodes' % str(json.loads(tvm).get('id'))
+            items = json.loads(client.request(tvm))
+            items = [(str(i.get('season')), str(i.get('number')), i.get('name').strip(), i.get('airdate')) for i in items]
+
+            if preset == 'tvtuner':
+                choice = random.choice(items)
+                items = items[items.index(choice):] + items[:items.index(choice)]
+                items = items[:100]
+
+            result = ''
+
+            for i in items:
+                try:
+                    if int(re.sub('[^0-9]', '', str(i[3]))) > today: raise Exception()
+                    result += '<item><title> %01dx%02d . %s</title><meta><content>episode</content><imdb>%s</imdb><tvdb>%s</tvdb><tvshowtitle>%s</tvshowtitle><year>%s</year><title>%s</title><premiered>%s</premiered><season>%01d</season><episode>%01d</episode></meta><link><sublink>search</sublink><sublink>searchsd</sublink></link><thumbnail>%s</thumbnail><fanart>%s</fanart></item>' % (int(i[0]), int(i[1]), i[2], imdb, tvdb, tvshowtitle, year, i[2], i[3], int(i[0]), int(i[1]), thumbnail, fanart)
+                except:
+                    pass
+
+            result = re.sub(r'[^\x00-\x7F]+', ' ', result)
+
+            if preset == 'tvtuner':
+                result = result.replace('<sublink>searchsd</sublink>', '')
+
+            self.list = self.phoenix_list('', result=result)
+
+            if preset == 'tvtuner':
+                self.addDirectory(self.list, queue=True)
+            else:
+                self.worker()
+                self.addDirectory(self.list)
         except:
             pass
 
@@ -152,7 +234,8 @@ class indexer:
                 except:
                     pass
 
-            self.addDirectory(self.list, mode=False)
+            for i in self.list: i.update({'content': 'videos'})
+            self.addDirectory(self.list)
         except:
             pass
 
@@ -191,18 +274,23 @@ class indexer:
 
         for item in items:
             try:
-                regex = re.compile('(<regex>.+?</regex>)', re.MULTILINE|re.DOTALL).findall(item)
-                regex = ''.join(regex)
-                regex = urllib.quote_plus(regex)
+                regdata = re.compile('(<regex>.+?</regex>)', re.MULTILINE|re.DOTALL).findall(item)
+                regdata = ''.join(regdata)
+                reglist = re.compile('(<listrepeat>.+?</listrepeat>)', re.MULTILINE|re.DOTALL).findall(regdata)
+                regdata = urllib.quote_plus(regdata)
+
+                reghash = hashlib.md5()
+                for i in regdata: reghash.update(str(i))
+                reghash = str(reghash.hexdigest())
 
                 item = item.replace('\r','').replace('\n','').replace('\t','').replace('&nbsp;','')
+                item = re.sub('<regex>.+?</regex>','', item)
                 item = re.sub('<sublink></sublink>|<sublink\s+name=(?:\'|\").*?(?:\'|\")></sublink>','', item)
                 item = re.sub('<link></link>','', item)
 
-                name = item.split('<meta>')[0].split('<regex>')[0]
+                name = re.sub('<meta>.+?</meta>','', item)
                 try: name = re.findall('<title>(.+?)</title>', name)[0]
                 except: name = re.findall('<name>(.+?)</name>', name)[0]
-                if '<meta>' in name: raise Exception()
 
                 try: date = re.findall('<date>(.+?)</date>', item)[0]
                 except: date = ''
@@ -210,11 +298,9 @@ class indexer:
 
                 try: image2 = re.findall('<thumbnail>(.+?)</thumbnail>', item)[0]
                 except: image2 = image
-                if not str(image2).lower().startswith('http'): image2 = '0'
 
                 try: fanart2 = re.findall('<fanart>(.+?)</fanart>', item)[0]
                 except: fanart2 = fanart
-                if not str(fanart2).lower().startswith('http'): fanart2 = '0'
 
                 try: meta = re.findall('<meta>(.+?)</meta>', item)[0]
                 except: meta = '0'
@@ -226,28 +312,36 @@ class indexer:
                 url = url.replace('>searchsd<', '><preset>searchsd</preset>%s<' % meta)
                 url = '<preset>searchsd</preset>%s' % meta if url == 'searchsd' else url
                 url = re.sub('<sublink></sublink>|<sublink\s+name=(?:\'|\").*?(?:\'|\")></sublink>','', url)
-                url += regex
 
                 if item.startswith('<item>'): action = 'play'
                 elif item.startswith('<plugin>'): action = 'plugin'
                 elif item.startswith('<info>') or url == '0': action = '0'
                 else: action = 'directory'
+                if action == 'play' and reglist: action = 'xdirectory'
 
-                if action in ['directory', 'plugin']: folder = True
-                elif not regex == '': folder = True ; action = 'regex'
-                else: folder = False
+                if not regdata == '':
+                    self.hash.append({'regex': reghash, 'response': regdata})
+                    url += '|regex=%s' % reghash
+
+                if action in ['directory', 'xdirectory', 'plugin']:
+                    folder = True
+                else:
+                    folder = False
 
                 try: content = re.findall('<content>(.+?)</content>', meta)[0]
                 except: content = '0'
+                if content == '0': 
+                    try: content = re.findall('<content>(.+?)</content>', item)[0]
+                    except: content = '0'
                 if not content == '0': content += 's'
 
                 if 'tvshow' in content and not url.strip().endswith('.xml'):
                     url = '<preset>tvindexer</preset><url>%s</url><thumbnail>%s</thumbnail><fanart>%s</fanart>%s' % (url, image2, fanart2, meta)
-                    action = 'play'
+                    action = 'tvtuner'
 
                 if 'tvtuner' in content and not url.strip().endswith('.xml'):
                     url = '<preset>tvtuner</preset><url>%s</url><thumbnail>%s</thumbnail><fanart>%s</fanart>%s' % (url, image2, fanart2, meta)
-                    action = 'play'
+                    action = 'tvtuner'
 
                 try: imdb = re.findall('<imdb>(.+?)</imdb>', meta)[0]
                 except: imdb = '0'
@@ -279,6 +373,8 @@ class indexer:
             except:
                 pass
 
+        regex.insert(self.hash)
+
         return self.list
 
 
@@ -301,6 +397,16 @@ class indexer:
 
         self.meta = []
         total = len(self.list)
+        if total == 0: return
+
+        for i in range(0, total): self.list[i].update({'metacache': False})
+        self.list = metacache.fetch(self.list, self.lang)
+
+        multi = [i['imdb'] for i in self.list]
+        multi = [x for y,x in enumerate(multi) if x not in multi[:y]]
+        if len(multi) == 1:
+                self.movie_info(0) ; self.tv_info(0)
+                if self.meta: metacache.insert(self.meta)
 
         for i in range(0, total): self.list[i].update({'metacache': False})
         self.list = metacache.fetch(self.list, self.lang)
@@ -313,7 +419,7 @@ class indexer:
             [i.start() for i in threads]
             [i.join() for i in threads]
 
-        if len(self.meta) > 0: metacache.insert(self.meta)
+        if self.meta: metacache.insert(self.meta)
 
 
     def movie_info(self, i):
@@ -363,6 +469,8 @@ class indexer:
             duration = item['Runtime']
             if duration == None or duration == '' or duration == 'N/A': duration = '0'
             duration = re.sub('[^0-9]', '', str(duration))
+            try: duration = str(int(duration) * 60)
+            except: pass
             duration = duration.encode('utf-8')
             if not duration == '0': self.list[i].update({'duration': duration})
 
@@ -466,6 +574,8 @@ class indexer:
             try: duration = str(item['runtime'])
             except: duration = '0'
             if duration == '' or duration == None: duration = '0'
+            try: duration = str(int(duration) * 60)
+            except: pass
             duration = duration.encode('utf-8')
             if not duration == '0': self.list[i].update({'duration': duration})
 
@@ -485,7 +595,7 @@ class indexer:
             pass
 
 
-    def addDirectory(self, items, mode=True, queue=False):
+    def addDirectory(self, items, queue=False):
         if items == None or len(items) == 0: return
 
         sysaddon = sys.argv[0]
@@ -498,13 +608,13 @@ class indexer:
         try: devmode = True if 'testings.xml' in control.listDir(control.dataPath)[1] else False
         except: devmode = False
 
-        if mode == True: mode = [i['content'] for i in items if 'content' in i]
-        else: mode = []
+        mode = [i['content'] for i in items if 'content' in i]
         if 'movies' in mode: mode = 'movies'
         elif 'tvshows' in mode: mode = 'tvshows'
         elif 'seasons' in mode: mode = 'seasons'
         elif 'episodes' in mode: mode = 'episodes'
-        else: mode = None
+        elif 'addons' in mode: mode = 'addons'
+        else: mode = 'videos'
 
         for i in items:
             try:
@@ -535,8 +645,6 @@ class indexer:
                 folder = i['folder'] if 'folder' in i else True
 
                 meta = dict((k,v) for k, v in i.iteritems() if not v == '0')
-                try: meta.update({'duration': str(int(meta['duration']) * 60)})
-                except: pass
 
                 cm = []
 
@@ -547,15 +655,21 @@ class indexer:
                 if content in ['movies', 'tvshows', 'seasons', 'episodes']:
                     cm.append((control.lang(30708).encode('utf-8'), 'XBMC.Action(Info)'))
 
-                if content in ['movies', 'videos']:
-                    try: dfile = '%s (%s)' % (data['title'], data['year'])
+                if (folder == False and not '|regex=' in str(i.get('url'))) or (folder == True and content in ['tvshows', 'seasons']):
+                    cm.append((control.lang(30723).encode('utf-8'), 'RunPlugin(%s?action=queueItem)' % sysaddon))
+
+                if content == 'movies':
+                    try: dfile = '%s (%s)' % (i['title'], i['year'])
                     except: dfile = name
                     try: cm.append((control.lang(30722).encode('utf-8'), 'RunPlugin(%s?action=addDownload&name=%s&url=%s&image=%s)' % (sysaddon, urllib.quote_plus(dfile), urllib.quote_plus(i['url']), urllib.quote_plus(poster))))
                     except: pass
                 elif content == 'episodes':
-                    try: dfile = '%s S%02dE%02d' % (data['tvshowtitle'], int(data['season']), int(data['episode']))
+                    try: dfile = '%s S%02dE%02d' % (i['tvshowtitle'], int(i['season']), int(i['episode']))
                     except: dfile = name
                     try: cm.append((control.lang(30722).encode('utf-8'), 'RunPlugin(%s?action=addDownload&name=%s&url=%s&image=%s)' % (sysaddon, urllib.quote_plus(dfile), urllib.quote_plus(i['url']), urllib.quote_plus(poster))))
+                    except: pass
+                elif content == 'songs':
+                    try: cm.append((control.lang(30722).encode('utf-8'), 'RunPlugin(%s?action=addDownload&name=%s&url=%s&image=%s)' % (sysaddon, urllib.quote_plus(name), urllib.quote_plus(i['url']), urllib.quote_plus(poster))))
                     except: pass
 
                 if mode == 'movies':
@@ -582,19 +696,34 @@ class indexer:
                 elif not addonFanart == None:
                     item.setProperty('Fanart_Image', addonFanart)
 
-                item.setInfo(type='Video', infoLabels = meta)
-                item.addContextMenuItems(cm)
-                if queue == False: control.addItem(handle=int(sys.argv[1]), url=url, listitem=item, isFolder=folder)
-                else: playlist.add(url=url, listitem=item)
+                if queue == False:
+                    item.setInfo(type='Video', infoLabels = meta)
+                    item.addContextMenuItems(cm)
+                    control.addItem(handle=int(sys.argv[1]), url=url, listitem=item, isFolder=folder)
+                else:
+                    item.setInfo(type='Video', infoLabels = meta)
+                    playlist.add(url=url, listitem=item)
             except:
                 pass
 
         if not queue == False:
             return control.player.play(playlist)
 
+        try:
+            i = items[0]
+            if i['next'] == '': raise Exception()
+            url = '%s?action=%s&url=%s' % (sysaddon, i['nextaction'], urllib.quote_plus(i['next']))
+            item = control.item(label=control.lang(30500).encode('utf-8'))
+            item.setArt({'addonPoster': addonPoster, 'thumb': addonPoster, 'poster': addonPoster, 'tvshow.poster': addonPoster, 'season.poster': addonPoster, 'banner': addonPoster, 'tvshow.banner': addonPoster, 'season.banner': addonPoster})
+            item.setProperty('addonFanart_Image', addonFanart)
+            control.addItem(handle=int(sys.argv[1]), url=url, listitem=item, isFolder=True)
+        except:
+            pass
+
         if not mode == None: control.content(int(sys.argv[1]), mode)
         control.directory(int(sys.argv[1]), cacheToDisc=True)
-        if not mode == None: views.setView(mode)
+        if mode in ['movies', 'tvshows', 'seasons', 'episodes']:
+            views.setView(mode, {'skin.estuary': 55})
 
 
 
@@ -694,18 +823,11 @@ class resolver:
             pass
 
         try:
-            r = urllib.unquote_plus(url)
+            r, x = re.findall('(.+?)\|regex=(.+?)$', url)[0]
+            x = regex.fetch(x)
+            r += urllib.unquote_plus(x)
             if not '</regex>' in r: raise Exception()
-
-            from resources.lib.modules import regex
-            r = regex.resolve(r)
-
-            if r[0] == 'makelist':
-                indexer().getx(r[1])
-                return False
-            elif r[0] == 'link':
-                u = r[1]
-
+            u = regex.resolve(r)
             if not u == None: url = u
         except:
             pass
@@ -738,23 +860,6 @@ class resolver:
         except:
             pass
 
-        try:
-            try: headers = dict(urlparse.parse_qsl(url.rsplit('|', 1)[1]))
-            except: headers = dict('')
-            if not url.startswith('http'): raise Exception()
-            result = client.request(url.split('|')[0], headers=headers, output='headers', timeout='20')
-            if 'Content-Type' in result and not 'html' in result['Content-Type']: raise Exception()
-
-            import liveresolver
-
-            if liveresolver.isValid(url) == False: raise Exception()
-
-            direct = False ; u = liveresolver.resolve(url)
-
-            if not u == None: return u
-        except:
-            pass
-
         if direct == True: return url
 
 
@@ -763,7 +868,7 @@ class player(xbmc.Player):
         xbmc.Player.__init__(self)
 
 
-    def play(self, url, content=None, SRU=True):
+    def play(self, url, content=None):
         try:
             base = url
 
@@ -801,8 +906,7 @@ class player(xbmc.Player):
             except: pass
             item.setInfo(type='Video', infoLabels = meta)
             control.player.play(url, item)
-            if SRU == True: control.resolve(int(sys.argv[1]), True, item)
-
+            control.resolve(int(sys.argv[1]), True, item)
 
             self.totalTime = 0 ; self.currentTime = 0
 

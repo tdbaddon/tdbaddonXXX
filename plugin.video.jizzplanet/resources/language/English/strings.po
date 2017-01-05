@@ -1,11 +1,7 @@
 # Language file
 # Addon Name: Jizz Planet
 # Addon id: plugin.video.jizzplanet
-# Addon version: 1.0.0
 # Addon Provider: Jizz Planet
-
-msgid ""
-msgstr ""
 
 
 msgctxt "#30701"
@@ -86,6 +82,10 @@ msgstr ""
 
 msgctxt "#30722"
 msgid "Download item"
+msgstr ""
+
+msgctxt "#30723"
+msgid "Queue item"
 msgstr ""
 
 msgctxt "#30725"

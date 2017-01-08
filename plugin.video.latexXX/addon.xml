@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.latexXX"
+       name="LatexXX"
+       version="0.0.1"
+       provider-name="Slim">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+    <import addon="script.module.requests"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource"
+            library="default.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">OVER 18 ONLY</summary>
+    <language>en</language>
+    <description lang="en">Massive thanks to Echo-Coder for all his help with this addon</description>
+	<disclaimer lang="en">This add-on contains explicit adult material, DO NOT install if you are younger than 18 years of age. **18+ ONLY**</disclaimer>
+     <platform>all</platform>
+  </extension>
+</addon>

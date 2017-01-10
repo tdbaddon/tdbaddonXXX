@@ -70,7 +70,7 @@ def Playvid(url, name):
     listhtml = utils.getHtml(url, '')
     match = re.compile('(hls_[0-9]+s_[0-9a-z]+)', re.DOTALL | re.IGNORECASE).findall(listhtml)
     if match:
-        videourl = "http://transcode.naked.com/hls/" + match[0] + "/index.m3u8"
+        videourl = "http://transcode.k8s.naked.com/hls/" + match[0] + "/index.m3u8"
         iconimage = xbmc.getInfoImage("ListItem.Thumb")
         listitem = xbmcgui.ListItem(name, iconImage="DefaultVideo.png", thumbnailImage=iconimage)
         listitem.setInfo('video', {'Title': name, 'Genre': 'Porn'})

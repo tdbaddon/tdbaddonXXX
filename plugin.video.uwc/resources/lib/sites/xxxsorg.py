@@ -71,16 +71,19 @@ def Playvid(url, name, download=None):
     progress.update( 10, "", "Loading video page", "" )
     url = url.split('#')[0]
     videopage = utils.getHtml(url, '')
-    entrycontent = re.compile('entry-content">(.*?)entry-content', re.DOTALL | re.IGNORECASE).findall(videopage)[0]
-    links = re.compile('href="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(entrycontent)
-    videourls = " "
-    for link in links:
-        if 'securely' in link:
-            try:
-                link = utils.getVideoLink(link, url)
-            except: pass
-        videourls = videourls + " " + link
-    utils.playvideo(videourls, name, download, url)
+    try:
+        entrycontent = re.compile('entry-content">(.*?)entry-content', re.DOTALL | re.IGNORECASE).findall(videopage)[0]
+        links = re.compile('href="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(entrycontent)
+        videourls = " "
+        for link in links:
+            if 'securely' in link:
+                try:
+                    link = utils.getVideoLink(link, url)
+                except: pass
+            videourls = videourls + " " + link
+        utils.playvideo(videourls, name, download, url)
+    except:
+        utils.playvideo(videopage, name, download, url)
 
 
 @utils.url_dispatcher.register('423', ['url']) 

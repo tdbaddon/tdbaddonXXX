@@ -130,18 +130,17 @@ def List(url, page=1):
         return None
     match = re.compile(r'<li>\s+<a href="([^"]+)".*?src="([^"]+)".*?<div[^>]+>([^<]+)</div>.*?href[^>]+>([^<]+)<.*?age[^>]+>([^<]+)<', re.DOTALL | re.IGNORECASE).findall(listhtml)
     for videopage, img, status, name, age in match:
-        name = utils.cleantext(name)
+        name = utils.cleantext(name.strip())
         status = status.replace("\n","").strip()
         name = name + " [COLOR deeppink][" + age + "][/COLOR] " + status
         videopage = "https://chaturbate.com" + videopage
         utils.addDownLink(name, videopage, 222, img, '', noDownload=True)
-    if len(match) == 90:
-        try:
-            page = page + 1
-            nextp=re.compile('<a href="([^"]+)" class="next', re.DOTALL | re.IGNORECASE).findall(listhtml)
-            next = "https://chaturbate.com" + nextp[0]
-            utils.addDir('Next Page ('+str(page)+')', next, 221,'', page)
-        except: pass
+    try:
+        page = page + 1
+        nextp=re.compile('<a href="([^"]+)" class="next', re.DOTALL | re.IGNORECASE).findall(listhtml)
+        next = "https://chaturbate.com" + nextp[0]
+        utils.addDir('Next Page ('+str(page)+')', next, 221,'', page)
+    except: pass
     xbmcplugin.endOfDirectory(utils.addon_handle)
 
 

@@ -38,13 +38,18 @@ def List(url):
     except:
         utils.notify('Oh oh','It looks like this website is down.')
         return None
-    match = re.compile(r'<a href="(.+?)" class="thumb"><img src="(.+?)" alt="(.+?)"').findall(listhtml)
-    for videopage, img, name in match:
+    match = re.compile(r'class="thumb"><img src="([^"]+)".*?<span class="time">(.*?)(\d+:[^\s]+).*?href="([^"]+)" title="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(listhtml)
+    for img, hd, duration, videopage, name in match:
         name = utils.cleantext(name)
+        if hd.find('HD') > 0:
+            hd = " [COLOR orange]HD[/COLOR] "
+        else:
+            hd = " "
+        name = name + hd + "[COLOR deeppink]" + duration + "[/COLOR]"
         utils.addDownLink(name, videopage, 502, img, '')
     try:
         nextp = re.compile('<a class="next" href="(.+?)">').findall(listhtml)
-        utils.addDir('Next Page', url[:url.rfind('/')+1] + nextp[0], 501,'')
+        utils.addDir('Next Page', nextp[0], 501,'')
     except: pass
     xbmcplugin.endOfDirectory(utils.addon_handle)
 

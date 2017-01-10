@@ -99,7 +99,7 @@ def PPlayvid(url, name, download=None, alternative=1):
     progress.update( 25, "", "Loading video page", "" )
     
     videopage = utils.getHtml(url, '', '', True)
-    if 'openload' in videopage:
+    if re.search('o(?:pen)?load', videopage, re.DOTALL | re.IGNORECASE):
         progress.close()
         utils.PLAYVIDEO(url, name, download)
     elif re.search('server/\?t=', videopage, re.DOTALL | re.IGNORECASE):

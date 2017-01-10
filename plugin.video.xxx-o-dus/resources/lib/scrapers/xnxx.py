@@ -160,7 +160,7 @@ def GET_CONTENT(url):
 			np=re.compile('<a href="([^"]*)" class="no-page">Next</a></li></ul></div>').findall(result)[0]
 			np = np.replace('&amp;','&')
 			np = 'http://www.xnxx.com' + np
-			common.addDir('[COLOR yellow]Next Page >>[/COLOR]',np,1,next_icon,fanart)       
+			common.addDir('[COLOR yellow]Next Page >>[/COLOR]',np,31,next_icon,fanart)       
 		except:pass
 
 		if not "http://www.xnxx.com/home/10" in checker:

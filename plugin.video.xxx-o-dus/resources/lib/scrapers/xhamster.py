@@ -123,7 +123,7 @@ def GET_CONTENT(url):
 			else:
 				np=re.compile('<link rel="next" href="(.+?)"').findall(result)[0]
 			np = np.replace('&amp;','&')
-			common.addDir('[COLOR white]Next Page >>[/COLOR]',np,1,icon,fanart)       
+			common.addDir('[COLOR white]Next Page >>[/COLOR]',np,11,icon,fanart)       
 		except:pass
 
 	kodi_name = common.GET_KODI_VERSION()

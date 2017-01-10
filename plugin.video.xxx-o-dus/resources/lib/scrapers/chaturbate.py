@@ -144,7 +144,7 @@ def GET_CONTENT(url):
 		for item in np:
 			next=re.compile('<li><a href="(.+?)" class="next endless_page_link">next</a></li>').findall(item)[0]
 			url = "http://chaturbate.com" + str(next)
-			common.addDir('[COLOR pink]Next Page >>[/COLOR]',url,1,next_icon,fanart)       
+			common.addDir('[COLOR pink]Next Page >>[/COLOR]',url,21,next_icon,fanart)       
 	except:pass
 
 	kodi_name = common.GET_KODI_VERSION()

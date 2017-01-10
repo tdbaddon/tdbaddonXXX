@@ -22,7 +22,7 @@ __scriptname__ = "Ultimate Whitecream"
 __author__ = "Whitecream"
 __scriptid__ = "plugin.video.uwc"
 __credits__ = "Whitecream, Fr33m1nd, anton40, NothingGnome"
-__version__ = "1.1.47"
+__version__ = "1.1.48"
 
 import urllib
 import urllib2
@@ -110,6 +110,10 @@ else:
 urllib2.install_opener(opener)
 
 favoritesdb = os.path.join(profileDir, 'favorites.db')
+
+def uwcimage(filename):
+    img = os.path.join(imgDir, filename)
+    return img
 
 class StopDownloading(Exception):
     def __init__(self, value): self.value = value
@@ -349,7 +353,7 @@ def playvideo(videosource, name, download=None, url=None):
     videourl=None
     if re.search('openload\.(?:co|io)?/', videosource, re.DOTALL | re.IGNORECASE):
         hosts.append('OpenLoad')
-    if re.search('oload\.(?:co|io)?/', videosource, re.DOTALL | re.IGNORECASE):
+    if re.search('oload\.(?:co|io|tv)?/', videosource, re.DOTALL | re.IGNORECASE):
         hosts.append('OpenLoad')
     if re.search('streamin\.to/', videosource, re.DOTALL | re.IGNORECASE):
         hosts.append('Streamin')
@@ -367,6 +371,8 @@ def playvideo(videosource, name, download=None, url=None):
         hosts.append('Streamdefence')
     if re.search('datoporn.com', videosource, re.DOTALL | re.IGNORECASE):
         hosts.append('Datoporn')
+    #if re.search('vidlox\.tv', videosource, re.DOTALL | re.IGNORECASE):
+    #    hosts.append('Vidlox')        
     if re.search('<source', videosource, re.DOTALL | re.IGNORECASE):
         hosts.append('Direct Source')
     if not 'keeplinks' in url:
@@ -391,7 +397,7 @@ def playvideo(videosource, name, download=None, url=None):
 
     if vidhost == 'OpenLoad':
         progress.update( 40, "", "Loading Openload", "" )
-        openloadurl = re.compile(r"//(?:www\.)?o(?:pen)?load\.(?:co|io)?/(?:embed|f)/([0-9a-zA-Z-_]+)", re.DOTALL | re.IGNORECASE).findall(videosource)
+        openloadurl = re.compile(r"//(?:www\.)?o(?:pen)?load\.(?:co|io|tv)?/(?:embed|f)/([0-9a-zA-Z-_]+)", re.DOTALL | re.IGNORECASE).findall(videosource)
         openloadurl = chkmultivids(openloadurl)
 
         openloadurl1 = 'http://openload.io/embed/%s/' % openloadurl
@@ -722,6 +728,8 @@ def addDownLink(name, url, mode, iconimage, desc='', stream=None, fav='add', noD
          "&img=" + urllib.quote_plus(iconimage) +
          "&name=" + urllib.quote_plus(name))
     ok = True
+    if len(iconimage) < 1:
+        iconimage = uwcicon
     liz = xbmcgui.ListItem(name, iconImage="DefaultVideo.png", thumbnailImage=iconimage)
     liz.setArt({'thumb': iconimage, 'icon': iconimage})
     fanart = os.path.join(rootDir, 'fanart.jpg')
@@ -755,6 +763,8 @@ def addDir(name, url, mode, iconimage, page=None, channel=None, section=None, ke
          "&keyword=" + urllib.quote_plus(keyword) +
          "&name=" + urllib.quote_plus(name))
     ok = True
+    if len(iconimage) < 1:
+        iconimage = uwcicon
     liz = xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
     liz.setArt({'thumb': iconimage, 'icon': iconimage})
     fanart = os.path.join(rootDir, 'fanart.jpg')

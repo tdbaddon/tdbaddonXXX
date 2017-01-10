@@ -44,6 +44,7 @@ def TPList(url, page=1):
         return None
     match = re.compile('src="([^"]+jpg)[^<]+[^"]+"([^"]+)">([^<]+)<[^"]+[^>]+>([^\s]+)\s', re.DOTALL | re.IGNORECASE).findall(listhtml)
     for thumb, videourl, name, duration in match:
+        if thumb.startswith('//'): thumb = 'http:' + thumb
         name = utils.cleantext(name)
         videourl = "http://www.bubbaporn.com" + videourl
         name = name + " [COLOR deeppink]" + duration + "[/COLOR]"
@@ -61,6 +62,7 @@ def TPPlayvid(url, name, download=None):
     match = re.compile('<source src="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(videopage)
     if match:
         videourl = match[0]
+        if videourl.startswith('//'): videourl = 'http:' + videourl
         if download == 1:
             utils.downloadVideo(videourl, name)
         else:

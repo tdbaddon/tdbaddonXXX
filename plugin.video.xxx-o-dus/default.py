@@ -17,6 +17,7 @@ from resources . lib . scrapers import pornfun
 from resources . lib . scrapers import motherless
 from resources . lib . scrapers import spankbang
 from resources . lib . scrapers import porn00
+from resources . lib . scrapers import virtualpornstars
 if 64 - 64: i11iIiiIii
 OO0o = 'plugin.video.xxx-o-dus'
 Oo0Ooo = '[COLOR orangered]XXX-O-DUS[/COLOR]'
@@ -233,9 +234,16 @@ def O0o0O00Oo0o0 ( ) :
     except : pass
     oO0OOoo0OO = "http://www.porn00.org/?s=" + O0ooo0O0oo0 . lower ( )
     oO0OOoo0OO = 'split|' + oO0OOoo0OO
-    O0oO . update ( 100 , '[COLOR white]Searching: [/COLOR] [COLOR orangered]Porn00[/COLOR]' , '[COLOR white]Term: [/COLOR][COLOR deeppink]' + iI1iII1 . lower ( ) + '[/COLOR]' , '[COLOR white]Source: [/COLOR][COLOR pink]9 of 9[/COLOR]' )
+    O0oO . update ( 99 , '[COLOR white]Searching: [/COLOR] [COLOR orangered]Porn00[/COLOR]' , '[COLOR white]Term: [/COLOR][COLOR deeppink]' + iI1iII1 . lower ( ) + '[/COLOR]' , '[COLOR white]Source: [/COLOR][COLOR pink]9 of 9[/COLOR]' )
     try :
      porn00 . GET_CONTENT ( 'none' , oO0OOoo0OO , 'none' )
+    except : pass
+    O0oO . close ( )
+    oO0OOoo0OO = "http://virtualpornstars.com/?s=" + O0ooo0O0oo0 . lower ( )
+    oO0OOoo0OO = 'split|' + oO0OOoo0OO
+    O0oO . update ( 100 , '[COLOR white]Searching: [/COLOR] [COLOR orangered]Virtual Porn Stars[/COLOR]' , '[COLOR white]Term: [/COLOR][COLOR deeppink]' + iI1iII1 . lower ( ) + '[/COLOR]' , '[COLOR white]Source: [/COLOR][COLOR pink]9 of 9[/COLOR]' )
+    try :
+     virtualpornstars . GET_CONTENT ( oO0OOoo0OO )
     except : pass
     O0oO . close ( )
    except :
@@ -716,6 +724,10 @@ elif I1i11 == 210 : porn00 . MAIN_MENU ( )
 elif I1i11 == 211 : porn00 . GET_CONTENT ( ooo0O0o00O , oO0OOoo0OO , ooOOO00Ooo )
 elif I1i11 == 212 : porn00 . SEARCH ( )
 elif I1i11 == 213 : porn00 . PLAY_URL ( ooo0O0o00O , oO0OOoo0OO , ooOOO00Ooo )
+elif I1i11 == 220 : virtualpornstars . MAIN_MENU ( )
+elif I1i11 == 221 : virtualpornstars . GET_CONTENT ( oO0OOoo0OO )
+elif I1i11 == 222 : virtualpornstars . SEARCH ( )
+elif I1i11 == 223 : virtualpornstars . PLAY_URL ( ooo0O0o00O , oO0OOoo0OO , ooOOO00Ooo )
 elif I1i11 == 800 : ooOOO0 ( ooo0O0o00O , oO0OOoo0OO , ooOOO00Ooo )
 elif I1i11 == 900 : iiIii ( )
 elif I1i11 == 901 : ii1i1I1i ( )

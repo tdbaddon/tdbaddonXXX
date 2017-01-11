@@ -78,12 +78,30 @@ def home():
 	add_dir('[COLOR cyan]. .[COLOR red]  ^  [COLOR cyan]. .[COLOR yellow]  Home  [COLOR cyan]. .[COLOR red]  ^  [COLOR cyan]. .[/COLOR]', '', None, icon, fanart)
 			
 def main():
-	
+	add_link('[COLOR lime]Hardcore [COLOR red]Sex TV[/COLOR]', vietsextv, 4, logos + 'hardcore.png', fanart)
+	content = make_request('http://www.giniko.com/watch.php?id=95')	  
+	match = re.compile('image: "([^"]*)",\s*file: "([^"]+)"').findall(content)
+	for thumb, url in match:
+		add_link('[COLOR yellow]Miami [COLOR red]TV[/COLOR]', url, 4, thumb, fanart)
+	add_dir('[COLOR red]Porn[COLOR white] 4u [COLOR red]TV[/COLOR]', 'porn_4u', 8, logos + 'porn4u.png', fanart)		
+	add_dir('[COLOR cyan]HD [COLOR red] Adult Videos[/COLOR]', 'hdadult', 7, logos + 'hdadult.png', fanart)
+	add_dir('[COLOR lime]Ero-tik [COLOR red] Adult Videos[/COLOR]', erotik, 2, logos + 'erotik.png', fanart) 
 	add_dir('[COLOR orange]FlyFLV [COLOR red] Adult Videos[/COLOR]', flyflv, 2, logos + 'flyflv.png', fanart) 
 	add_dir('[COLOR yellow]LubeTube [COLOR red] Adult Videos[/COLOR]', lubetube, 2, logos + 'lubetube.png', fanart) 
 	add_dir('[COLOR violet]PlayVid [COLOR red] Adult Videos[/COLOR]', playvid, 2, logos + 'playvid.png', fanart) 	
+	add_dir('[COLOR lightblue]PornCom [COLOR red] Adult Videos[/COLOR]', porncom, 2, logos + 'porncom.png', fanart)	
+	add_dir('[COLOR lime]PornHD [COLOR red] Adult Videos[/COLOR]', pornhd, 2, logos + 'pornhd.png', fanart)		
 	add_dir('[COLOR blue]PornXS [COLOR red] Adult Videos[/COLOR]', pornxs + 'browse/', 2, logos + 'pornxs.png', fanart)		
+	add_dir('[COLOR red]Red[COLOR white]Tube [COLOR red] Adult Videos[/COLOR]', redtube, 2, logos + 'redtube.png', fanart)
+	add_dir('[COLOR green]TnAFlix [COLOR red] Adult Videos[/COLOR]', tnaflix, 2, logos + 'tnaflix.png', fanart) 	
+	add_dir('[COLOR magenta]Tube8 [COLOR red] Adult Videos[/COLOR]', tube8, 2, logos + 'tube8.png', fanart) 
 	add_dir('[COLOR silver]ViKiPorn [COLOR red] Adult Videos[/COLOR]', vikiporn, 2, logos + 'vikiporn.png', fanart) 
+	add_dir('[COLOR blue]xHamster [COLOR red] Adult Videos[/COLOR]', xhamster, 2, logos + 'xhamster.png', fanart)
+	add_dir('[COLOR yellow]Xvideos [COLOR red] Adult Videos[/COLOR]', xvideos, 2, logos + 'xvideos.png', fanart)
+	add_dir('[COLOR white]Yes XXX [COLOR red] Adult Videos[/COLOR]', yesxxx, 20, logos + 'yes.png', fanart) 			
+	add_dir('[COLOR chocolate]YouJizz [COLOR red] Adult Videos[/COLOR]', youjizz, 2, logos + 'youjizz.png', fanart)	
+	add_dir('[COLOR lightgreen]YouPorn [COLOR red] Adult Videos[/COLOR]', youporn, 2, logos + 'youporn.png', fanart)   
+	add_dir('[COLOR green]ZBPorn [COLOR red] Adult Videos[/COLOR]', zbporn, 40, logos + 'zbporn.png', fanart)  	
 	
 def porn4u():
 	home()

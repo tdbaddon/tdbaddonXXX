@@ -27,7 +27,7 @@ cj = cookielib.LWPCookieJar()
 Request = urllib2.Request
 USERAGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.2; en-GB; rv:1.8.1.18) Gecko/20081029 Firefox/2.0.0.18'
 
-if cj != None:
+if cj:
     if os.path.isfile(xbmc.translatePath(cookiePath)):
         try:
             cj.load(xbmc.translatePath(cookiePath))
@@ -328,31 +328,13 @@ entitydefs2 = {
     '`':    '%60'
 }
 
-entitydefs3 = {
-    u'ÂÁÀÄÃÅ':  u'A',
-    u'âáàäãå':  u'a',
-    u'ÔÓÒÖÕ':   u'O',
-    u'ôóòöõğø': u'o',
-    u'ÛÚÙÜ':    u'U',
-    u'ûúùüµ':   u'u',
-    u'ÊÉÈË':    u'E',
-    u'êéèë':    u'e',
-    u'ÎÍÌÏ':    u'I',
-    u'îìíï':    u'i',
-    u'ñ':       u'n',
-    u'ß':       u'B',
-    u'÷':       u'%',
-    u'ç':       u'c',
-    u'æ':       u'ae'
-}
 
 def clean1(s): # remove &XXX;
     if not s:
         return ''
-    for name, value in entitydefs.iteritems():
-        if u'&' in s:
-            s = s.replace(u'&' + name + u';', value)
-    return s
+    import HTMLParser
+    h = HTMLParser.HTMLParser()
+    return h.unescape(s)
 
 def clean2(s): # remove \\uXXX
     pat = re.compile(r'\\u(....)')
@@ -1090,7 +1072,6 @@ class Main:
         if enable_debug:
             xbmc.log('Initializing VideoDevil')
         self.pDialog = None
-        self.curr_file = ''
         self.urlList = []
         self.extensionList = []
         self.selectionList = []

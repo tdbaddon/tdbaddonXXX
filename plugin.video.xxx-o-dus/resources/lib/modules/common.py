@@ -22,6 +22,10 @@ import base64
 import re
 
 AddonTitle     = "[COLOR red]XXX-O-DUS[/COLOR]"
+dialog              = xbmcgui.Dialog()
+addon_id            = 'plugin.video.xxx-o-dus'
+fanart              = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id , 'fanart.jpg'))
+icon                = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'icon.png'))
 
 def GET_KODI_VERSION():
 
@@ -44,6 +48,41 @@ def GET_KODI_VERSION():
 	else: codename = "Decline"
 	
 	return codename
+
+def GET_M3U_LIST(url):
+
+	response = open_url(url)
+	response = response.replace('#AAASTREAM:','#A:')
+	response = response.replace('#EXTINF:','#A:')
+	matches=re.compile('^#A:-?[0-9]*(.*?),(.*?)\n(.*?)$',re.I+re.M+re.U+re.S).findall(response)
+	li = []
+	for params, display_name, url in matches:
+		item_data = {"params": params, "display_name": display_name, "url": url}
+		li.append(item_data)
+	m3u_list = []
+	for channel in li:
+		item_data = {"display_name": channel["display_name"], "url": channel["url"]}
+		matches=re.compile(' (.+?)="(.+?)"',re.I+re.M+re.U+re.S).findall(channel["params"])
+		for field, value in matches:
+			item_data[field.strip().lower().replace('-', '_')] = value.strip()
+		m3u_list.append(item_data)
+
+	for channel in sorted(m3u_list):
+		name = GetEncodeString(channel["display_name"])
+		url = GetEncodeString(channel["url"])
+		url = url.replace('\\n','').replace('\n','').replace('\\r','').replace('\\t','').replace('\r','').replace('\t','').replace(' ','').replace('m3u8','m3u8')
+		addLink('[COLOR pink]'+name.title()+'[/COLOR]',url,996,icon,fanart)
+
+def GetEncodeString(str):
+	try:
+		import chardet
+		str = str.decode(chardet.detect(str)["encoding"]).encode("utf-8")
+	except:
+		try:
+			str = str.encode("utf-8")
+		except:
+			pass
+	return str
 
 def CLEANUP(text):
 

@@ -23,7 +23,7 @@ import re
 from resources.lib.modules  import common
 
 addon_id            = 'plugin.video.xxx-o-dus'
-AddonTitle          = '[COLOR orangered]XXX-O-DUS[/B][/COLOR]'
+AddonTitle          = '[COLOR orangered]XXX-O-DUS[/COLOR]'
 fanart              = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id , 'fanart.jpg'))
 icon                = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'icon.png'))
 xhamster_icon       = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/xhamster/icon.png'))
@@ -53,18 +53,18 @@ virtualpornstars_fanart = xbmc.translatePath(os.path.join('special://home/addons
 
 def SEARCH():
 
-	common.addDir("[COLOR white][B]SEARCH ALL WESBITES[/B][/COLOR]","url",100,icon,fanart)
-	common.addLink("[COLOR darkgray]#################################[/B][/COLOR]","url",999,icon,fanart)
-	common.addDir("[COLOR white][B]Search Xhamster[/B][/COLOR]","url",12,xhamster_icon,xhamster_fanart)
-	common.addDir("[COLOR white][B]Search XNXX[/B][/COLOR]","url",32,xnxx_icon,xnxx_fanart)
-	common.addDir("[COLOR white][B]Search RedTube[/B][/COLOR]","url",43,redtube_icon,redtube_fanart)
-	common.addDir("[COLOR white][B]Search PornHD[/B][/COLOR]","url",52,pornhd_icon,pornhd_fanart)
-	common.addDir("[COLOR white][B]Search Porn.com[/B][/COLOR]","url",62,porncom_icon,porncom_fanart)
-	common.addDir("[COLOR white][B]Search YouPorn[/B][/COLOR]","url",72,youporn_icon,youporn_fanart)
-	common.addDir("[COLOR white][B]Search PornFun[/B][/COLOR]","url",82,pornfun_icon,pornfun_fanart)
-	common.addDir("[COLOR white][B]Search Spankbang[/B][/COLOR]","url",202,spankbang_icon,spankbang_fanart)
-	common.addDir("[COLOR white][B]Search Porn00[/B][/COLOR]","url",212,porn00_icon,porn00_fanart)
-	common.addDir("[COLOR white][B]Search Virtual Porn Stars[/B][/COLOR]","url",222,virtualpornstars_icon,virtualpornstars_fanart)
+	common.addDir("[COLOR white]SEARCH ALL WESBITES[/COLOR]","url",100,icon,fanart)
+	common.addLink("[COLOR darkgray]#################################[/COLOR]","url",999,icon,fanart)
+	common.addDir("[COLOR white]Search Xhamster[/COLOR]","url",12,xhamster_icon,xhamster_fanart)
+	common.addDir("[COLOR white]Search XNXX[/COLOR]","url",32,xnxx_icon,xnxx_fanart)
+	common.addDir("[COLOR white]Search RedTube[/COLOR]","url",43,redtube_icon,redtube_fanart)
+	common.addDir("[COLOR white]Search PornHD[/COLOR]","url",52,pornhd_icon,pornhd_fanart)
+	common.addDir("[COLOR white]Search Porn.com[/COLOR]","url",62,porncom_icon,porncom_fanart)
+	common.addDir("[COLOR white]Search YouPorn[/COLOR]","url",72,youporn_icon,youporn_fanart)
+	common.addDir("[COLOR white]Search PornFun[/COLOR]","url",82,pornfun_icon,pornfun_fanart)
+	common.addDir("[COLOR white]Search Spankbang[/COLOR]","url",202,spankbang_icon,spankbang_fanart)
+	common.addDir("[COLOR white]Search Porn00[/COLOR]","url",212,porn00_icon,porn00_fanart)
+	common.addDir("[COLOR white]Search Virtual Porn Stars[/COLOR]","url",222,virtualpornstars_icon,virtualpornstars_fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
 
@@ -76,16 +76,16 @@ def SEARCH():
 	
 def VIDEOS():
 
-	common.addDir("[COLOR white][B]Xhamster.com[/B][/COLOR]",'url',10,xhamster_icon,xhamster_fanart)
-	common.addDir("[COLOR white][B]XNXX.com[/B][/COLOR]",'url',30,xnxx_icon,xnxx_fanart)
-	common.addDir("[COLOR white][B]RedTube.com[/B][/COLOR]",'url',41,redtube_icon,redtube_fanart)
-	common.addDir("[COLOR white][B]PornHD.com[/B][/COLOR]",'url',50,pornhd_icon,pornhd_fanart)
-	common.addDir("[COLOR white][B]Porn.com[/B][/COLOR]",'url',60,porncom_icon,porncom_fanart)
-	common.addDir("[COLOR white][B]YouPorn.com[/B][/COLOR]",'url',70,youporn_icon,youporn_fanart)
-	common.addDir("[COLOR white][B]PornFun.com[/B][/COLOR]",'url',80,pornfun_icon,pornfun_fanart)
-	common.addDir("[COLOR white][B]Spankbang.com[/B][/COLOR]",'url',200,spankbang_icon,spankbang_fanart)
-	common.addDir("[COLOR white][B]Porn00.org[/B][/COLOR]",'url',210,porn00_icon,porn00_fanart)
-	common.addDir("[COLOR white][B]Virtualpornstars.com[/B][/COLOR]",'url',220,virtualpornstars_icon,virtualpornstars_fanart)
+	common.addDir("[COLOR white]Xhamster.com[/COLOR]",'url',10,xhamster_icon,xhamster_fanart)
+	common.addDir("[COLOR white]XNXX.com[/COLOR]",'url',30,xnxx_icon,xnxx_fanart)
+	common.addDir("[COLOR white]RedTube.com[/COLOR]",'url',41,redtube_icon,redtube_fanart)
+	common.addDir("[COLOR white]PornHD.com[/COLOR]",'url',50,pornhd_icon,pornhd_fanart)
+	common.addDir("[COLOR white]Porn.com[/COLOR]",'url',60,porncom_icon,porncom_fanart)
+	common.addDir("[COLOR white]YouPorn.com[/COLOR]",'url',70,youporn_icon,youporn_fanart)
+	common.addDir("[COLOR white]PornFun.com[/COLOR]",'url',80,pornfun_icon,pornfun_fanart)
+	common.addDir("[COLOR white]Spankbang.com[/COLOR]",'url',200,spankbang_icon,spankbang_fanart)
+	common.addDir("[COLOR white]Porn00.org[/COLOR]",'url',210,porn00_icon,porn00_fanart)
+	common.addDir("[COLOR white]Virtualpornstars.com[/COLOR]",'url',220,virtualpornstars_icon,virtualpornstars_fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
 
@@ -97,7 +97,8 @@ def VIDEOS():
 	
 def LIVE():
 
-	common.addDir("[COLOR white][B]Chaturbate.com[/B][/COLOR]",'url',20,chaturbate_icon,chaturbate_fanart)
+	common.addDir("[COLOR white]Live Channels[/COLOR]",'http://echocoder.com/m3u/adult.m3u',995,icon,fanart)
+	common.addDir("[COLOR white]Chaturbate.com[/COLOR]",'url',20,chaturbate_icon,chaturbate_fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
 
@@ -109,8 +110,8 @@ def LIVE():
 	
 def PICTURES():
 
-	common.addDir("[COLOR white][B]XNXX Pictures[/B][/COLOR]","url",34,xnxx_icon,xnxx_fanart)
-	common.addDir("[COLOR white][B]Motherless Pictures[/B][/COLOR]","url",90,motherless_icon,motherless_fanart)
+	common.addDir("[COLOR white]XNXX Pictures[/COLOR]","url",34,xnxx_icon,xnxx_fanart)
+	common.addDir("[COLOR white]Motherless Pictures[/COLOR]","url",90,motherless_icon,motherless_fanart)
 	
 	kodi_name = common.GET_KODI_VERSION()
 
@@ -122,7 +123,7 @@ def PICTURES():
 	
 def STORIES():
 
-	common.addDir("[COLOR white][B]XNXX Stories[/B][/COLOR]","url",38,xnxx_icon,xnxx_fanart)
+	common.addDir("[COLOR white]XNXX Stories[/COLOR]","url",38,xnxx_icon,xnxx_fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
 
@@ -134,18 +135,18 @@ def STORIES():
 	
 def ALL():
 
-	common.addDir("[COLOR white][B]Xhamster.com[/B][/COLOR]",'url',10,xhamster_icon,xhamster_fanart)
-	common.addDir("[COLOR white][B]Chaturbate.com[/B][/COLOR]",'url',20,chaturbate_icon,chaturbate_fanart)
-	common.addDir("[COLOR white][B]XNXX.com[/B][/COLOR]",'url',30,xnxx_icon,xnxx_fanart)
-	common.addDir("[COLOR white][B]RedTube.com[/B][/COLOR]",'url',41,redtube_icon,redtube_fanart)
-	common.addDir("[COLOR white][B]PornHD.com[/B][/COLOR]",'url',50,pornhd_icon,pornhd_fanart)
-	common.addDir("[COLOR white][B]Porn.com[/B][/COLOR]",'url',60,porncom_icon,porncom_fanart)
-	common.addDir("[COLOR white][B]YouPorn.com[/B][/COLOR]",'url',70,youporn_icon,youporn_fanart)
-	common.addDir("[COLOR white][B]PornFun.com[/B][/COLOR]",'url',80,pornfun_icon,pornfun_fanart)
-	common.addDir("[COLOR white][B]Motherless.com[/B][/COLOR]",'url',90,motherless_icon,motherless_fanart)
-	common.addDir("[COLOR white][B]Spankbang.com[/B][/COLOR]",'url',200,spankbang_icon,spankbang_fanart)
-	common.addDir("[COLOR white][B]Porn00.org[/B][/COLOR]",'url',210,porn00_icon,porn00_fanart)
-	common.addDir("[COLOR white][B]Virtualpornstars.com[/B][/COLOR]",'url',220,virtualpornstars_icon,virtualpornstars_fanart)
+	common.addDir("[COLOR white]Xhamster.com[/COLOR]",'url',10,xhamster_icon,xhamster_fanart)
+	common.addDir("[COLOR white]Chaturbate.com[/COLOR]",'url',20,chaturbate_icon,chaturbate_fanart)
+	common.addDir("[COLOR white]XNXX.com[/COLOR]",'url',30,xnxx_icon,xnxx_fanart)
+	common.addDir("[COLOR white]RedTube.com[/COLOR]",'url',41,redtube_icon,redtube_fanart)
+	common.addDir("[COLOR white]PornHD.com[/COLOR]",'url',50,pornhd_icon,pornhd_fanart)
+	common.addDir("[COLOR white]Porn.com[/COLOR]",'url',60,porncom_icon,porncom_fanart)
+	common.addDir("[COLOR white]YouPorn.com[/COLOR]",'url',70,youporn_icon,youporn_fanart)
+	common.addDir("[COLOR white]PornFun.com[/COLOR]",'url',80,pornfun_icon,pornfun_fanart)
+	common.addDir("[COLOR white]Motherless.com[/COLOR]",'url',90,motherless_icon,motherless_fanart)
+	common.addDir("[COLOR white]Spankbang.com[/COLOR]",'url',200,spankbang_icon,spankbang_fanart)
+	common.addDir("[COLOR white]Porn00.org[/COLOR]",'url',210,porn00_icon,porn00_fanart)
+	common.addDir("[COLOR white]Virtualpornstars.com[/COLOR]",'url',220,virtualpornstars_icon,virtualpornstars_fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
 

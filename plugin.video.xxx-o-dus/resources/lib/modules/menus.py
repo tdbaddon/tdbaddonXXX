@@ -50,6 +50,10 @@ porn00_icon         = xbmc.translatePath(os.path.join('special://home/addons/' +
 porn00_fanart       = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/porn00/fanart.jpg'))
 virtualpornstars_icon   = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/virtualpornstars/icon.png'))
 virtualpornstars_fanart = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/virtualpornstars/fanart.jpg'))
+watchxxxfree_icon   = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/watchxxxfree/icon.png'))
+watchxxxfree_fanart = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/watchxxxfree/fanart.jpg'))
+perfectgirls_icon   = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/perfectgirls/icon.png'))
+perfectgirls_fanart = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/perfectgirls/fanart.jpg'))
 
 def SEARCH():
 
@@ -65,6 +69,8 @@ def SEARCH():
 	common.addDir("[COLOR white]Search Spankbang[/COLOR]","url",202,spankbang_icon,spankbang_fanart)
 	common.addDir("[COLOR white]Search Porn00[/COLOR]","url",212,porn00_icon,porn00_fanart)
 	common.addDir("[COLOR white]Search Virtual Porn Stars[/COLOR]","url",222,virtualpornstars_icon,virtualpornstars_fanart)
+	common.addDir("[COLOR white]Search Watch XXX Free[/COLOR]","url",302,watchxxxfree_icon,watchxxxfree_fanart)
+	common.addDir("[COLOR white]Search Perfect Girls[/COLOR]","url",312,perfectgirls_icon,perfectgirls_fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
 
@@ -86,6 +92,8 @@ def VIDEOS():
 	common.addDir("[COLOR white]Spankbang.com[/COLOR]",'url',200,spankbang_icon,spankbang_fanart)
 	common.addDir("[COLOR white]Porn00.org[/COLOR]",'url',210,porn00_icon,porn00_fanart)
 	common.addDir("[COLOR white]Virtualpornstars.com[/COLOR]",'url',220,virtualpornstars_icon,virtualpornstars_fanart)
+	common.addDir("[COLOR white]Watchxxxfree.com[/COLOR]",'url',300,watchxxxfree_icon,watchxxxfree_fanart)
+	common.addDir("[COLOR white]Perfectgirls.net[/COLOR]",'url',310,perfectgirls_icon,perfectgirls_fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
 
@@ -97,7 +105,7 @@ def VIDEOS():
 	
 def LIVE():
 
-	common.addDir("[COLOR white]Live Channels[/COLOR]",'http://echocoder.com/m3u/adult.m3u',995,icon,fanart)
+	common.addDir("[COLOR white]Live Channels[/COLOR]",'http://echocoder.com/m3u/xxxodus.xml',995,icon,fanart)
 	common.addDir("[COLOR white]Chaturbate.com[/COLOR]",'url',20,chaturbate_icon,chaturbate_fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
@@ -147,6 +155,8 @@ def ALL():
 	common.addDir("[COLOR white]Spankbang.com[/COLOR]",'url',200,spankbang_icon,spankbang_fanart)
 	common.addDir("[COLOR white]Porn00.org[/COLOR]",'url',210,porn00_icon,porn00_fanart)
 	common.addDir("[COLOR white]Virtualpornstars.com[/COLOR]",'url',220,virtualpornstars_icon,virtualpornstars_fanart)
+	common.addDir("[COLOR white]Watchxxxfree.com[/COLOR]",'url',300,watchxxxfree_icon,watchxxxfree_fanart)
+	common.addDir("[COLOR white]Perfectgirls.net[/COLOR]",'url',310,perfectgirls_icon,perfectgirls_fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
 

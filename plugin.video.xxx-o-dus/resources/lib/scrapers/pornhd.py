@@ -66,6 +66,7 @@ def MAIN_MENU():
 
 def GET_CONTENT(url):
 
+	url_for_next = url
 	nextpage = 0
 	try:
 		a,url = url.split('|')
@@ -74,22 +75,29 @@ def GET_CONTENT(url):
 	result = common.open_url(url)
 	match = re.compile('<section id="pageContent" class="page-content " >(.+?)<div class="pager paging">',re.DOTALL).findall(result)
 	string = str(match)
-	match2 = re.compile('<a class="t(.+?)/time>',re.DOTALL).findall(string)
+	match2 = re.compile('<a class="thumb(.+?)</a>',re.DOTALL).findall(string)
 	for item in match2:
 		title=re.compile('alt="(.+?)"').findall(item)[0]
-		url=re.compile('humb" href="(.+?)" >').findall(item)[0]
-		iconimage=re.compile('data-original="(.+?)"').findall(item)[0]
+		url=re.compile('href="(.+?)" >').findall(item)[0]
+		iconimage=re.compile('src="(.+?)"').findall(item)[0]
+		if not "http" in iconimage:
+			iconimage=re.compile('data-original="(.+?)"').findall(item)[0]
+		time=re.compile('<time>(.+?)</time>').findall(item)[0]
 		url = "http://pornhd.com" + str(url)
 		name = "[COLOR white]" + title + "[/COLOR]"
 		name = common.CLEANUP(name)
 		url2 = name + '|SPLIT|' + url
-		common.addLink(name,url2,53,iconimage,iconimage)
+		common.addLink(name + " - Dur: " + time,url2,53,iconimage,iconimage)
 
 	if nextpage == 1:
 		try:
-			np=re.compile('<link rel="next" href="(.+?)"').findall(result)[0]
-			url = "http://pornhd.com" + str(np) 
-			common.addDir('[COLOR crimson]Next Page >>[/COLOR]',url,51,next_icon,fanart)       
+			next_url = ""
+			if not "=" in url_for_next:
+				url_for_next = url_for_next + "?page=1"
+			a,b = url_for_next.split("=")
+			c = int(b) + 1
+			next_url = a + "=" + str(c)
+			common.addDir('[COLOR crimson]Next Page >>[/COLOR]',next_url,51,next_icon,fanart)       
 		except:pass
 
 	kodi_name = common.GET_KODI_VERSION()
@@ -194,7 +202,6 @@ def PLAY_URL(name,url,iconimage):
 			f.write(str(b))
 			f.close()
 
-		url = url + '|User-Agent=Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36&Referer=' + ref_url
 		liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
 		dp.close()
 		xbmc.Player ().play(url, liz, False)

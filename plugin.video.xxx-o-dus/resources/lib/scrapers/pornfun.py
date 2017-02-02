@@ -65,13 +65,6 @@ def MAIN_MENU():
 		videos = videos + int(float(c))
 		name = "[COLOR rose]" + title + " - " + number + "[/COLOR]"
 		common.addDir(name,url,81,icon_cat,fanart)
-		
-	try:
-		common.addDir("[COLOR red]Total Videos: {:,}".format(videos) + "[/COLOR]",LATEST_VIDS,71,icon,fanart)
-	except:
-		try:
-			common.addDir("[COLOR red]Total Videos: " + str(videos) + "[/COLOR]",LATEST_VIDS,71,icon,fanart)
-		except: pass
 
 	kodi_name = common.GET_KODI_VERSION()
 
@@ -99,7 +92,7 @@ def GET_CONTENT(url):
 		iconimage=re.compile('data-original="(.+?)"').findall(item)[0]
 		duration=re.compile('<span itemprop="duration" class="duration">(.+?)</span>').findall(item)[0]
 		views=re.compile('<span class="counter"><i class="ico-views"></i>(.+?)</span>').findall(item)[0]						
-		url2 = title + '|SPLIT|' + url
+		url2 = title + '|SPLIT|' + "http:" + url
 		name = '[COLOR pink]' + title + '[/COLOR] | [I]Duration: ' + duration + ' - Views: ' + views
 		name = common.CLEANUP(name)
 		common.addLink(name,url2,83,iconimage,iconimage)
@@ -138,7 +131,7 @@ def PLAY_URL(name,url,iconimage):
 	ref_url = url
 	result = common.open_url(url)
 	url = re.compile("video_url:.+?'(.+?)',",re.DOTALL).findall(result)[0]
-	
+	url = 'http:' + url
 	choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
 
 	if choice == 1:
@@ -185,7 +178,6 @@ def PLAY_URL(name,url,iconimage):
 			f.write(str(b))
 			f.close()
 
-		url = url + '|User-Agent=Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36&Referer=' + ref_url
 		liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
 		dp.close()
 		xbmc.Player ().play(url, liz, False)

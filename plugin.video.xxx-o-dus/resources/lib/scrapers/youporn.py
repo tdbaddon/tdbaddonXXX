@@ -120,7 +120,7 @@ def GET_CONTENT(url):
 				name = "[COLOR yellow]SD[/COLOR][COLOR white] - " + title + "[/COLOR]"
 			name = name.replace("'",'')
 			name = common.CLEANUP(name)
-			url2 = name + '|SPLIT|' + url
+			url2 = name + '|SPLIT|' + url + '|SPLIT|' + iconimage 
 			common.addLink(name,url2,73,iconimage,iconimage)
 		except: pass
 	
@@ -157,7 +157,7 @@ def SEARCH():
 
 def PLAY_URL(name,url,iconimage):
 
-	name,url = url.split('|SPLIT|')
+	name,url,iconimage = url.split('|SPLIT|')
 	name = name.replace("[COLOR orangered]HD[/COLOR][COLOR white] - ",'').replace("[COLOR yellow]SD[/COLOR][COLOR white] - ",'').replace('[/COLOR]','').replace(' - ','')
 	dp = common.GET_LUCKY()
 	url = "http://www.youporn.com" + url

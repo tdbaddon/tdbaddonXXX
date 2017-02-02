@@ -51,6 +51,14 @@ def GET_KODI_VERSION():
 
 def GET_M3U_LIST(url):
 
+	req = urllib2.Request(url)
+	req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36')
+	response = urllib2.urlopen(req)
+	link=response.read()
+	response.close()
+	link=link.replace('\n','').replace('\r','').replace('<fanart></fanart>','<fanart>x</fanart>').replace('<thumbnail></thumbnail>','<thumbnail>x</thumbnail>').replace('<utube>','<link>https://www.youtube.com/watch?v=').replace('</utube>','</link>')#.replace('></','>x</')
+	url = re.compile('<link>(.+?)</link>').findall(link)[0]
+
 	response = open_url(url)
 	response = response.replace('#AAASTREAM:','#A:')
 	response = response.replace('#EXTINF:','#A:')

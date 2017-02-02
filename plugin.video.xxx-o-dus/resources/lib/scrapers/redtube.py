@@ -160,10 +160,10 @@ def PLAY_URL(name,url,iconimage):
 	ref_url = url
 	dp = common.GET_LUCKY()
 	result = common.open_url(url)
-	url = re.compile('<source src="//(.+?)"',re.DOTALL).findall(result)
+	url = re.compile('<source src="//(.+?)" type="video/mp4">',re.DOTALL).findall(result)
 	a = str(url)
 	url = 'http://' + str(a)
-	url = url.replace("['",'').replace("']",'').replace('%3A%2F%2F','://').replace('%2F','/')
+	url = url.replace("['",'').replace("']",'').replace('%3A%2F%2F','://').replace('%2F','/').replace('amp;','')
 
 	choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
 

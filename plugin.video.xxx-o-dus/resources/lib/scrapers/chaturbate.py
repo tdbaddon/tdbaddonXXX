@@ -108,7 +108,7 @@ def POP_NOW(url):
 					name = "[COLOR blue]NEW[/COLOR][COLOR yellow] - " + title + " - Age " + age + "[/COLOR]"
 				else:
 					name = "[COLOR yellow]" + title + " - Age " + age + "[/COLOR]"
-				url2 = title + '|SPLIT|' + url
+				url2 = title + '|SPLIT|' + url + '|SPLIT|' + iconimage
 				common.addLink(name,url2,23,iconimage,fanart)
 				i = i + 1
 			except: pass
@@ -135,7 +135,7 @@ def GET_CONTENT(url):
 				name = "[COLOR blue]NEW[/COLOR][COLOR yellow] - " + title + " - Age " + age + "[/COLOR]"
 			else:
 				name = "[COLOR yellow]" + title + " - Age " + age + "[/COLOR]"
-			url2 = title + '|SPLIT|' + url
+			url2 = title + '|SPLIT|' + url + '|SPLIT|' + iconimage
 			common.addLink(name,url2,23,iconimage,fanart)
 		except: pass
 
@@ -170,12 +170,15 @@ def SEARCH():
 def PLAY_URL(name,url,iconimage):
 	
 	dp = common.GET_LUCKY()
-	name,url = url.split('|SPLIT|')
+	name,url,iconimage = url.split('|SPLIT|')
 	orig_url = "http://www.chaturbate.com" + url
 	result = common.open_url(orig_url)
 	match = re.compile('<head>(.+?)</html>',re.DOTALL).findall(result)
 	string = str(match).replace('\\','').replace('(','').replace(')','')
-	url = re.compile("playsinline autoplay><source src='(.+?)'").findall(string)[0]
+	try:
+		url = re.compile("hlsSourceFast = '(.+?)';").findall(string)[0]
+	except:
+		url = re.compile("hlsSourceSlow = '(.+?)';").findall(string)[0]
 
 	if os.path.exists(F4M):
 		url2 = 'plugin://plugin.video.f4mTester/?streamtype=HLSRETRY&amp;name='+name+'&amp;url='+url+'&amp;iconImage='+iconimage

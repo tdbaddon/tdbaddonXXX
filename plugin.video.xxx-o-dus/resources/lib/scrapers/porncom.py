@@ -238,45 +238,7 @@ def PLAY_URL(name,url,iconimage):
 			f.write(str(b))
 			f.close()
 
-			try:
-				url1 = re.compile('id:"1080p",url:"(.+?)"').findall(match)[0]
-			except: url1 = "null"
-			try:
-				url2 = re.compile('id:"720p",url:"(.+?)"').findall(match)[0]
-			except:url2 = "null"
-			try:
-				url3 = re.compile('id:"480p",url:"(.+?)"').findall(match)[0]
-			except:url3 = "null"
-			try:
-				url4 = re.compile('id:"360p",url:"(.+?)"').findall(match)[0]
-			except: url4 = "null"
-			try:
-				url5 = re.compile('id:"240p",url:"(.+?)"').findall(match)[0]
-			except: url5 = "null"
-			if "http" in url1:
-				choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR deepskyblue]Watch in 1080p[/COLOR]','[COLOR deepskyblue]Watch in 720p[/COLOR]','[COLOR deepskyblue]Watch in 480p[/COLOR]','[COLOR deepskyblue]Watch in 360p[/COLOR]','[COLOR deepskyblue]Watch in 240p[/COLOR]'])
-				if choice == 0: url_play = url1
-				elif choice == 1: url_play = url2
-				elif choice == 2: url_play = url3
-				elif choice == 3: url_play = url4
-				elif choice == 4: url_play = url5
-			elif "http" in url2:
-				choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR deepskyblue]Watch in 720p[/COLOR]','[COLOR deepskyblue]Watch in 480p[/COLOR]','[COLOR deepskyblue]Watch in 360p[/COLOR]','[COLOR deepskyblue]Watch in 240p[/COLOR]'])
-				if choice == 0: url_play = url2
-				elif choice == 1: url_play = url3
-				elif choice == 2: url_play = url4
-				elif choice == 3: url_play = url5
-			elif "http" in url3:
-				choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR deepskyblue]Watch in 480p[/COLOR]','[COLOR deepskyblue]Watch in 360p[/COLOR]','[COLOR deepskyblue]Watch in 240p[/COLOR]'])
-				if choice == 0: url_play = url3
-				elif choice == 1: url_play = url4
-				elif choice == 2: url_play = url5
-			elif "http" in url4:
-				choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR deepskyblue]Watch in 360p[/COLOR]','[COLOR deepskyblue]Watch in 240p[/COLOR]'])
-				if choice == 0: url_play = url4
-				elif choice == 1: url_play = url5
-			elif "http" in url5:
-				url_play = url5
+		url_play = re.compile('{id:".+?",url:"(.+?)"').findall(match)[-1]
 
 		url = url_play + '|User-Agent=Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36&Referer=' + ref_url
 		liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)

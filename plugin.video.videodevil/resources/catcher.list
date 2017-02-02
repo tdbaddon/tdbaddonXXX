@@ -157,7 +157,7 @@ build=http://en.clipa.tv%s
 quality=standard
 ########################################################
 title=simple-match
-target=(http://[^"<]+?.(mp4|flv))
+target=(https*://[^"<]+?.(mp4|flv))
 url=%s
 quality=standard
 ########################################################
@@ -320,6 +320,7 @@ quality=standard
 title=pornburst.xxx
 target=source src="([^"]+)
 url=%s
+build=http:%s
 quality=standard
 ########################################################
 title=sexu.com

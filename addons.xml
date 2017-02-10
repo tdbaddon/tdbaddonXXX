@@ -227,7 +227,7 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
 
 <addon id="plugin.video.latexXX"
        name="LatexXX"
-       version="0.0.1"
+       version="0.0.2"
        provider-name="Slim">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
@@ -416,7 +416,7 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
 
 <addon
   id="plugin.video.videodevil"
-  version="1.7.150"
+  version="1.7.151"
   name="VideoDevil"
   provider-name="xbmc-adult">
   <requires>

@@ -64,7 +64,7 @@ def SEARCH(name,url,iconimage):
     keyboard = xbmc.Keyboard(string, 'Enter Search Term')
     keyboard.doModal()
     if keyboard.isConfirmed():
-        string = keyboard.getText().replace(' ','').capitalize()
+        string = keyboard.getText().replace(' ','+')
         if len(string)>1:
             url = "http://www.thelatextube.com/tubex/index.php?term=" + string + '&c=0&b.x=0&b.y=0&r=search'
             GET_CONTENT(url)
@@ -72,31 +72,36 @@ def SEARCH(name,url,iconimage):
 
 def PLAY_URL(name,url,iconimage):
 
-	xbmc.executebuiltin("ActivateWindow(busydialog)")
-	result = requests.get(url)
-	
+	original = OPEN_URL(url)
+	failed = 0
 	try:
-		url = re.compile("file: '(.+?)'",re.DOTALL).findall(result.content)
-		a = str(url)
-		a = a.replace("['",'').replace("']",'').replace('%3A%2F%2F','://').replace('%2F','/')
-		b,c = a.split('?u=')
-		d,e = c.split('&un')
-		url = str(d)
-	except:
+		a = re.compile('<embed src="(.+?)&',re.DOTALL).findall(original)[0]
+		b = a.split("id=")[1]
+		result = OPEN_URL('http://redtube.com/' + str(b))
+		url = re.compile('<source src="(.+?)"',re.DOTALL).findall(result)[0]
+		url = "http:" + url
+	except: failed = 1
+	
+	if failed == 1:
+		failed = 0
 		try:
-			url = re.compile('value="id=(.+?)&',re.DOTALL).findall(result.content)
+			url = re.compile("file: '(.+?)'",re.DOTALL).findall(original)
 			a = str(url)
-			url = a.replace("['",'').replace("']",'').replace('%3A%2F%2F','://').replace('%2F','/')
-			result = requests.get('http://redtube.com/' + str(url))
-			url = re.compile('<source src="http://(.+?)"',re.DOTALL).findall(result.content)
-			a = str(url)
-			url = 'http://' + str(a)
-			url = url.replace("['",'').replace("']",'').replace('%3A%2F%2F','://').replace('%2F','/')
-		except:
-			dialog.ok("LatexXX","Error playing video, please select another.")
-			sys.exit(0)		
+			a = a.replace("['",'').replace("']",'').replace('%3A%2F%2F','://').replace('%2F','/')
+			b,c = a.split('?u=')
+			d,e = c.split('&un')
+			url = str(d)
+		except: failed = 1
+
+	if failed == 1:	
+		dialog.ok("LatexXX","Error playing video, please select another.")
+		quit()
+
+	if len(url) < 10:
+		dialog.ok("LatexXX","Error playing video, please select another.")
+		quit()
+
 	liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
-	xbmc.executebuiltin("Dialog.Close(busydialog)")
 	xbmc.Player ().play(url, liz, False)
 
 def get_params():
@@ -116,6 +121,15 @@ def get_params():
                                 param[splitparams[0]]=splitparams[1]
                                 
         return param       
+
+def OPEN_URL(url):
+
+    req = urllib2.Request(url)
+    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.73 Safari/537.36')
+    response = urllib2.urlopen(req)
+    link=response.read()
+    response.close()
+    return link  
 
 def addItem(name,url,mode,iconimage,fanart,description=''):
 	u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)+"&description="+urllib.quote_plus(description)

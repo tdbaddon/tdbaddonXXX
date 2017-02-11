@@ -1,2 +1,2 @@
-[B]1.1.0[/B]
-- Cosmetics
+[B]1.1.1[/B]
+- Tweaks

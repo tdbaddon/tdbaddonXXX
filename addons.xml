@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
-<addon id="plugin.video.adulthideout" name="AdultHideout" version="0.6.6" provider-name="Vashiel">
+<addon id="plugin.video.adulthideout" name="AdultHideout" version="0.6.7" provider-name="Vashiel">
     <requires>
     </requires>
     <extension point="xbmc.python.pluginsource"
@@ -181,7 +181,7 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
   </extension>
 </addon>
 
-<addon id="plugin.video.jizzplanet" name="Jizz Planet" version="1.1.0" provider-name="Cosmix, tvaddons.ag">
+<addon id="plugin.video.jizzplanet" name="Jizz Planet" version="1.1.1" provider-name="Cosmix, tvaddons.ag">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0" />
 		<import addon="plugin.video.youtube" version="5.2.1" optional="true" />
@@ -195,8 +195,8 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary lang="en">Jizz Planet</summary>
-		<description lang="en">Jizz Planet - adult based playlists from sites all over the web.</description>
-		<news>- Cosmetics</news>
+		<description lang="en">Unofficial Addon - Jizz Planet - adult based playlists from sites all over the web.</description>
+		<news>- Tweaks</news>
 		<assets>
 			<icon>icon.png</icon>
 			<fanart>fanart.jpg</fanart>

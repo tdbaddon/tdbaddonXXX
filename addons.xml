@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
-<addon id="plugin.video.adulthideout" name="AdultHideout" version="0.6.7" provider-name="Vashiel">
+<addon id="plugin.video.adulthideout" name="AdultHideout" version="0.6.8" provider-name="Vashiel">
     <requires>
     </requires>
     <extension point="xbmc.python.pluginsource"
@@ -344,7 +344,7 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
 
 <addon id="plugin.video.TDBPORNO"
        name="TDB PORNO"
-       version="1002"
+       version="1003"
        provider-name="TDB">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>

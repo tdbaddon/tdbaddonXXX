@@ -3,7 +3,7 @@
 # ChunkPlayer.py
 #------------------------------------------------------------------------------
 #
-# Copyright (c) 2014 LivingOn <LivingOn@xmail.net>
+# Copyright (c) 2014-2015 LivingOn <LivingOn@xmail.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ class PlaylistAnylyser(object):
 
     def get_streamurl_and_sequencenr(self, actor):
         "Liefert die Stream-URL und die Sequenznummer."
-        playlist     = self._get_playlist(actor)
+        playlist     = self.get_playlist(actor)
         if playlist:
             streambase   = self._get_playlist_url(playlist)
             chunkurl     = self._get_chunk_url(streambase, playlist)
@@ -49,12 +49,12 @@ class PlaylistAnylyser(object):
         else:
             return (None,None)
 
-    def _get_playlist(self, actor):
+    def get_playlist(self, actor):
         "Liefert die *.m3u8-Playlist."
         url = "%s/%s" % (Config.CHATURBATE_URL, actor)
         data = urllib2.urlopen(url).read()
         try:
-            playlist = re.findall(r'(http.*?://.*?.stream.highwebmedia.com:1935.*?m3u8)',data)[0]
+            playlist = re.findall(r'(http.*?://.*?.stream.highwebmedia.com.*?m3u8)',data)[0]
             return playlist
         except:
             pass
@@ -204,9 +204,21 @@ class ChunkPlayer(object):
     def __init__(self, plugin_id):
         self._plugin_id = plugin_id
      
-    def play_stream(self, actor):    
+    def play_stream(self, actor):
+        if xbmcaddon.Addon().getSetting("record_active") == "false":
+            self._direct_play(actor)
+        else:
+            self._record_play(actor)
+
+    def _direct_play(self, actor):
+        listitem = xbmcgui.ListItem(actor)
+        playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+        playlist.clear()
+        playlist.add(PlaylistAnylyser().get_playlist(actor), listitem)
+        xbmc.Player().play(playlist)
+
+    def _record_play(self, actor):
         pa = PlaylistAnylyser()
-        
         streamurl, sequencenr =  pa.get_streamurl_and_sequencenr(actor)
         if streamurl and sequencenr:
             recorder = Recorder(actor)

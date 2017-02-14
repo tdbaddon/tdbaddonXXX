@@ -3,7 +3,7 @@
 # Actors.py
 #------------------------------------------------------------------------------
 #
-# Copyright (c) 2014 LivingOn <LivingOn@xmail.net>
+# Copyright (c) 2014-2016 LivingOn <LivingOn@xmail.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,41 +19,39 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #******************************************************************************
-import re
-import urllib2
 
 from resources.lib.Config import Config
+from resources.lib.Scraper import Scraper
+from resources.lib.Tags import Tags
 
-class Actors(object):
 
-    # Regulärer Ausdruck um den Darsteller und das Tumbnail zu ermitteln
-    _REGEX_Name_and_Image = re.compile(r'<li>\s+<a href="/(.*?)/".*?<img src="(http.*?://.*?)"')
-
-    CATEGORY_URL = {
-        "Featured":     Config.CHATURBATE_URL_FEATURED,
-        "Weiblich":     Config.CHATURBATE_URL_WEIBLICH,
-        "Maennlich":    Config.CHATURBATE_URL_MAENNLICH,
-        "Paar":         Config.CHATURBATE_URL_PAAR,
-        "Transsexual":  Config.CHATURBATE_URL_TRANSSEXUAL
-        }
+class Actors(Scraper):
 
     def __init__(self):
-        self._last_page = False
+        super(Actors, self).__init__()
 
-    def names_and_images(self, category, page):
+    def names_and_images(self, category, page, tag=None):
         "Liefert eine Liste mit Name/Thumbnail Tuple."
-        return self._REGEX_Name_and_Image.findall(self._get_streams_page(category, page))
+        result = self._REGEX_Name_and_Image.findall(self._get_streams_page(category, page, tag))
+        if self._Last_Page:
+            result.append((None, None))
+        return result
 
-    def reached_last_page(self):
-        return self._last_page
-        
-    def _get_streams_page(self, category, page):
+    @staticmethod
+    def get_thumbnail_base_url():
+        "Liefert die aktuelle Basis-URL der Thumbnails"
+        url = Actors().names_and_images("Featured", 1)[0][1]
+        return url[0:url.rfind("/")]
+
+    def _get_streams_page(self, category, page, tag=None):
         "Liefert die Homepage in einem String."
-        url = self.CATEGORY_URL[category] + "?page=%d" % int(page)
-        data = urllib2.urlopen(url).readlines()
-        data = " ".join(data)
-        data = data.replace("\n","")
-        if not "endless_page_link" in data:
-            self._last_page = True
-        return data
+        if tag:
+            tagmap = Tags.mapping(category)
+            if tagmap:
+                url = "%stag/%s/%s?page=%d" % (Config.CHATURBATE_URL, tag, tagmap, int(page))
+            else:
+                url = "%stag/%s?page=%d" % (Config.CHATURBATE_URL, tag, int(page))
+        else:
+            url = self.CATEGORY_URL[category] + "?page=%d" % (int(page))
+        return self.get_streams_page_in_a_string(url)
 

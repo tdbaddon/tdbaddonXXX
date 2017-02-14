@@ -164,12 +164,15 @@ def clean_database(showdialog=True):
 @utils.url_dispatcher.register('222', ['url', 'name'])
 def Playvid(url, name):
     playmode = int(addon.getSetting('chatplay'))
+    chatslow = int(addon.getSetting('chatslow'))
     listhtml = utils.getHtml(url, hdr=cbheaders)
     iconimage = xbmc.getInfoImage("ListItem.Thumb")
     
     m3u8url = re.compile(r"loadHlsVideo\('([^']+)", re.DOTALL | re.IGNORECASE).findall(listhtml)
     if m3u8url:
         m3u8stream = m3u8url[0]
+        if chatslow == 1:
+            m3u8stream = m3u8stream.replace('_fast','')
     else:
         m3u8stream = False
     

@@ -3,7 +3,7 @@
 # Texture13DB.py
 #------------------------------------------------------------------------------
 #
-# Copyright (c) 2014 LivingOn <LivingOn@xmail.net>
+# Copyright (c) 2014-2015 LivingOn <LivingOn@xmail.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,6 +34,6 @@ class Texture13DB(object):
         conn = sqlite3.connect(xbmc.translatePath("special://database/Textures13.db"))
         try:
             with conn:
-                conn.execute("DELETE FROM texture WHERE url LIKE '%%%s%%';" % Config.THUMBNAILS_URL)
+                conn.execute("DELETE FROM texture WHERE url LIKE '%roomimg%';")
         except:
             pass

@@ -22,7 +22,7 @@ __scriptname__ = "Ultimate Whitecream"
 __author__ = "Whitecream"
 __scriptid__ = "plugin.video.uwc"
 __credits__ = "Whitecream, Fr33m1nd, anton40, NothingGnome"
-__version__ = "1.1.49"
+__version__ = "1.1.50"
 
 import urllib
 import urllib2
@@ -450,6 +450,9 @@ def playvideo(videosource, name, download=None, url=None):
         datourl = chkmultivids(datourl)
         datourl = "http://datoporn.com/embed-" + datourl + ".html"
         datosrc = getHtml(datourl,'', openloadhdr)
+        if "File was deleted" in datosrc:
+            notify('Oh oh','File is deleted from Datoporn')
+            return
         try:
             datojs = re.compile("<script[^>]+>(eval[^<]+)</sc", re.DOTALL | re.IGNORECASE).findall(datosrc)
             datoujs = unpack(datojs[0])
@@ -880,10 +883,10 @@ def searchDir(url, mode, page=None):
         c.execute("SELECT * FROM keywords")
         for (keyword,) in c.fetchall():
             name = '[COLOR deeppink]' + urllib.unquote_plus(keyword) + '[/COLOR]'
-            addDir(name, url, mode, '', page=page, keyword=keyword)
+            addDir(name, url, mode, uwcimage('uwc-search.png'), page=page, keyword=keyword)
     except: pass
-    addDir('[COLOR hotpink]Add Keyword[/COLOR]', url, 902, '', '', mode, Folder=False)
-    addDir('[COLOR hotpink]Clear list[/COLOR]', '', 903, '', Folder=False)
+    addDir('[COLOR hotpink]Add Keyword[/COLOR]', url, 902, uwcimage('uwc-search.png'), '', mode, Folder=False)
+    addDir('[COLOR hotpink]Clear list[/COLOR]', '', 903, uwcimage('uwc-search.png'), Folder=False)
     xbmcplugin.endOfDirectory(addon_handle)
 
 @url_dispatcher.register('902', ['url', 'channel'])

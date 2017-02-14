@@ -3,7 +3,7 @@
 # insert_actor.py
 #------------------------------------------------------------------------------
 #
-# Copyright (c) 2014 LivingOn <LivingOn@xmail.net>
+# Copyright (c) 2014-2015 LivingOn <LivingOn@xmail.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

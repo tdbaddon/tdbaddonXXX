@@ -23,4 +23,8 @@
     <string id="30112">Male</string>
     <string id="30113">Couple</string>
     <string id="30114">Trans</string>
+    <string id="30114">Trans</string>
+    <string id="30115">Fast (default)</string>
+    <string id="30116">Slow</string>
+    <string id="30117">Buffering? Try Slow</string>
 </strings>

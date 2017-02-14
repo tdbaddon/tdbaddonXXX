@@ -56,6 +56,7 @@ def HQLIST(url):
 def HQCAT(url):
     link = utils.getHtml(url, '')
     tags = re.compile('<a href="([^"]+)"[^<]+<img src="([^"]+)" alt="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(link)
+    tags = sorted(tags, key=lambda x: x[2])
     for caturl, catimg, catname in tags:
         caturl = "http://www.hqporner.com" + caturl
         catimg = "http://www.hqporner.com" + catimg        
@@ -78,11 +79,13 @@ def HQSEARCH(url, keyword=None):
 @utils.url_dispatcher.register('152', ['url', 'name'], ['download'])
 def HQPLAY(url, name, download=None):
     videopage = utils.getHtml(url, url)
-    iframeurl = re.compile(r'<iframe\swidth="\d+"\sheight="\d+"\ssrc="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(videopage)
+    iframeurl = re.compile(r"nativeplayer\.php\?i=([^']+)", re.DOTALL | re.IGNORECASE).findall(videopage)
     #if re.search('hqporner', iframeurl[0], re.DOTALL | re.IGNORECASE):
     #    videourl = getHQ(iframeurl[0])
     if re.search('bemywife', iframeurl[0], re.DOTALL | re.IGNORECASE):
         videourl = getBMW(iframeurl[0])
+    elif re.search('mydaddy', iframeurl[0], re.DOTALL | re.IGNORECASE):
+        videourl = getBMW(iframeurl[0])        
     elif re.search('5\.79', iframeurl[0], re.DOTALL | re.IGNORECASE):
         videourl = getIP(iframeurl[0])
     elif re.search('flyflv', iframeurl[0], re.DOTALL | re.IGNORECASE):

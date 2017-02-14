@@ -63,7 +63,7 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
     </extension>
 </addon>
 
-<addon id="plugin.video.chaturbate" name="Chaturbate" version="2.1.0" provider-name="LivingOn">
+<addon id="plugin.video.chaturbate" name="Chaturbate" version="2.2.6" provider-name="LivingOn">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
   </requires>
@@ -71,9 +71,11 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
         <provides>video</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
-    <summary lang="en">Adult(18+) from Chaturbate</summary>
-    <description lang="en"></description>
-    <disclaimer lang="en"></disclaimer>
+    <summary lang="de">Chaturbate</summary>
+    <description lang="de">Der Name sagt alles!</description>
+    <disclaimer lang="de">Diese Software steht unter der GNU General Public License version 2[CR][CR]Copyright (c) 2014-2016 by LivingOn &lt;LivingOn@xmail.net&gt;</disclaimer>
+    <description lang="en">The name says it all!</description>
+    <disclaimer lang="en">This software is licensed under the GNU General Public License version 2[CR][CR]Copyright (c) 2014-2016 by &lt;LivingOn@xmail.net&gt;</disclaimer>
     <platform>all</platform>
   </extension>
 </addon>
@@ -390,7 +392,7 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
 
 <addon id="plugin.video.uwc"
        name="Ultimate Whitecream"
-       version="1.1.49"
+       version="1.1.50"
        provider-name="Whitecream">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
@@ -416,7 +418,7 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
 
 <addon
   id="plugin.video.videodevil"
-  version="1.7.151"
+  version="1.7.152"
   name="VideoDevil"
   provider-name="xbmc-adult">
   <requires>
@@ -429,7 +431,7 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
   </extension>
   <extension point="xbmc.addon.metadata">
     <summary>Play videos from different adult streaming sites</summary>
-    <description>This addon plays videos from YouPorn, Tube8, Boysfood, MoviesAnd, PornoTube, xHamster, KeezMovies and some other adult streaming sites. It contains explicit adult material. You may only view this addon if you are at least 18 years of age, or at least the age of majority in the jurisdiction where you reside or from which you access this content. If you do not meet these requirements, then you do not have permission to use this addon.</description>
+    <description>This addon plays videos from YouPorn, Tube8, Boysfood, MoviesAnd, PornoTube, xHamster, KeezMovies and some other adult streaming sites. It contains explicit adult material. You may only view this addon if you are at least 18 years of age, or at least the age of majority in the jurisdiction where you reside or from which you access this content. If you do not meet these requirements, then you do not have permission to use this addon. </description>
     <disclaimer>The author does not host or distribute any of the content displayed by this addon. The author does not have any affiliation with the content provider.</disclaimer>
     <platform>all</platform>
   </extension>

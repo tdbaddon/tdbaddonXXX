@@ -3,7 +3,7 @@
 # Config.py
 #------------------------------------------------------------------------------
 #
-# Copyright (c) 2014 LivingOn <LivingOn@xmail.net>
+# Copyright (c) 2014-2015 LivingOn <LivingOn@xmail.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,15 +26,20 @@ class Config(object):
     "Die wichtigsten Konfigurationsparameter zusammengefasst."
     
     PLUGIN_NAME    = "plugin.video.chaturbate"
-    THUMBNAILS_URL = "http://cdn-i.highwebmedia.com/roomimage"
-    CHATURBATE_URL = "http://de.chaturbate.com/"
+    CHATURBATE_URL = "https://de.chaturbate.com/"
     
     CHATURBATE_URL_FEATURED    = CHATURBATE_URL 
     CHATURBATE_URL_WEIBLICH    = CHATURBATE_URL + "female-cams/"
     CHATURBATE_URL_MAENNLICH   = CHATURBATE_URL + "male-cams/"
     CHATURBATE_URL_PAAR        = CHATURBATE_URL + "couple-cams/"
     CHATURBATE_URL_TRANSSEXUAL = CHATURBATE_URL + "transsexual-cams/"
-    
+
+    CHATURBATE_URL_FEATURED_TAGS    = CHATURBATE_URL + "tags/"
+    CHATURBATE_URL_WEIBLICH_TAGS    = CHATURBATE_URL + "tags/female/"
+    CHATURBATE_URL_MAENNLICH_TAGS   = CHATURBATE_URL + "tags/male/"
+    CHATURBATE_URL_PAAR_TAGS        = CHATURBATE_URL + "tags/couple/"
+    CHATURBATE_URL_TRANSSEXUAL_TAGS = CHATURBATE_URL + "tags/transsexual/"
+
     SCRIPT_INSERT_FAVORITE = "insert_actor.py"
     SCRIPT_REMOVE_FAVORITE = "remove_actor.py"
     

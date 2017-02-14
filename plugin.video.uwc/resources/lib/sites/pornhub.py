@@ -86,9 +86,18 @@ def Categories(url):
 @utils.url_dispatcher.register('392', ['url', 'name'], ['download'])    
 def Playvid(url, name, download=None):
     html = utils.getHtml(url, '')
-    match = re.compile(r"var player_quality_(\w+)p = '([^']+)'", re.DOTALL | re.IGNORECASE).findall(html)
+    match = re.compile(r"player_quality_([0-9]{3,4})p\s*=([^;]+);", re.DOTALL | re.IGNORECASE).findall(html)
     match = sorted(match, key=lambda x: int(x[0]), reverse=True)
-    videourl = match[0][1]
+    videolink = match[0][1]
+    videolink = re.sub(r"/\*[^/]+/", "", videolink).replace("+","")
+
+    linkparts = re.compile(r"(\w+)", re.DOTALL | re.IGNORECASE).findall(videolink)
+    for part in linkparts:
+        partval = re.compile(part+'="(.*?)";', re.DOTALL | re.IGNORECASE).findall(html)[0]
+        partval = partval.replace('" + "','')
+        videolink = videolink.replace(part, partval)
+
+    videourl = videolink.replace(" ","")
     if download == 1:
         utils.downloadVideo(videourl, name)
     else:

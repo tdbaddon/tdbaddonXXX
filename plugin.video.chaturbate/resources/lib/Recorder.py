@@ -3,7 +3,7 @@
 # Recorder.py
 #------------------------------------------------------------------------------
 #
-# Copyright (c) 2014 LivingOn <LivingOn@xmail.net>
+# Copyright (c) 2014-2015 LivingOn <LivingOn@xmail.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,9 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #******************************************************************************
 import os
+import time
 import xbmcaddon
+import xbmcvfs
 
 class Recorder(object):
     
@@ -32,7 +34,6 @@ class Recorder(object):
         self._active = True if addon.getSetting("record_active") == "true" else False
         if self._active:
             self._type = addon.getSetting("record_type")
-            self._mode = addon.getSetting("record_mode")
             self._folder = addon.getSetting("record_folder").rstrip(os.sep)
             # bei einmaliger Aufnahme den Rekorder wieder deaktivieren
             if self._type == "0":
@@ -43,10 +44,10 @@ class Recorder(object):
     def open(self):
         "Öffnet die Ausgabedatei zum Anfügen oder Überschreiben."
         if self._active:
-            mode = "wb" if self._mode == "1" else "ab"
-            filename = "%s%s%s.mp4" % (self._folder, os.sep, self._actor)
+            timestamp = time.strftime('%Y-%m-%d__%H.%M.%S')
+            filename = "%s%s%s_%s.mp4" % (self._folder, os.sep, self._actor, timestamp)
             try:
-                self._filehandle = open(filename, mode)
+                self._filehandle = xbmcvfs.File(filename, "w")
             except:
                 self._active = False
 

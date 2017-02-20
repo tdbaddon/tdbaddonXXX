@@ -1,5 +1,5 @@
 import util, urllib2, re, urllib, base64, difflib, time, json, base64, HTMLParser
-import xbmcaddon,xbmcplugin,xbmcgui
+import xbmcaddon,xbmcplugin,xbmcgui,xbmc
 
 hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -161,6 +161,8 @@ def getVids(params) :
 
 def buildMainMenu():
     util.addDir("Newest","http://woodrocket.com/newest-porn", 2, "","")
+    util.addDir("Newest Parodies","http://woodrocket.com/newest-parodies", 2, "","")
+    util.addDir("Newest Shows","http://woodrocket.com/newest-series", 2, "","")
     util.addDir("Whats Hot", "http://woodrocket.com/whats-hot", 2, "", "")
     util.addDir("Web Series","http://woodrocket.com/series", 5, "","")
     util.addDir("Exclusives","http://woodrocket.com/exclusive", 2, "","")
@@ -193,12 +195,8 @@ def fileInfo():
 def playVideo(params):
     content=util.getURL(params['url'], hdr)
     if content!=False:
-        vidID=util.extract(content, 'file: "http://videos.woodrocket.com/vid/', '.mp4", label: "480p"')
-        source=util.extract(content, 'sources: [', '],')
-        if 'label: "720p HD"' in source:
-            util.playMedia(params['name'], params['poster'], "http://videos.woodrocket.com/vid/"+vidID+".hd.mp4", "Video")
-        else:
-            util.playMedia(params['name'], params['poster'], "http://videos.woodrocket.com/vid/"+vidID+".mp4", "Video")
+        vidID=util.extract(content, 'wrVideo = "', '"')
+        util.playMedia(params['name'], params['poster'], vidID, "Video")
 
 parameters=util.parseParameters()
 try:

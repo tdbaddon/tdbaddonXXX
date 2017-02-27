@@ -250,7 +250,6 @@ def PLAY_URL(name,url,iconimage):
 		liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
 		dp.close()
 		xbmc.Player ().play(url, liz, False)
-		quit()
 	else:
 		dp.close()
 		quit()

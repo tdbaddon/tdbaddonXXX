@@ -78,7 +78,7 @@ def GET_CONTENT(url):
 	for item in match:
 		title=re.compile('title="(.+?)"').findall(item)[0]
 		url=re.compile('href="(.+?)"').findall(item)[0]
-		iconimage=re.compile('data-lazy-src="(.+?)"').findall(item)[0]
+		iconimage=re.compile('src="(.+?)"').findall(item)[0]
 		try:
 			rating=re.compile('<div class="rating-infos">(.+?)<span class="rating-img">').findall(item)[0]						
 		except: rating = "0%"
@@ -173,7 +173,6 @@ def PLAY_URL(name,url,iconimage):
 		liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
 		dp.close()
 		xbmc.Player ().play(url, liz, False)
-		quit()
 	else:
 		dp.close()
 		quit()

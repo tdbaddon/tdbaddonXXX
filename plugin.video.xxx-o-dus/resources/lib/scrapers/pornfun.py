@@ -92,7 +92,7 @@ def GET_CONTENT(url):
 		iconimage=re.compile('data-original="(.+?)"').findall(item)[0]
 		duration=re.compile('<span itemprop="duration" class="duration">(.+?)</span>').findall(item)[0]
 		views=re.compile('<span class="counter"><i class="ico-views"></i>(.+?)</span>').findall(item)[0]						
-		url2 = title + '|SPLIT|' + "http:" + url
+		url2 = title + '|SPLIT|' + url
 		name = '[COLOR pink]' + title + '[/COLOR] | [I]Duration: ' + duration + ' - Views: ' + views
 		name = common.CLEANUP(name)
 		common.addLink(name,url2,83,iconimage,iconimage)
@@ -127,11 +127,11 @@ def SEARCH():
 def PLAY_URL(name,url,iconimage):
 
 	name,url = url.split('|SPLIT|')
+
 	dp = common.GET_LUCKY()
 	ref_url = url
 	result = common.open_url(url)
 	url = re.compile("video_url:.+?'(.+?)',",re.DOTALL).findall(result)[0]
-	url = 'http:' + url
 	choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
 
 	if choice == 1:
@@ -181,7 +181,6 @@ def PLAY_URL(name,url,iconimage):
 		liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
 		dp.close()
 		xbmc.Player ().play(url, liz, False)
-		quit()
 	else:
 		dp.close()
 		quit()

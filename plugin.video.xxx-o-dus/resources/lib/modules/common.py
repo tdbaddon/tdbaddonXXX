@@ -20,6 +20,7 @@ import urllib2,urllib
 import time
 import base64
 import re
+from HTMLParser import HTMLParser
 
 AddonTitle     = "[COLOR red]XXX-O-DUS[/COLOR]"
 dialog              = xbmcgui.Dialog()
@@ -108,6 +109,8 @@ def CLEANUP(text):
 	text = text.replace('&#8211;',"&")
 	text = text.replace('&#8217;',"'")
 	text = text.replace('&#038;',"&")
+	text = text.lstrip(' ')
+	text = text.lstrip('	')
 
 	return text
 
@@ -196,3 +199,17 @@ def addLink(name,url,mode,iconimage,fanartimage):
 	liz.setProperty( "icon_Image", iconimage )
 	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=False)
 	return ok
+
+class MLStripper(HTMLParser):
+    def __init__(self):
+        self.reset()
+        self.fed = []
+    def handle_data(self, d):
+        self.fed.append(d)
+    def get_data(self):
+        return ''.join(self.fed)
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()

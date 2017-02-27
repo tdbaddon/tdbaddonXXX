@@ -91,7 +91,7 @@ def PICTURE_MENU():
 		url3 = url
 		url4 = url3.replace('\\','')
 		url = "http://multi.xnxx.com" + url4
-		name = "[COLOR white]" + title + "[/COLOR]"
+		name = "[COLOR white]" + title.title() + "[/COLOR]"
 		common.addDir(name,url,35,icon,fanart)
 
 	kodi_name = common.GET_KODI_VERSION()
@@ -149,6 +149,7 @@ def GET_CONTENT(url):
 			resolution = "[COLOR yellow]" + str(res) + "[/COLOR] - "
 		url=re.compile('<a href="(.+?)"').findall(item)[0]
 		iconimage=re.compile('<img src="(.+?)"').findall(item)[0]
+		iconimage = iconimage.replace("THUMBNUM","5")
 		name = "[COLOR white]" + title + "[/COLOR]"
 		name = name.replace('"','')
 		name = common.CLEANUP(name)
@@ -246,7 +247,7 @@ def DISPLAY_STORY(url):
 		for item in match2:
 			content=re.compile('_panel">(.+?)<div cl').findall(item)[0]
 			display=str(content).replace('<!-- VOTES -->','')
-			display.decode()
+			#a = common.strip_tags(display)
 			a = common.CLEANUP(display)
 			common.TextBoxes("%s" % a)
 	except:
@@ -260,11 +261,11 @@ def SCRAPE_GALLERY(url):
 	
 	match = re.compile('<div class="row galleryPage GalleryBlock" id="Gallery">(.+?)</div><div class="sponsorLink">',re.DOTALL).findall(result)
 	string = str(match)
-	match2 = re.compile('<img(.+?) data-id',re.DOTALL).findall(string)
+	match2 = re.compile('<a class="picture"(.+?) data-id',re.DOTALL).findall(string)
 
 	for item in match2:
 		i = i + 1
-		image=re.compile('src="(.+?)"').findall(item)[0]
+		image=re.compile('href="(.+?)"').findall(item)[0]
 		common.addLink("[COLOR white]Picture " + str(i) + "[/COLOR]",image,37,image,image)
 
 	kodi_name = common.GET_KODI_VERSION()
@@ -354,7 +355,6 @@ def PLAY_URL(name,url,iconimage):
 		liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
 		dp.close()
 		xbmc.Player ().play(url, liz, False)
-		quit()
 	else:
 		dp.close()
 		quit()

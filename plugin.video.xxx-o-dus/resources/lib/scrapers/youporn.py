@@ -43,6 +43,8 @@ viewed_icon    = xbmc.translatePath(os.path.join('special://home/addons/' + addo
 HISTORY_FILE   = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'history.xml'))
 FAVOURITES_FILE= xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'favourites.xml'))
 DOWNLOADS_FILE = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'downloads.xml'))
+DATA_FOLDER    = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id))
+SEARCH_FILE    = xbmc.translatePath(os.path.join(DATA_FOLDER , 'search.xml'))
 
 NEW_VIDS       = 'http://www.youporn.com/'
 TOP_VIDS       = 'http://www.youporn.com/top_rated/'
@@ -52,7 +54,7 @@ MOST_DIS       = 'http://www.youporn.com/most_discussed/'
 
 def MAIN_MENU():
 
-	common.addDir("[COLOR red][B]SEARCH[/B][/COLOR]","url",72,search_icon,fanart)
+	common.addDir("[COLOR red][B]SEARCH[/B][/COLOR]","url",74,search_icon,fanart)
 	common.addDir("[COLOR pink][I]New Videos[/I][/COLOR]",NEW_VIDS,71,new_icon,fanart)
 	common.addDir("[COLOR pink][I]Top Rated[/I][/COLOR]",TOP_VIDS,71,top_icon,fanart)
 	common.addDir("[COLOR pink][I]Most Viewed[/I][/COLOR]",MOST_VIEW,71,viewed_icon,fanart)
@@ -143,17 +145,40 @@ def GET_CONTENT(url):
 		xbmc.executebuiltin('Container.SetViewMode(52)')
 	else: xbmc.executebuiltin('Container.SetViewMode(500)')
 
-def SEARCH():
+def SEARCH_DECIDE():
 
-    string =''
-    keyboard = xbmc.Keyboard(string, 'Enter Search Term')
-    keyboard.doModal()
-    if keyboard.isConfirmed():
-        string = keyboard.getText().replace(' ','+')
-        if len(string)>1:
-            url = "http://www.youporn.com/search/?query=" + string.lower()
-            GET_CONTENT(url)
-        else: quit()
+	search_on_off  = plugintools.get_setting("search_setting")
+	if search_on_off == "true":
+		name = "null"
+		url = "72"
+		common.SEARCH_HISTORY(name,url)
+	else:
+		url = "null"
+		SEARCH(url)
+
+def SEARCH(url):
+
+	if url == "null":
+		string =''
+		keyboard = xbmc.Keyboard(string, 'Enter Search Term')
+		keyboard.doModal()
+		if keyboard.isConfirmed():
+			search_on_off  = plugintools.get_setting("search_setting")
+			if search_on_off == "true":
+				term = keyboard.getText()
+				a=open(SEARCH_FILE).read()
+				b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<term>'+str(term)+'</term>\n</item>\n')
+				f= open(SEARCH_FILE, mode='w')
+				f.write(str(b))
+			string = keyboard.getText().replace(' ','+')
+			if len(string)>1:
+				url = "http://www.youporn.com/search/?query=" + string.lower()
+				GET_CONTENT(url)
+			else: quit()
+	else:
+		string = url.replace(' ','+')
+		url = "http://www.youporn.com/search/?query=" + string.lower()
+		GET_CONTENT(url)
 
 def PLAY_URL(name,url,iconimage):
 

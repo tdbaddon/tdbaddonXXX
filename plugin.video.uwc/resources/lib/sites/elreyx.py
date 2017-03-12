@@ -82,7 +82,21 @@ def EXCat(url):
 
 @utils.url_dispatcher.register('112', ['url', 'name'], ['download'])
 def EXPlayvid(url, name, download=None):
-    utils.PLAYVIDEO(url, name, download)
+    progress.create('Play video', 'Searching videofile.')
+    progress.update( 10, "", "Loading video page", "" )
+    videopage = utils.getHtml(url, '')
+    try:
+        links = re.compile('<iframe src="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(videopage)
+        videourls = " "
+        for link in links:
+            if '2424rs' in link:
+                try:
+                    link = utils.getHtml(link, url)
+                except: pass
+            videourls = videourls + " " + link
+        utils.playvideo(videourls, name, download, url)
+    except:
+        utils.playvideo(videopage, name, download, url)
 
 
 @utils.url_dispatcher.register('115', ['url'])
@@ -108,7 +122,7 @@ def EXMovies(url):
 @utils.url_dispatcher.register('117', ['url'])
 def EXMoviesList(url):
     listhtml = utils.getHtml(url, '')
-    match = re.compile('<div class="container_news">(.*?)</div>', re.DOTALL | re.IGNORECASE).findall(listhtml)
+    match = re.compile('<div class="content">(.*?)<!-- end of content -->', re.DOTALL | re.IGNORECASE).findall(listhtml)
     match1 = re.compile('<td.*?<a title="([^"]+)" href="([^"]+)".*?src="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(match[0])
     for name, videopage, img in match1:
         imgid = re.compile('(\d+)', re.DOTALL | re.IGNORECASE).findall(img)[0]

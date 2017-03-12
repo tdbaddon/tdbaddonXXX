@@ -111,8 +111,8 @@ def Models(url):
 @utils.url_dispatcher.register('342', ['url', 'name'], ['download'])
 def Playvid(url, name, download=None):
     videopage = utils.getHtml(url, '')
-    videourl = re.compile("video_url: '(.+?)\/\?br", re.DOTALL | re.IGNORECASE).findall(videopage)
-    videourl = videourl[0]
+    videourl = re.compile(r"'label': '\d{3,4}p',\s+'file': '([^']+)'", re.DOTALL | re.IGNORECASE).findall(videopage)
+    videourl = videourl[-1]
     if download == 1:
         utils.downloadVideo(videourl, name)
     else:    

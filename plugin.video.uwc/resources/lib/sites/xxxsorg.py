@@ -72,7 +72,7 @@ def Playvid(url, name, download=None):
     url = url.split('#')[0]
     videopage = utils.getHtml(url, '')
     try:
-        entrycontent = re.compile('entry-content">(.*?)entry-content', re.DOTALL | re.IGNORECASE).findall(videopage)[0]
+        entrycontent = re.compile('entry-content">(.*?)</div>', re.DOTALL | re.IGNORECASE).findall(videopage)[0]
         links = re.compile('href="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(entrycontent)
         videourls = " "
         for link in links:

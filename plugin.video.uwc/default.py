@@ -31,7 +31,6 @@ from resources.lib.sites import *
 
 socket.setdefaulttimeout(60)
 
-xbmcplugin.setContent(utils.addon_handle, 'movies')
 addon = xbmcaddon.Addon(id=utils.__scriptid__)
 
 progress = utils.progress
@@ -84,8 +83,9 @@ def INDEXS():
     xbmcplugin.endOfDirectory(utils.addon_handle, cacheToDisc=False)
 
 @utils.url_dispatcher.register('2')
-def INDEXM():    
-    utils.addDir('[COLOR hotpink]Xtheatre[/COLOR]','http://xtheatre.net/page/1/',20,os.path.join(imgDir, 'xt.png'),'')
+def INDEXM():
+    if int(utils.kodiver) >= 17:
+        utils.addDir('[COLOR hotpink]Xtheatre[/COLOR]','http://xtheatre.net/page/1/',20,os.path.join(imgDir, 'xt.png'),'')
     utils.addDir('[COLOR hotpink]Nudeflix[/COLOR]','http://www.nudeflix.com/browse?order=released&page=1',40,os.path.join(imgDir, 'nf.png'),'')
     utils.addDir('[COLOR hotpink]PornHive[/COLOR]','http://www.pornhive.tv/en/movies/all',70,os.path.join(imgDir, 'ph.png'),'')
     utils.addDir('[COLOR hotpink]JustPorn[/COLOR]','http://justporn.to/category/dvdrips-full-movies/',245,os.path.join(imgDir, 'justporn.png'),'')

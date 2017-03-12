@@ -104,10 +104,18 @@ url=%s
 quality=standard
 ########################################################
 title=extremetube.com
-target=quality_480p":"(http[^']+[.](mp4|flv)[^"]+)
+target=quality_480p":"(http[^"]+)
 url=%s
 header=Cookie|age_verified=1
 quality=standard
+target=quality_720p":"(http[^"]+)
+url=%s
+header=Cookie|age_verified=1
+quality=high
+target=quality_1080p":"(http[^"]+)
+url=%s
+header=Cookie|age_verified=1
+quality=high
 ########################################################
 title=xvideos.com
 target=flv_url=(http[^"]+?)&amp;
@@ -122,7 +130,8 @@ quality=standard
 title=redtube.com
 target=source src="([^"]+)"
 url=%s
-build=%s&ec_seek=0
+build=http:%s
+action=decode
 quality=standard
 ########################################################
 title=mofosex.com
@@ -214,9 +223,9 @@ url=%s
 quality=high
 ########################################################
 title=m.pornhub.com
-target=data-default="([^"]+)"
+target=video [^>]+ src="([^"]+)"
 url=%s
-header=Cookie|platform=mobile
+header=Cookie|platform=tv
 quality=standard
 ########################################################
 #title=viloader.net
@@ -329,11 +338,11 @@ url=%s
 quality=standard
 ########################################################
 title=pornhd.com
-target='480p'  : '([^']+)',
+target='480p'\s*:s\s*'([^']+)',
 url=%s
 header=Referer|http://pornhd.com
 quality=standard
-target='720p'  : '([^']+)',
+target='720p'\s*:\s*'([^']+)',
 url=%s
 header=Referer|http://pornhd.com
 quality=high

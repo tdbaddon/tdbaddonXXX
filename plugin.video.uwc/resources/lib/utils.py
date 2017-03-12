@@ -22,7 +22,7 @@ __scriptname__ = "Ultimate Whitecream"
 __author__ = "Whitecream"
 __scriptid__ = "plugin.video.uwc"
 __credits__ = "Whitecream, Fr33m1nd, anton40, NothingGnome"
-__version__ = "1.1.50"
+__version__ = "1.1.51"
 
 import urllib
 import urllib2
@@ -83,6 +83,7 @@ uwcicon = xbmc.translatePath(os.path.join(rootDir, 'icon.png'))
 profileDir = addon.getAddonInfo('profile')
 profileDir = xbmc.translatePath(profileDir).decode("utf-8")
 cookiePath = os.path.join(profileDir, 'cookies.lwp')
+kodiver = xbmc.getInfoLabel("System.BuildVersion").split(".")[0]
 
 if not os.path.exists(profileDir):
     os.makedirs(profileDir)

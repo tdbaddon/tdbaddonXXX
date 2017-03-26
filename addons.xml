@@ -517,7 +517,7 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
 
 <addon id="plugin.video.xxx-o-dus"
 	     name="XXX-O-DUS"
-	     version="1.20"
+	     version="1.21"
 	     provider-name="Echo Coder">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
@@ -766,17 +766,12 @@ Skin and code for skin by Demonstratorz</description>
 	</extension>
 </addon>
 
-<addon id="repository.xxxecho" name="ECHO XXX Repository" version="2.00" provider-name="Echo Coder">
+<addon id="repository.xxxecho" name="ECHO XXX Repository" version="2.01" provider-name="Echo Coder">
     <extension point="xbmc.addon.repository" name="Echo Coder XXX Repository">
         <dir>
             <info compressed="false">https://offshoregit.com/tvaresolvers/tva-common-repository/raw/master/addons.xml</info>
             <checksum>https://offshoregit.com/tvaresolvers/tva-common-repository/raw/master/addons.xml.md5</checksum>
             <datadir zip="true">https://offshoregit.com/tvaresolvers/tva-common-repository/raw/master/zips/</datadir>
-        </dir>
-        <dir>
-            <info compressed="false">https://offshoregit.com/Shani-08/main/addons.xml</info>
-            <checksum>https://offshoregit.com/Shani-08/main/addons.xml.md5</checksum>
-            <datadir zip="true">https://offshoregit.com/Shani-08/main/zips</datadir>
         </dir>
         <info compressed="false">https://offshoregit.com/echocoder/xxx/addons.xml</info>
         <checksum>https://offshoregit.com/echocoder/xxx/addons.xml.md5</checksum>

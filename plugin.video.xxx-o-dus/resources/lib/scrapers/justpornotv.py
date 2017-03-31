@@ -74,6 +74,7 @@ def GET_CONTENT(url):
 			name=re.compile('<a href=".+?" title="(.+?)">',re.DOTALL).findall(links)[0]
 			url=re.compile('<a href="(.+?)" title=".+?">',re.DOTALL).findall(links)[0]
 			iconimage=re.compile('src="(.+?)"',re.DOTALL).findall(links)[0]
+			if not 'http://' in iconimage: iconimage=iconimage.replace('//','http://')
 			url="http://justporno.tv" + url
 			name = common.CLEANUP(name)
 			url = name + "|SPLIT|" + url + "|SPLIT|" + iconimage

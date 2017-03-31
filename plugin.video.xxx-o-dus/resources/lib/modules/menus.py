@@ -64,101 +64,76 @@ xvideos_icon        = xbmc.translatePath(os.path.join('special://home/addons/' +
 xvideos_fanart      = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/xvideos/fanart.jpg'))
 nxgx_icon           = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/nxgx/icon.png'))
 nxgx_fanart         = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/nxgx/fanart.jpg'))
+madthumbs_icon      = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/madthumbs/icon.png'))
+madthumbs_fanart    = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/madthumbs/fanart.jpg'))
 
 def SEARCH():
 
-	common.addDir("[COLOR white]SEARCH ALL WESBITES[/COLOR]","null",99,icon,fanart)
-	common.addLink("[COLOR darkgray]#################################[/COLOR]","url",999,icon,fanart)
-	common.addDir("[COLOR white]Search Eporner[/COLOR]",'null',244,eporner_icon,eporner_fanart)
-	common.addDir("[COLOR white]Search Just Porno TV[/COLOR]","null",234,justporno_icon,justporno_fanart)
-	common.addDir("[COLOR white]Search Motherless[/COLOR]","null",97,motherless_icon,motherless_fanart)
-	common.addDir("[COLOR white]Search NXGX[/COLOR]","null",274,nxgx_icon,nxgx_fanart)
-	common.addDir("[COLOR white]Search Perfect Girls[/COLOR]","null",314,perfectgirls_icon,perfectgirls_fanart)
-	common.addDir("[COLOR white]Search Porn.com[/COLOR]","null",64,porncom_icon,porncom_fanart)
-	common.addDir("[COLOR white]Search Porn00[/COLOR]","null",214,porn00_icon,porn00_fanart)
-	common.addDir("[COLOR white]Search PornFun[/COLOR]","null",84,pornfun_icon,pornfun_fanart)
-	common.addDir("[COLOR white]Search PornHD[/COLOR]","null",54,pornhd_icon,pornhd_fanart)
-	common.addDir("[COLOR white]Search PornXS[/COLOR]",'null',254,pornxs_icon,pornxs_fanart)
-	common.addDir("[COLOR white]Search RedTube[/COLOR]","null",45,redtube_icon,redtube_fanart)
-	common.addDir("[COLOR white]Search Spankbang[/COLOR]","null",205,spankbang_icon,spankbang_fanart)
-	common.addDir("[COLOR white]Search Virtual Porn Stars[/COLOR]","null",224,virtualpornstars_icon,virtualpornstars_fanart)
-	common.addDir("[COLOR white]Search Watch XXX Free[/COLOR]","null",304,watchxxxfree_icon,watchxxxfree_fanart)
-	common.addDir("[COLOR white]Search Xhamster[/COLOR]","null",14,xhamster_icon,xhamster_fanart)
-	common.addDir("[COLOR white]Search XNXX[/COLOR]","null",29,xnxx_icon,xnxx_fanart)
-	common.addDir("[COLOR white]Search Xvideos[/COLOR]",'null',264,xvideos_icon,xvideos_fanart)
-	common.addDir("[COLOR white]Search YouPorn[/COLOR]","null",74,youporn_icon,youporn_fanart)
+    common.addDir("[COLOR white]SEARCH ALL WESBITES[/COLOR]","null",99,icon,fanart)
+    common.addLink("[COLOR darkgray]#################################[/COLOR]","url",999,icon,fanart)
+    common.addDir("[COLOR white]Search Eporner[/COLOR]",'null',244,eporner_icon,eporner_fanart)
+    common.addDir("[COLOR white]Search Just Porno TV[/COLOR]","null",234,justporno_icon,justporno_fanart)
+    common.addDir("[COLOR white]Search MadThumbs[/COLOR]","null",284,madthumbs_icon,madthumbs_fanart)
+    common.addDir("[COLOR white]Search Motherless[/COLOR]","null",97,motherless_icon,motherless_fanart)
+    common.addDir("[COLOR white]Search NXGX[/COLOR]","null",274,nxgx_icon,nxgx_fanart)
+    common.addDir("[COLOR white]Search Perfect Girls[/COLOR]","null",314,perfectgirls_icon,perfectgirls_fanart)
+    common.addDir("[COLOR white]Search Porn.com[/COLOR]","null",64,porncom_icon,porncom_fanart)
+    common.addDir("[COLOR white]Search Porn00[/COLOR]","null",214,porn00_icon,porn00_fanart)
+    common.addDir("[COLOR white]Search PornFun[/COLOR]","null",84,pornfun_icon,pornfun_fanart)
+    common.addDir("[COLOR white]Search PornHD[/COLOR]","null",54,pornhd_icon,pornhd_fanart)
+    common.addDir("[COLOR white]Search PornXS[/COLOR]",'null',254,pornxs_icon,pornxs_fanart)
+    common.addDir("[COLOR white]Search RedTube[/COLOR]","null",45,redtube_icon,redtube_fanart)
+    common.addDir("[COLOR white]Search Spankbang[/COLOR]","null",205,spankbang_icon,spankbang_fanart)
+    common.addDir("[COLOR white]Search Virtual Porn Stars[/COLOR]","null",224,virtualpornstars_icon,virtualpornstars_fanart)
+    common.addDir("[COLOR white]Search Watch XXX Free[/COLOR]","null",304,watchxxxfree_icon,watchxxxfree_fanart)
+    common.addDir("[COLOR white]Search Xhamster[/COLOR]","null",14,xhamster_icon,xhamster_fanart)
+    common.addDir("[COLOR white]Search XNXX[/COLOR]","null",29,xnxx_icon,xnxx_fanart)
+    common.addDir("[COLOR white]Search Xvideos[/COLOR]",'null',264,xvideos_icon,xvideos_fanart)
+    common.addDir("[COLOR white]Search YouPorn[/COLOR]","null",74,youporn_icon,youporn_fanart)
 
-	kodi_name = common.GET_KODI_VERSION()
-
-	if kodi_name == "Jarvis":
-		xbmc.executebuiltin('Container.SetViewMode(50)')
-	elif kodi_name == "Krypton":
-		xbmc.executebuiltin('Container.SetViewMode(55)')
-	else: xbmc.executebuiltin('Container.SetViewMode(50)')
-	
+    common.SET_VIEW('list')
+    
 def VIDEOS():
 
-	common.addDir("[COLOR white]Eporner.com[/COLOR]",'url',240,eporner_icon,eporner_fanart)
-	common.addDir("[COLOR white]JustPorno.TV[/COLOR]",'url',230,justporno_icon,justporno_fanart)
-	common.addDir("[COLOR white]Motherless.com[/COLOR]",'url',93,motherless_icon,motherless_fanart)
-	common.addDir("[COLOR white]NXGX.com[/COLOR]",'url',270,nxgx_icon,nxgx_fanart)
-	common.addDir("[COLOR white]Perfectgirls.net[/COLOR]",'url',310,perfectgirls_icon,perfectgirls_fanart)
-	common.addDir("[COLOR white]Porn00.org[/COLOR]",'url',210,porn00_icon,porn00_fanart)
-	common.addDir("[COLOR white]Porn.com[/COLOR]",'url',60,porncom_icon,porncom_fanart)
-	common.addDir("[COLOR white]PornFun.com[/COLOR]",'url',80,pornfun_icon,pornfun_fanart)
-	common.addDir("[COLOR white]PornHD.com[/COLOR]",'url',50,pornhd_icon,pornhd_fanart)
-	common.addDir("[COLOR white]PornXS.com[/COLOR]",'url',250,pornxs_icon,pornxs_fanart)
-	common.addDir("[COLOR white]RedTube.com[/COLOR]",'url',41,redtube_icon,redtube_fanart)
-	common.addDir("[COLOR white]Spankbang.com[/COLOR]",'url',200,spankbang_icon,spankbang_fanart)
-	common.addDir("[COLOR white]Virtualpornstars.com[/COLOR]",'url',220,virtualpornstars_icon,virtualpornstars_fanart)
-	common.addDir("[COLOR white]Watchxxxfree.com[/COLOR]",'url',300,watchxxxfree_icon,watchxxxfree_fanart)
-	common.addDir("[COLOR white]Xhamster.com[/COLOR]",'url',10,xhamster_icon,xhamster_fanart)
-	common.addDir("[COLOR white]XNXX.com[/COLOR]",'url',30,xnxx_icon,xnxx_fanart)
-	common.addDir("[COLOR white]Xvideos.com[/COLOR]",'url',260,xvideos_icon,xvideos_fanart)
-	common.addDir("[COLOR white]YouPorn.com[/COLOR]",'url',70,youporn_icon,youporn_fanart)
+    common.addDir("[COLOR white]Eporner.com[/COLOR]",'url',240,eporner_icon,eporner_fanart)
+    common.addDir("[COLOR white]JustPorno.TV[/COLOR]",'url',230,justporno_icon,justporno_fanart)
+    common.addDir("[COLOR white]Madthumbs.com[/COLOR]",'url',280,madthumbs_icon,madthumbs_fanart)
+    common.addDir("[COLOR white]Motherless.com[/COLOR]",'url',93,motherless_icon,motherless_fanart)
+    common.addDir("[COLOR white]NXGX.com[/COLOR]",'url',270,nxgx_icon,nxgx_fanart)
+    common.addDir("[COLOR white]Perfectgirls.net[/COLOR]",'url',310,perfectgirls_icon,perfectgirls_fanart)
+    common.addDir("[COLOR white]Porn00.org[/COLOR]",'url',210,porn00_icon,porn00_fanart)
+    common.addDir("[COLOR white]Porn.com[/COLOR]",'url',60,porncom_icon,porncom_fanart)
+    common.addDir("[COLOR white]PornFun.com[/COLOR]",'url',80,pornfun_icon,pornfun_fanart)
+    common.addDir("[COLOR white]PornHD.com[/COLOR]",'url',50,pornhd_icon,pornhd_fanart)
+    common.addDir("[COLOR white]PornXS.com[/COLOR]",'url',250,pornxs_icon,pornxs_fanart)
+    common.addDir("[COLOR white]RedTube.com[/COLOR]",'url',41,redtube_icon,redtube_fanart)
+    common.addDir("[COLOR white]Spankbang.com[/COLOR]",'url',200,spankbang_icon,spankbang_fanart)
+    common.addDir("[COLOR white]Virtualpornstars.com[/COLOR]",'url',220,virtualpornstars_icon,virtualpornstars_fanart)
+    common.addDir("[COLOR white]Watchxxxfree.com[/COLOR]",'url',300,watchxxxfree_icon,watchxxxfree_fanart)
+    common.addDir("[COLOR white]Xhamster.com[/COLOR]",'url',10,xhamster_icon,xhamster_fanart)
+    common.addDir("[COLOR white]XNXX.com[/COLOR]",'url',30,xnxx_icon,xnxx_fanart)
+    common.addDir("[COLOR white]Xvideos.com[/COLOR]",'url',260,xvideos_icon,xvideos_fanart)
+    common.addDir("[COLOR white]YouPorn.com[/COLOR]",'url',70,youporn_icon,youporn_fanart)
 
-	kodi_name = common.GET_KODI_VERSION()
-
-	if kodi_name == "Jarvis":
-		xbmc.executebuiltin('Container.SetViewMode(50)')
-	elif kodi_name == "Krypton":
-		xbmc.executebuiltin('Container.SetViewMode(55)')
-	else: xbmc.executebuiltin('Container.SetViewMode(50)')
-	
+    common.SET_VIEW('list')
+    
 def LIVE():
 
-	common.addDir("[COLOR white]Chaturbate.com[/COLOR]",'url',20,chaturbate_icon,chaturbate_fanart)
-	common.addDir("[COLOR white]Live Channels[/COLOR]",'http://echocoder.com/m3u/xxxodus.xml',995,icon,fanart)
+    common.addDir("[COLOR white]Chaturbate.com[/COLOR]",'url',20,chaturbate_icon,chaturbate_fanart)
+    common.addDir("[COLOR white]Live Channels[/COLOR]",'none',700,icon,fanart)
 
-	kodi_name = common.GET_KODI_VERSION()
-
-	if kodi_name == "Jarvis":
-		xbmc.executebuiltin('Container.SetViewMode(50)')
-	elif kodi_name == "Krypton":
-		xbmc.executebuiltin('Container.SetViewMode(55)')
-	else: xbmc.executebuiltin('Container.SetViewMode(50)')
-	
+    common.SET_VIEW('list')
+    
 def PICTURES():
 
-	common.addDir("[COLOR white]Motherless Pictures[/COLOR]","url",90,motherless_icon,motherless_fanart)
-	common.addDir("[COLOR white]XNXX Pictures[/COLOR]","url",34,xnxx_icon,xnxx_fanart)
-	
-	kodi_name = common.GET_KODI_VERSION()
-
-	if kodi_name == "Jarvis":
-		xbmc.executebuiltin('Container.SetViewMode(50)')
-	elif kodi_name == "Krypton":
-		xbmc.executebuiltin('Container.SetViewMode(55)')
-	else: xbmc.executebuiltin('Container.SetViewMode(50)')
-	
+    common.addDir("[COLOR white]Motherless Pictures[/COLOR]","url",90,motherless_icon,motherless_fanart)
+    common.addDir("[COLOR white]XNXX Pictures[/COLOR]","url",34,xnxx_icon,xnxx_fanart)
+    
+    common.SET_VIEW('list')
+    
 def STORIES():
 
-	common.addDir("[COLOR white]XNXX Stories[/COLOR]","url",38,xnxx_icon,xnxx_fanart)
+    common.addDir("[COLOR white]XNXX Stories[/COLOR]","url",38,xnxx_icon,xnxx_fanart)
 
-	kodi_name = common.GET_KODI_VERSION()
-
-	if kodi_name == "Jarvis":
-		xbmc.executebuiltin('Container.SetViewMode(50)')
-	elif kodi_name == "Krypton":
-		xbmc.executebuiltin('Container.SetViewMode(55)')
-	else: xbmc.executebuiltin('Container.SetViewMode(50)')
+    common.SET_VIEW('list')
+    

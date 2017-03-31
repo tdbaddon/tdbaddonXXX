@@ -87,6 +87,7 @@ def GET_CONTENT(url):
 	match2 = re.compile('<a(.+?)class="icon-thumbs-up">',re.DOTALL).findall(string)
 	for item in match2:
 		title=re.compile('class="title">(.+?)<').findall(item)[0]
+		if '</a>' in title: title = 'Unknown'
 		url=re.compile('href="(.+?)"').findall(item)[0]
 		iconimage=re.compile('src="(.+?)"').findall(item)[0]
 		url = "http://porn.com" + str(url)

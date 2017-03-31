@@ -6,7 +6,7 @@
 
 You can get the ECHO XXX repository by addon the following source to your Kodi file manager.[/COLOR]
 
-[COLOR red][B]http://echocoder.com/repo[/B][/COLOR]
+[COLOR red][B]http://fusion.tvaddons.ag[/B][/COLOR]
 
 [COLOR white]Once you have added the source you can proceed to Install from ZIP file and select the repository.xxxecho=x-xx.zip
 

@@ -80,6 +80,29 @@ def GET_KODI_VERSION():
 
 	return codename
 
+def SET_VIEW(name):
+
+    kodi_name = GET_KODI_VERSION()
+
+    if name == 'list':
+        if kodi_name == "Jarvis":
+            xbmc.executebuiltin('Container.SetViewMode(50)')
+        elif kodi_name == "Krypton":
+            xbmc.executebuiltin('Container.SetViewMode(55)')
+        else: xbmc.executebuiltin('Container.SetViewMode(50)')
+    elif name == 'thumbs':
+        if kodi_name == "Jarvis":
+            xbmc.executebuiltin('Container.SetViewMode(500)')
+        elif kodi_name == "Krypton":
+            xbmc.executebuiltin('Container.SetViewMode(52)')
+        else: xbmc.executebuiltin('Container.SetViewMode(500)')
+    else:
+        if kodi_name == "Jarvis":
+            xbmc.executebuiltin('Container.SetViewMode(50)')
+        elif kodi_name == "Krypton":
+            xbmc.executebuiltin('Container.SetViewMode(55)')
+        else: xbmc.executebuiltin('Container.SetViewMode(50)')
+
 def GET_M3U_LIST(url):
 
 	req = urllib2.Request(url)
@@ -233,6 +256,15 @@ def addLink(name,url,mode,iconimage,fanartimage):
 	liz.setProperty( "icon_Image", iconimage )
 	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=False)
 	return ok
+
+def replaceHTMLCodes(txt):
+    # Code from Lambdas ParseDOM file.
+    txt = re.sub("(&#[0-9]+)([^;^0-9]+)", "\\1;\\2", txt)
+    txt = HTMLParser().unescape(txt)
+    txt = txt.replace("&quot;", "\"")
+    txt = txt.replace("&amp;", "&")
+    txt = txt.strip()
+    return txt
 
 class MLStripper(HTMLParser):
     def __init__(self):

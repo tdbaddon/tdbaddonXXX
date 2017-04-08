@@ -177,26 +177,11 @@ def PLAY_URL(name,url,iconimage):
 	string = str(match).replace('\\','').replace('(','').replace(')','')
 	url = "null"
 	try:
-		url_fast = re.compile("hlsSourceFast = '(.+?)';").findall(string)[0]
-	except: url_fast == "null"
-	try:
-		url_slow = re.compile("hlsSourceSlow = '(.+?)';").findall(string)[0]
-	except: url_slow == "null"
-	if not "http" in url_fast:
-		url = url_slow
-	if not "http" in url_slow:
-		url = url_fast
-	if url == "null":
-		choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Fast Stream[/COLOR]','[COLOR pink]Watch Slow Stream[/COLOR]'])
-		if choice == 0:
-			url = url_fast
-		elif choice == 1:
-			url = url_slow
-		else: quit()
-	if os.path.exists(F4M):
-		url2 = 'plugin://plugin.video.f4mTester/?streamtype=HLSRETRY&amp;name='+name+'&amp;url='+url+'&amp;iconImage='+iconimage
-	else:
-		url2 = url + '|Referer=' + orig_url
+		url = re.compile("src='([^']+)'").findall(string)[0]
+	except:
+		dialog.ok(AddonTitle, "Sorry, we are unable to find a playable link.")
+		quit()
+	url2 = url + '|Referer=' + orig_url
 	dp.close()
 
 	history_on_off  = plugintools.get_setting("history_setting")

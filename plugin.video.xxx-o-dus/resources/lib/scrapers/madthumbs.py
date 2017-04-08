@@ -59,7 +59,6 @@ def GET_CONTENT(url):
     nextpage = 0
     try: a,url = url.split('|')
     except: nextpage = 1
-
     
     checker = url
     if nextpage == 1:

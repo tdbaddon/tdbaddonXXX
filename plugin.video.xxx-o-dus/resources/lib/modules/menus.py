@@ -66,6 +66,10 @@ nxgx_icon           = xbmc.translatePath(os.path.join('special://home/addons/' +
 nxgx_fanart         = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/nxgx/fanart.jpg'))
 madthumbs_icon      = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/madthumbs/icon.png'))
 madthumbs_fanart    = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/madthumbs/fanart.jpg'))
+ultravid_icon       = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/ultravid/icon.png'))
+ultravid_fanart     = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/ultravid/fanart.jpg'))
+freeomovie_icon     = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/freeomovie/icon.png'))
+freeomovie_fanart   = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/freeomovie/fanart.jpg'))
 
 def SEARCH():
 
@@ -124,6 +128,13 @@ def LIVE():
 
     common.SET_VIEW('list')
     
+def FILMS():
+
+    common.addDir("[COLOR white]Ultra-Vid[/COLOR]",'None',710,ultravid_icon,ultravid_fanart)
+    common.addDir("[COLOR white]Freeomovie[/COLOR]",'None',720,freeomovie_icon,freeomovie_fanart)
+
+    common.SET_VIEW('list')
+
 def PICTURES():
 
     common.addDir("[COLOR white]Motherless Pictures[/COLOR]","url",90,motherless_icon,motherless_fanart)

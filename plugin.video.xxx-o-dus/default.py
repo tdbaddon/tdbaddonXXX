@@ -28,6 +28,8 @@ from resources.lib.scrapers import pornxs
 from resources.lib.scrapers import xvideos
 from resources.lib.scrapers import nxgx
 from resources.lib.scrapers import madthumbs
+from resources.lib.scrapers import ultravid
+from resources.lib.scrapers import freeomovie
 
 addon_id            = 'plugin.video.xxx-o-dus'
 AddonTitle          = '[COLOR orangered]XXX-O-DUS[/COLOR]'
@@ -70,6 +72,7 @@ def GetMenu():
     else: common.addDir("[COLOR orangered]PARENTAL CONTROLS - [COLOR lime]ON[/COLOR][/COLOR]","url",900,icon,fanart)
     common.addDir("[COLOR white]Search...[/COLOR]","url",1,icon,fanart)
     common.addDir("[COLOR white]Live Cams & Channels[/COLOR]","url",3,icon,fanart)
+    common.addDir("[COLOR white]Films[/COLOR]","url",7,icon,fanart)
     common.addDir("[COLOR white]Videos[/COLOR]","url",2,icon,fanart)
     common.addDir("[COLOR white]Photos[/COLOR]","url",4,icon,fanart)
     common.addDir("[COLOR white]Stories[/COLOR]","url",5,icon,fanart)
@@ -305,6 +308,8 @@ def PARENTAL_CONTROLS():
 
 def GET_HISTORY():
 
+    list = []
+    
     history_on_off  = plugintools.get_setting("history_setting")
 
     setting = "history_setting|SPLIT|" + history_on_off
@@ -325,8 +330,8 @@ def GET_HISTORY():
             site=re.compile('<site>(.+?)</site>').findall(item)[0]
             iconimage=re.compile('<icon>(.+?)</icon>').findall(item)[0]
             url = title + '|SPLIT|' + url + '|SPLIT|' + site + '|SPLIT|' + iconimage + '|SPLIT|' + url
-
-            common.addLink('[COLOR pink]' + date + ' | ' + '[/COLOR][COLOR deeppink]' + time + '[/COLOR] - [COLOR orangered]' + site + '[/COLOR][COLOR pink] - ' + title + '[/COLOR]',url,800,iconimage,fanart)
+            if not url in str(list): common.addLink('[COLOR pink]' + date + ' | ' + '[/COLOR][COLOR deeppink]' + time + '[/COLOR] - [COLOR orangered]' + site + '[/COLOR][COLOR pink] - ' + title + '[/COLOR]',url,800,iconimage,fanart)
+            list.append(url)
     else: 
         common.addLink('[COLOR orangered]Enable History Monitoring[/COLOR]',setting,109,icon,fanart)
         common.addLink('############################################',BASE,999,icon,fanart)
@@ -462,6 +467,9 @@ def PLAYER(name,url,iconimage):
 
     if "highwebmedia" in url:
         dialog.ok(AddonTitle, '[COLOR pink]Chaturbate links are taken at the time of broadcasting. If this broadcast has ended the link will no longer play. [/COLOR]')
+    import urlresolver
+    if urlresolver.HostedMediaFile(url).valid_url(): 
+        url = urlresolver.HostedMediaFile(url).resolve()
     liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
     xbmc.Player ().play(url, liz, False)
 
@@ -697,6 +705,7 @@ elif mode==3:menus.LIVE()
 elif mode==4:menus.PICTURES()
 elif mode==5:menus.STORIES()
 elif mode==6:menus.ALL()
+elif mode==7:menus.FILMS()
 elif mode==10:xhamster.MAIN_MENU()
 elif mode==11:xhamster.GET_CONTENT(url)
 elif mode==12:xhamster.SEARCH(url)
@@ -819,6 +828,10 @@ elif mode==282:madthumbs.SEARCH(url)
 elif mode==283:madthumbs.PLAY_URL(name,url,iconimage)
 elif mode==284:madthumbs.SEARCH_DECIDE()
 elif mode==700:live.LIVE_CHANNELS()
+elif mode==710:ultravid.MENU(url)
+elif mode==711:ultravid.PLAY_URL(name,url,iconimage)
+elif mode==720:freeomovie.MENU(url)
+elif mode==721:freeomovie.PLAY_URL(name,url,iconimage)
 elif mode==800:PLAYER(name,url,iconimage)
 elif mode==900:PARENTAL_CONTROLS()
 elif mode==901:PARENTAL_CONTROLS_PIN()

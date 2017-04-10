@@ -34,8 +34,8 @@ addon_id       = 'plugin.video.xxx-o-dus'
 fanart         = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/freeomovie/fanart.jpg'))
 icon           = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/freeomovie/icon.png'))
 BASE           = 'http://www.freeomovie.com'
-HISTORY_FILE   = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'history.xml'))
-FAVOURITES_FILE= xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'favourites.xml'))
+HISTORY_FILE   = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'history.xml'))
+FAVOURITES_FILE= xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'favourites.xml'))
 
 def MENU(url=None):
      

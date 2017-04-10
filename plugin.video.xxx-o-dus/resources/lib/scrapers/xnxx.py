@@ -32,10 +32,10 @@ fanart           = xbmc.translatePath(os.path.join('special://home/addons/' + ad
 icon             = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/xnxx/icon.png'))
 next_icon        = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/xnxx/next.png'))
 search_icon      = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/xnxx/search.png'))
-HISTORY_FILE     = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'history.xml'))
-FAVOURITES_FILE  = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'favourites.xml'))
-DOWNLOADS_FILE   = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'downloads.xml'))
-DATA_FOLDER      = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id))
+HISTORY_FILE     = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'history.xml'))
+FAVOURITES_FILE  = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'favourites.xml'))
+DOWNLOADS_FILE   = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'downloads.xml'))
+DATA_FOLDER      = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id))
 SEARCH_FILE      = xbmc.translatePath(os.path.join(DATA_FOLDER , 'search.xml'))
 
 NEW_VIDS       = 'http://www.xnxx.com/new'

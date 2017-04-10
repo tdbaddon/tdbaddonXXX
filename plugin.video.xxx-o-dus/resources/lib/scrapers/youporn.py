@@ -40,10 +40,10 @@ pc_icon        = xbmc.translatePath(os.path.join('special://home/addons/' + addo
 top_icon       = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/youporn/top.png'))
 twitter_icon   = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/youporn/twitter.png'))
 viewed_icon    = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/youporn/viewed.png'))
-HISTORY_FILE   = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'history.xml'))
-FAVOURITES_FILE= xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'favourites.xml'))
-DOWNLOADS_FILE = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'downloads.xml'))
-DATA_FOLDER    = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id))
+HISTORY_FILE   = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'history.xml'))
+FAVOURITES_FILE= xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'favourites.xml'))
+DOWNLOADS_FILE = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'downloads.xml'))
+DATA_FOLDER    = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id))
 SEARCH_FILE    = xbmc.translatePath(os.path.join(DATA_FOLDER , 'search.xml'))
 
 NEW_VIDS       = 'http://www.youporn.com/'

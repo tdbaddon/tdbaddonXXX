@@ -28,7 +28,7 @@ dialog         = xbmcgui.Dialog()
 addon_id       = 'plugin.video.xxx-o-dus'
 fanart         = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id , 'fanart.jpg'))
 icon           = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'icon.png'))
-DATA_FOLDER    = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id))
+DATA_FOLDER    = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id))
 SEARCH_FILE    = xbmc.translatePath(os.path.join(DATA_FOLDER , 'search.xml'))
 
 def SEARCH_HISTORY(name,url):

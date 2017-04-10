@@ -39,8 +39,8 @@ couple_icon    = xbmc.translatePath(os.path.join('special://home/addons/' + addo
 trans_icon     = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/chaturbate/trans.png'))
 BASE           = 'https://chaturbate.com'
 F4M            = xbmc.translatePath(os.path.join('special://home/addons/plugin.video.f4mTester'))
-HISTORY_FILE   = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'history.xml'))
-FAVOURITES_FILE= xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'favourites.xml'))
+HISTORY_FILE   = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'history.xml'))
+FAVOURITES_FILE= xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'favourites.xml'))
 
 def MAIN_MENU():
 

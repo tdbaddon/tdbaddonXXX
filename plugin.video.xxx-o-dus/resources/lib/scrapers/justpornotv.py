@@ -31,9 +31,9 @@ dialog            = xbmcgui.Dialog()
 addon_id          = 'plugin.video.xxx-o-dus'
 fanart            = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id , 'resources/art/justporno/fanart.jpg'))
 icon              = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/justporno/icon.png'))
-HISTORY_FILE      = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'history.xml'))
-FAVOURITES_FILE   = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'favourites.xml'))
-DOWNLOADS_FILE    = xbmc.translatePath(os.path.join('special://home/userdata/addon_data/' + addon_id , 'downloads.xml'))
+HISTORY_FILE      = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'history.xml'))
+FAVOURITES_FILE   = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'favourites.xml'))
+DOWNLOADS_FILE    = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'downloads.xml'))
 
 def MAIN_MENU():
 

@@ -30,6 +30,7 @@ from resources.lib.scrapers import nxgx
 from resources.lib.scrapers import madthumbs
 from resources.lib.scrapers import ultravid
 from resources.lib.scrapers import freeomovie
+from resources.lib.scrapers import overthumbs
 
 addon_id            = 'plugin.video.xxx-o-dus'
 AddonTitle          = '[COLOR orangered]XXX-O-DUS[/COLOR]'
@@ -101,7 +102,7 @@ def SEARCH_DECIDE():
 def SEARCH_HOME(url):
 
     term = url
-    total = 19
+    total = 20
     i = 0
     if term == "null":
         string =''
@@ -281,6 +282,14 @@ def SEARCH_HOME(url):
         dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]MadThumbs[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
         try:
             madthumbs.GET_CONTENT(url)
+        except: pass
+        url = "http://overthumbs.com/search/?q=" + string.lower()
+        url = 'split|'+url
+        i = i + 1
+        progress = 100 * int(i)/int(total)
+        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]OverThumbs[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        try:
+            overthumbs.GET_CONTENT(url)
         except: pass
         dp.close()
     except:
@@ -827,6 +836,11 @@ elif mode==281:madthumbs.GET_CONTENT(url)
 elif mode==282:madthumbs.SEARCH(url)
 elif mode==283:madthumbs.PLAY_URL(name,url,iconimage)
 elif mode==284:madthumbs.SEARCH_DECIDE()
+elif mode==290:overthumbs.MAIN_MENU()
+elif mode==291:overthumbs.GET_CONTENT(url)
+elif mode==292:overthumbs.SEARCH(url)
+elif mode==293:overthumbs.PLAY_URL(name,url,iconimage)
+elif mode==294:overthumbs.SEARCH_DECIDE()
 elif mode==700:live.LIVE_CHANNELS()
 elif mode==710:ultravid.MENU(url)
 elif mode==711:ultravid.PLAY_URL(name,url,iconimage)

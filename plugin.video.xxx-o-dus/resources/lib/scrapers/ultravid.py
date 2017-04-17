@@ -31,7 +31,7 @@ dialog         = xbmcgui.Dialog()
 addon_id       = 'plugin.video.xxx-o-dus'
 fanart         = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/ultravid/fanart.jpg'))
 icon           = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/ultravid/icon.png'))
-BASE           = 'http://ultra-vid.com/vid/'
+BASE           = 'http://x.ultra-vid.com/'
 HISTORY_FILE   = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'history.xml'))
 FAVOURITES_FILE= xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id , 'favourites.xml'))
 
@@ -72,7 +72,7 @@ def PLAY_URL(name,url,iconimage):
 
     response = common.open_url(url)
 
-    url = re.compile('<iframe.+?(?:http)([^"]*)').findall(response)[0]; url = ('%s%s' % ('http',url))
+    url = re.compile('<iframe.+?(?:http)([^"]*)',re.I).findall(response)[0]; url = ('%s%s' % ('http',url))
 
     import urlresolver
 

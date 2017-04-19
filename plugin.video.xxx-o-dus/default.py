@@ -7,6 +7,8 @@ from resources.lib.modules  import checker
 from resources.lib.modules  import cache
 from resources.lib.modules  import downloader
 from resources.lib.modules  import extract
+from resources.lib.modules  import kodi
+from resources.lib.modules  import log_utils
 from resources.lib.scrapers import live
 from resources.lib.scrapers import chaturbate
 from resources.lib.scrapers import xnxx
@@ -58,6 +60,8 @@ HISTORY_FILE        = xbmc.translatePath(os.path.join(DATA_FOLDER , 'history.xml
 FAVOURITES_FILE     = xbmc.translatePath(os.path.join(DATA_FOLDER , 'favourites.xml'))
 DOWNLOADS_FILE      = xbmc.translatePath(os.path.join(DATA_FOLDER , 'downloads.xml'))
 SEARCH_FILE         = xbmc.translatePath(os.path.join(DATA_FOLDER , 'search.xml'))
+CHATURBATE_FILE     = xbmc.translatePath(os.path.join(DATA_FOLDER , 'chaturbate.xml'))
+CHATURBATE_CACHE    = xbmc.translatePath(os.path.join(DATA_FOLDER , 'chaturbate_cache.xml'))
 REPO_FOLDER         = xbmc.translatePath(os.path.join('special://home/addons/repository.xxxecho'))
 download_location   = plugintools.get_setting("download_location")
 DOWNLOAD_FOLDER = xbmc.translatePath(download_location)
@@ -724,6 +728,9 @@ elif mode==20:chaturbate.MAIN_MENU()
 elif mode==21:chaturbate.GET_CONTENT(url)
 elif mode==22:chaturbate.SEARCH(url)
 elif mode==23:chaturbate.PLAY_URL(name,url,iconimage)
+elif mode==24:chaturbate.MONITORING()
+elif mode==25:chaturbate.TAGS()
+elif mode==26:chaturbate.GET_TAGS(url)
 elif mode==29:xnxx.SEARCH_DECIDE()
 elif mode==30:xnxx.MAIN_MENU()
 elif mode==31:xnxx.GET_CONTENT(url)

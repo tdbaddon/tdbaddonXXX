@@ -52,13 +52,8 @@ def SEARCH_HISTORY(name,url):
         url=re.compile('<term>(.+?)</term>').findall(item)[0]
         if not url in str(list): addDir('[COLOR pink]' + url + '[/COLOR]',url,mode,icon,fanart)
         list.append(url)
-    kodi_name = GET_KODI_VERSION()
 
-    if kodi_name == "Jarvis":
-        xbmc.executebuiltin('Container.SetViewMode(50)')
-    elif kodi_name == "Krypton":
-        xbmc.executebuiltin('Container.SetViewMode(55)')
-    else: xbmc.executebuiltin('Container.SetViewMode(50)')
+    SET_VIEW('list')
 
 def GET_KODI_VERSION():
 
@@ -84,27 +79,32 @@ def GET_KODI_VERSION():
 
 def SET_VIEW(name):
 
+    list_mode   = plugintools.get_setting("list_view")
+    thumb_mode  = plugintools.get_setting("thumb_view")
+
     kodi_name = GET_KODI_VERSION()
 
-    if name == 'list':
+    if (list_mode == '0') or (list_mode == 0):
         if kodi_name == "Jarvis":
-            xbmc.executebuiltin('Container.SetViewMode(50)')
+            list_mode='50'
         elif kodi_name == "Krypton":
-            xbmc.executebuiltin('Container.SetViewMode(55)')
-        else: xbmc.executebuiltin('Container.SetViewMode(50)')
-    elif name == 'thumbs':
-        if kodi_name == "Jarvis":
-            xbmc.executebuiltin('Container.SetViewMode(500)')
-        elif kodi_name == "Krypton":
-            xbmc.executebuiltin('Container.SetViewMode(52)')
-        else: xbmc.executebuiltin('Container.SetViewMode(500)')
-    else:
-        if kodi_name == "Jarvis":
-            xbmc.executebuiltin('Container.SetViewMode(50)')
-        elif kodi_name == "Krypton":
-            xbmc.executebuiltin('Container.SetViewMode(55)')
-        else: xbmc.executebuiltin('Container.SetViewMode(50)')
+            list_mode='55'
+        else: list_mode='50'
 
+    if (thumb_mode == '0') or (thumb_mode == 0):
+        if kodi_name == "Jarvis":
+            thumb_mode='500'
+        elif kodi_name == "Krypton":
+            thumb_mode='52'
+        else: thumb_mode='500'
+
+    if name == 'list':
+        xbmc.executebuiltin(('Container.SetViewMode(%s)') % (list_mode))
+    elif name == 'thumbs':
+        xbmc.executebuiltin(('Container.SetViewMode(%s)') % (thumb_mode))
+    else:
+        xbmc.executebuiltin(('Container.SetViewMode(%s)') % (list_mode))
+            
 def GET_M3U_LIST(url):
 
     req = urllib2.Request(url)

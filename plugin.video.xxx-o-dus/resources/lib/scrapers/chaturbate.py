@@ -51,47 +51,16 @@ def MAIN_MENU():
     if chat_on_off == 'true': common.addDir("[COLOR pink]View Monitored Performers[/COLOR]","url",24,icon,fanart)
     else: common.addLink("[COLOR pink]Enable Performer Monitoring[/COLOR]","url",106,icon,fanart)
     result = common.open_url(BASE)
-    
-    match = re.compile('<ul class="sub-nav">(.+?)<div class="content">',re.DOTALL).findall(result)
-    string = str(match)
-    match2 = re.compile("<li(.+?)</li>",re.DOTALL).findall(string)
-    fail = 0
-    videos = 0
+    match = re.compile("<dd>(.+?)</dd>",re.DOTALL).findall(result)
     common.addDir('[COLOR white]VIEW BY TAGS[/COLOR]','url',25,icon,fanart)
-    for item in match2:
-        url=re.compile('<a href="(.+?)">.+?</a>').findall(item)[0]
-        title=re.compile('<a href=".+?">(.+?)</a>').findall(item)[0]
-        url3 = url
-        url4 = url3.replace('\\','')
-        url = "http://www.chaturbate.com" + url4
-        if "featured" in title.lower():
-            name = "[COLOR white]" + title + "[/COLOR]"
-            common.addDir(name,url,21,featured_icon,fanart)
-        elif "female" in title.lower():
-            name = "[COLOR white]Females[/COLOR]"
-            common.addDir(name,url,21,female_icon,fanart)
-        elif "male" in title.lower():
-            name = "[COLOR white]Males[/COLOR]"
-            common.addDir(name,url,21,male_icon,fanart)
-        elif "couple" in title.lower():
-            name = "[COLOR white]Couples[/COLOR]"
-            common.addDir(name,url,21,couple_icon,fanart)
-        elif "trans" in title.lower():
-            name = "[COLOR white]Transexual[/COLOR]"
-            common.addDir(name,url,21,trans_icon,fanart)
+    for item in match:
+        if not 'Tokens' in item:
+            if 'title=' in item: section = re.compile('<a href=\"(.+?)\".+?>(.+?)</a>').findall(item)
+            else: section = re.compile('<a href=\"(.+?)\">(.+?)</a>').findall(item)
+            for url,name in section:
+                common.addDir('[COLOR white]' + name + '[/COLOR]','https://chaturbate.com' + url,21,icon,fanart)
 
-
-    common.addLink("[COLOR pink] ################# RANDOM PICKS #################[/COLOR]","url",999,twitter_icon,fanart)
-
-    POP_NOW(BASE)
-
-    kodi_name = common.GET_KODI_VERSION()
-
-    if kodi_name == "Jarvis":
-        xbmc.executebuiltin('Container.SetViewMode(50)')
-    elif kodi_name == "Krypton":
-        xbmc.executebuiltin('Container.SetViewMode(55)')
-    else: xbmc.executebuiltin('Container.SetViewMode(50)')
+    common.SET_VIEW('list')
 
 def MONITORING():
 
@@ -143,32 +112,7 @@ def MONITORING():
                 common.addLink('[COLOR pink][B]' + title + ' is online now![/B][/COLOR]',url2,23,iconimage,fanart)
             else: common.addLink(title + ' is offline!','url',999,iconimage,fanart)
 
-def POP_NOW(url):
-
-    i = 1
-    result = common.open_url(url)
-    match = re.compile('<ul class="list">(.+?)<ul class="paging">',re.DOTALL).findall(result)
-    string = str(match)
-    match2 = re.compile("<li>(.+?)</li>",re.DOTALL).findall(string)
-    for item in match2:
-        if i <= 7:
-            try:
-                title=re.compile('<a href=".+?"> (.+?)</a>').findall(item)[0]
-                url=re.compile('<a href="(.+?)">.+?</a>').findall(item)[0]
-                iconimage=re.compile('<img src="(.+?)"').findall(item)[0]
-                try:
-                    age=re.compile('<span class="age gender.+?">(.+?)</span>').findall(item)[0]
-                except: age = "Unknown"
-                if 'thumbnail_label_c_hd">' in item:
-                    name = "[COLOR pink]HD[/COLOR][COLOR white] - " + title + " - Age " + age + "[/COLOR]"
-                elif 'label_c_new' in item:
-                    name = "[COLOR blue]NEW[/COLOR][COLOR white] - " + title + " - Age " + age + "[/COLOR]"
-                else:
-                    name = "[COLOR white]" + title + " - Age " + age + "[/COLOR]"
-                url2 = title + '|SPLIT|' + url + '|SPLIT|' + iconimage
-                common.addLink(name,url2,23,iconimage,fanart)
-                i = i + 1
-            except: pass
+    common.SET_VIEW('list')
 
 def TAGS():
 
@@ -183,6 +127,8 @@ def TAGS():
             common.addDir('[COLOR white]' + name.title() + '[/COLOR]',url,26,icon,fanart)
         except: pass
 
+    common.SET_VIEW('list')
+
 def GET_TAGS(url):
 
     result = common.open_url('https://chaturbate.com' + url)
@@ -196,27 +142,27 @@ def GET_TAGS(url):
             common.addDir('[COLOR white]' + name.title() + ' - ' + viewers + ' Viewers - ' + rooms + ' Rooms[/COLOR]','https://chaturbate.com'+url,21,icon,fanart)
         except: pass
 
+    common.SET_VIEW('list')
+
 def GET_CONTENT(url):
 
     checker = url
     result = common.open_url(url)
-    match = re.compile('<ul class="list">(.+?)<div class="c-1 featured_blog_posts">',re.DOTALL).findall(result)
+    match = re.compile('<ul class="list">(.+?)<div class="banner">',re.DOTALL).findall(result)
     string = str(match)
-    match2 = re.compile("<li>(.+?)</li>",re.DOTALL).findall(string)
+    match2 = re.compile('<li>(.+?)ewers',re.DOTALL).findall(string)
     for item in match2:
         try:
             title=re.compile('<a href=".+?"> (.+?)</a>').findall(item)[0]
             url=re.compile('<a href="(.+?)">.+?</a>').findall(item)[0]
             iconimage=re.compile('<img src="(.+?)"').findall(item)[0]
-            try:
-                age=re.compile('<span class="age gender.+?">(.+?)</span>').findall(item)[0]
+            try: age=re.compile('<span class="age gender.+?">(.+?)</span>').findall(item)[0]
             except: age = "Unknown"
-            if 'thumbnail_label_c_hd">' in item:
-                name = "[COLOR pink]HD[/COLOR][COLOR white] - " + title + " - Age " + age + "[/COLOR]"
-            elif 'label_c_new' in item:
-                name = "[COLOR blue]NEW[/COLOR][COLOR white] - " + title + " - Age " + age + "[/COLOR]"
-            else:
-                name = "[COLOR white]" + title + " - Age " + age + "[/COLOR]"
+            try: stats=re.compile('<li class="cams">(.+?)vi').findall(item)[0]
+            except: stats = '? mins, ?'
+            if 'thumbnail_label_c_hd">' in item: name = "[COLOR pink]HD[/COLOR][COLOR white] - " + title + " - Age " + age + " - (" + stats + "viewers)[/COLOR]"
+            elif 'label_c_new' in item: name = "[COLOR blue]NEW[/COLOR][COLOR white] - " + title + " - Age " + age + " - (" + stats + "viewers)[/COLOR]"
+            else: name = "[COLOR white]" + title + " - Age " + age + " - (" + stats + "viewers)[/COLOR]"
             url2 = title + '|SPLIT|' + url + '|SPLIT|' + iconimage
             common.addLink(name,url2,23,iconimage,fanart)
         except: pass
@@ -229,14 +175,7 @@ def GET_CONTENT(url):
             common.addDir('[COLOR pink]Next Page >>[/COLOR]',url,21,next_icon,fanart)       
     except:pass
 
-    kodi_name = common.GET_KODI_VERSION()
-
-    if kodi_name == "Jarvis":
-        xbmc.executebuiltin('Container.SetViewMode(500)')
-    elif kodi_name == "Krypton":
-        xbmc.executebuiltin('Container.SetViewMode(52)')
-    else: xbmc.executebuiltin('Container.SetViewMode(500)')
-
+    common.SET_VIEW('thumbs')
 
 def PLAY_URL(name,url,iconimage):
     

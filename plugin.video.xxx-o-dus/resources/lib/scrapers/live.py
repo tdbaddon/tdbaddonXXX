@@ -32,3 +32,5 @@ def LIVE_CHANNELS():
     if combinedlists:
         for name,url in sorted(combinedlists):
             common.addLink('[COLOR pink]'+ name.title() +'[/COLOR]',url,996,icon,fanart)
+
+    common.SET_VIEW('list')

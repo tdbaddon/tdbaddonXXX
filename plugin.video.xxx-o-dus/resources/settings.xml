@@ -6,6 +6,10 @@
 		<setting id="history_setting" type="bool" label="[COLOR pink]Log History:[/COLOR]" default="true"/>
 		<setting id="chaturbate_setting" type="bool" label="[COLOR pink]Chaturbate Performer Monitoring:[/COLOR]" default="true"/>
 		<setting type="lsep" label=" "/>
+		<setting type="lsep" label="[COLOR=red]VIEW MODES[/COLOR]"/>
+        <setting id="list_view" label="Default List View" type="number" default="0" visible="true"/>
+        <setting id="thumb_view" label="Default Thumbnail View" type="number" default="0" visible="true"/>
+		<setting type="lsep" label=" "/>
 		<setting type="lsep" label="[COLOR=red]DOWNLOAD LOCATION[/COLOR]"/>
 		<setting id="download_location" type="folder" label="[COLOR pink]Download Location:[/COLOR]" default="special://home\userdata\addon_data\plugin.video.xxx-o-dus\Downloads\"/>
 		<setting type="lsep" label=" "/>

@@ -106,11 +106,7 @@ def GET_CONTENT(url):
         except: pass
     kodi_name = common.GET_KODI_VERSION()
 
-    if kodi_name == "Jarvis":
-        xbmc.executebuiltin('Container.SetViewMode(500)')
-    elif kodi_name == "Krypton":
-        xbmc.executebuiltin('Container.SetViewMode(52)')
-    else: xbmc.executebuiltin('Container.SetViewMode(500)')
+    common.SET_VIEW('thumbs')
 
 def SEARCH_DECIDE():
 

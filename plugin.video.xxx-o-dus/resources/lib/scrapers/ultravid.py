@@ -65,6 +65,8 @@ def MENU(url=None):
         common.addDir('Load More...',str(next),710,icon,fanart)
     else: common.addLink('No more results found!','None',999,icon,fanart)
 
+    common.SET_VIEW('thumbs')
+
 def PLAY_URL(name,url,iconimage):
     
     dp = common.GET_LUCKY()

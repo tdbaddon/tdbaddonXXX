@@ -300,7 +300,7 @@ def SEARCH_HOME(url):
         dialog.ok(AddonTitle, '[COLOR pink]Sorry, there was an error searching for ' + string.lower() + ' please try again later.[/COLOR]')
         quit()
 
-    common.SET_VIEW('list')
+    common.SET_VIEW('thumbs')
 
 def PARENTAL_CONTROLS():
 
@@ -318,6 +318,8 @@ def PARENTAL_CONTROLS():
     if found == 0:
         common.addLink("[COLOR rose]PARENTAL CONTROLS - [/COLOR][COLOR orangered]OFF[/COLOR]","url",999,icon,fanart)
         common.addLink("[COLOR white]Setup Parental Password[/COLOR]","url",902,icon,fanart)
+
+    common.SET_VIEW('list')
 
 def GET_HISTORY():
 
@@ -350,6 +352,8 @@ def GET_HISTORY():
         common.addLink('############################################',BASE,999,icon,fanart)
         common.addLink('[COLOR pink]History monitoring is currently disabled.[/COLOR]',setting,109,icon,fanart)
 
+    common.SET_VIEW('list')
+
 def GET_FAVOURITES():
 
     common.addLink('[COLOR deeppink]Your Favourites[/COLOR]',BASE,999,icon,fanart)
@@ -365,6 +369,8 @@ def GET_FAVOURITES():
         iconimage=re.compile('<icon>(.+?)</icon>').findall(item)[0]
         url = title + '|SPLIT|' + url + '|SPLIT|' + site + '|SPLIT|' + iconimage + '|SPLIT|' + url
         common.addLink('[COLOR orangered]' + site + '[/COLOR][COLOR pink] - ' + title + '[/COLOR]',url,103,iconimage,fanart)
+
+    common.SET_VIEW('list')
 
 def DECIDE_FAVOURITES(name,url,iconimage):
 
@@ -450,6 +456,8 @@ def GET_DOWNLOADS():
                 else:
                     url2 = file + '|SPLIT|' + url + '|SPLIT|Downloaded|SPLIT|None|SPLIT|' + url
                 common.addLink('[COLOR pink]' + file + '[/COLOR]',url2,107,iconimage,fanart)
+
+    common.SET_VIEW('thumbs')
 
 def CHANGE_DOWNLOADS():
 
@@ -572,10 +580,12 @@ def SET_SETTINGS(url):
 
     name,setting = url.split("|SPLIT|")
 
+    if (name == 'search_setting') and setting == 'true': os.remove(SEARCH_FILE)
+    
     if setting == "true": setting = "false"
     elif setting == "false": setting = "true"
-    plugintools.set_setting( str(name) , str(setting) )
     
+    plugintools.set_setting( str(name) , str(setting) )
     xbmc.executebuiltin("Container.Refresh")
 
 def VIEW_DIALOG(url):
@@ -652,10 +662,9 @@ if not os.path.isfile(DOWNLOADS_FILE):
     f = open(DOWNLOADS_FILE,'w'); f.write('#START OF FILE#'); f.close()
 if not os.path.isfile(SEARCH_FILE):
     f = open(SEARCH_FILE,'w'); f.write('#START OF FILE#'); f.close()
-try:
-    search_on_off  = plugintools.get_setting("search_setting")
-    if not search_on_off == "true" or "false": plugintools.set_setting("search_setting", "true")
-except: plugintools.set_setting("search_setting", "true")
+
+search_on_off  = plugintools.get_setting("search_setting")
+if (not search_on_off == "true") or (not search_on_off == "true"): search_on_off = 'false'
 
 if not os.path.exists(PARENTAL_FOLDER): os.makedirs(PARENTAL_FOLDER)
 
@@ -776,18 +785,8 @@ elif mode==94:motherless.GET_CONTENT(url)
 elif mode==95:motherless.SEARCH(url)
 elif mode==96:motherless.PLAY_URL(name,url,iconimage)
 elif mode==97:motherless.SEARCH_DECIDE()
-elif mode==300:watchxxxfree.MAIN_MENU()
-elif mode==301:watchxxxfree.GET_CONTENT(url)
-elif mode==302:watchxxxfree.SEARCH(url)
-elif mode==303:watchxxxfree.PLAY_URL(name,url,iconimage)
-elif mode==304:watchxxxfree.SEARCH_DECIDE()
-elif mode==310:perfectgirls.MAIN_MENU()
-elif mode==311:perfectgirls.GET_CONTENT(url)
-elif mode==312:perfectgirls.SEARCH(url)
-elif mode==313:perfectgirls.PLAY_URL(name,url,iconimage)
-elif mode==314:perfectgirls.SEARCH_DECIDE()
-elif mode==99:SEARCH_DECIDE();
-elif mode==100:SEARCH_HOME(url);
+elif mode==99:SEARCH_DECIDE()
+elif mode==100:SEARCH_HOME(url)
 elif mode==101:GET_HISTORY()
 elif mode==102:GET_FAVOURITES()
 elif mode==103:DECIDE_FAVOURITES(name,url,iconimage)
@@ -848,6 +847,16 @@ elif mode==291:overthumbs.GET_CONTENT(url)
 elif mode==292:overthumbs.SEARCH(url)
 elif mode==293:overthumbs.PLAY_URL(name,url,iconimage)
 elif mode==294:overthumbs.SEARCH_DECIDE()
+elif mode==300:watchxxxfree.MAIN_MENU()
+elif mode==301:watchxxxfree.GET_CONTENT(url)
+elif mode==302:watchxxxfree.SEARCH(url)
+elif mode==303:watchxxxfree.PLAY_URL(name,url,iconimage)
+elif mode==304:watchxxxfree.SEARCH_DECIDE()
+elif mode==310:perfectgirls.MAIN_MENU()
+elif mode==311:perfectgirls.GET_CONTENT(url)
+elif mode==312:perfectgirls.SEARCH(url)
+elif mode==313:perfectgirls.PLAY_URL(name,url,iconimage)
+elif mode==314:perfectgirls.SEARCH_DECIDE()
 elif mode==700:live.LIVE_CHANNELS()
 elif mode==710:ultravid.MENU(url)
 elif mode==711:ultravid.PLAY_URL(name,url,iconimage)

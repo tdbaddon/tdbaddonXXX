@@ -154,6 +154,8 @@ def SEARCH(url):
 
 def PLAY_URL(name,url,iconimage):
 
+    dp = common.GET_LUCKY()
+
     name,url = url.split('|SPLIT|')
     name = name.replace('[COLOR white] - [/COLOR][COLOR deepskyblue]HD[/COLOR] - [COLOR white]','').replace('[COLOR white] - [/COLOR][COLOR orange]SD[/COLOR] - [COLOR white]','').replace('[/COLOR]','').replace(' - ','')
     ref_url = url
@@ -162,10 +164,11 @@ def PLAY_URL(name,url,iconimage):
     a = str(match)
     match = a.replace('\\','')
     
-    choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
-
-    dp = common.GET_LUCKY()
-
+    auto_play = plugintools.get_setting("extras_setting")
+    
+    if auto_play == 'false': choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
+    else: choice = 0
+    
     if choice == 1:
         a=open(FAVOURITES_FILE).read()
         b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<name>'+str(name)+'</name>\n<link>'+str(url)+'</link>\n<site>Porn.com</site>\n<icon>'+str(iconimage)+'</icon>\n</item>\n')

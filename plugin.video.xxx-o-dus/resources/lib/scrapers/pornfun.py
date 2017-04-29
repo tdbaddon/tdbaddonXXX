@@ -145,8 +145,12 @@ def PLAY_URL(name,url,iconimage):
     ref_url = url
     result = common.open_url(url)
     url = re.compile("video_url:.+?'(.+?)',",re.DOTALL).findall(result)[0]
-    choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
-
+    
+    auto_play = plugintools.get_setting("extras_setting")
+    
+    if auto_play == 'false': choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
+    else: choice = 0
+    
     if choice == 1:
         a=open(FAVOURITES_FILE).read()
         b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<name>'+str(name)+'</name>\n<link>'+str(url)+'</link>\n<site>PornFun</site>\n<icon>'+str(iconimage)+'</icon>\n</item>\n')

@@ -123,23 +123,27 @@ def PLAY_URL(name,url,iconimage):
     name,url,iconimage = url.split('|SPLIT|')
     name = name.replace('[COLOR white]','').replace('[/COLOR]','').replace(' - ','')
     ref_url = url
-    id = url.split("/")[-2]
-    if len(id) > 4:
-        start = id[0:4]
-    else: start = "0"
-    if "/hd/" in url:
-        base = 'http://cdn.justporno.sex/video_hd/'
-    else: base = 'http://cdn.justporno.sex/video/'
-    url = base + str(start) + "/" + id + ".mp4"
+    #id = url.split("/")[-2]
+    #if len(id) > 4:
+    #    start = id[0:4]
+    #else: start = "0"
+    #if "/hd/" in url:
+    #    base = 'http://cdn.justporno.sex/video_hd/'
+    #else: base = 'http://cdn.justporno.sex/video/'
+    #url = base + str(start) + "/" + id + ".mp4"
     dp = common.GET_LUCKY()
-    #result = common.open_url(url)
-    #url = re.compile('<iframe src="(.+?)" frameborder="0" scrolling="no"></iframe>',re.DOTALL).findall(result)[0]
+    result = common.open_url(url)
+    url = re.compile('<source src="(.+?)"').findall(result)[0]
     #video = common.open_url(url)
     #common.TextBoxes("%s" % video)
     #url = re.compile("video_url.+?'(.+?)'",re.DOTALL).findall(video)[0]
     url = url.replace("['",'').replace("']",'').replace('%3A%2F%2F','://').replace('%2F','/').replace('amp;','')
-    choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
-
+    
+    auto_play = plugintools.get_setting("extras_setting")
+    
+    if auto_play == 'false': choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
+    else: choice = 0
+    
     if choice == 1:
         a=open(FAVOURITES_FILE).read()
         b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<name>'+str(name)+'</name>\n<link>'+str(url)+'</link>\n<site>Just Porno TV</site>\n<icon>'+str(iconimage)+'</icon>\n</item>\n')

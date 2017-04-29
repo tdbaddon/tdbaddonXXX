@@ -22,7 +22,7 @@ __scriptname__ = "Ultimate Whitecream"
 __author__ = "Whitecream"
 __scriptid__ = "plugin.video.uwc"
 __credits__ = "Whitecream, Fr33m1nd, anton40, NothingGnome"
-__version__ = "1.1.51"
+__version__ = "1.1.53"
 
 import urllib
 import urllib2
@@ -79,6 +79,7 @@ rootDir = xbmc.translatePath(rootDir)
 resDir = os.path.join(rootDir, 'resources')
 imgDir = os.path.join(resDir, 'images')
 uwcicon = xbmc.translatePath(os.path.join(rootDir, 'icon.png'))
+uwcchange = xbmc.translatePath(os.path.join(rootDir, 'uwcchange.txt'))
 
 profileDir = addon.getAddonInfo('profile')
 profileDir = xbmc.translatePath(profileDir).decode("utf-8")
@@ -92,6 +93,17 @@ urlopen = urllib2.urlopen
 cj = cookielib.LWPCookieJar(xbmc.translatePath(cookiePath))
 Request = urllib2.Request
 
+handlers = [urllib2.HTTPBasicAuthHandler(), urllib2.HTTPHandler()]
+
+if (2, 7, 8) < sys.version_info < (2, 7, 12):
+    try:
+        import ssl; ssl_context = ssl.create_default_context()
+        ssl_context.check_hostname = False
+        ssl_context.verify_mode = ssl.CERT_NONE
+        handlers += [urllib2.HTTPSHandler(context=ssl_context)]
+    except:
+        pass
+
 if cj != None:
     if os.path.isfile(xbmc.translatePath(cookiePath)):
         try:
@@ -104,11 +116,10 @@ if cj != None:
                 dialog.ok('Oh oh','The Cookie file is locked, please restart Kodi')
                 pass
     cookie_handler = urllib2.HTTPCookieProcessor(cj)
-    opener = urllib2.build_opener(cookie_handler, urllib2.HTTPBasicAuthHandler(), urllib2.HTTPHandler())
-else:
-    opener = urllib2.build_opener()
+    handlers += [cookie_handler]
 
-urllib2.install_opener(opener)
+opener = urllib2.build_opener(*handlers)
+opener = urllib2.install_opener(opener)
 
 favoritesdb = os.path.join(profileDir, 'favorites.db')
 
@@ -370,10 +381,14 @@ def playvideo(videosource, name, download=None, url=None):
         hosts.append('Videowood')
     if re.search('streamdefence.com/view\.php', videosource, re.DOTALL | re.IGNORECASE):
         hosts.append('Streamdefence')
-    if re.search('datoporn.com', videosource, re.DOTALL | re.IGNORECASE):
+    if re.search('dato\.?porn.\.?', videosource, re.DOTALL | re.IGNORECASE):
         hosts.append('Datoporn')
-    #if re.search('vidlox\.tv', videosource, re.DOTALL | re.IGNORECASE):
-    #    hosts.append('Vidlox')        
+    if re.search('zstream\.to/', videosource, re.DOTALL | re.IGNORECASE):
+        hosts.append('ZStream')
+    if re.search('rapidvideo\.com/', videosource, re.DOTALL | re.IGNORECASE):
+        hosts.append('Rapidvideo')        
+    if re.search('vidlox\.tv', videosource, re.DOTALL | re.IGNORECASE):
+        hosts.append('Vidlox')        
     if re.search('<source', videosource, re.DOTALL | re.IGNORECASE):
         hosts.append('Direct Source')
     if not 'keeplinks' in url:
@@ -447,7 +462,7 @@ def playvideo(videosource, name, download=None, url=None):
 
     elif vidhost == 'Datoporn':
         progress.update( 40, "", "Loading Datoporn", "" )
-        datourl = re.compile(r"//(?:www\.)?datoporn\.com/(?:embed-)?([0-9a-zA-Z]+)", re.DOTALL | re.IGNORECASE).findall(videosource)
+        datourl = re.compile(r"//(?:www\.)?dato\.?porn(?:.com)?/(?:embed-)?([0-9a-zA-Z]+)", re.DOTALL | re.IGNORECASE).findall(videosource)
         datourl = chkmultivids(datourl)
         datourl = "http://datoporn.com/embed-" + datourl + ".html"
         datosrc = getHtml(datourl,'', openloadhdr)
@@ -554,6 +569,47 @@ def playvideo(videosource, name, download=None, url=None):
                     pass
         playvideo(fcurls, name, download, fcurl)
         return
+        
+    elif vidhost == 'Vidlox':
+        if sys.version_info < (2, 7, 9):
+            progress.close()
+            notify('Oh oh','Python version to old, update to Krypton')
+            return
+        progress.update( 40, "", "Loading Vidlox", "" )
+        vlurl = re.compile(r"(?://|\.)vidlox\.tv/(?:embed-|)([0-9a-zA-Z]+)", re.DOTALL | re.IGNORECASE).findall(videosource)
+        media_id = chkmultivids(vlurl)
+        vlurl = 'http://vidlox.tv/%s' % media_id
+        progress.update( 50, "", "Loading Vidlox", "Sending it to urlresolver" )
+        video = urlresolver.resolve(vlurl)
+        if video:
+            progress.update( 80, "", "Loading Vidlox", "Found the video" )
+            videourl = video
+            
+    elif vidhost == 'ZStream':
+        progress.update( 40, "", "Loading Zstream", "" )
+        zstreamurl = re.compile(r"(?://|\.)zstream\.to/(?:embed-)?([0-9a-zA-Z]+)", re.DOTALL | re.IGNORECASE).findall(videosource)
+        zstreamurl = chkmultivids(zstreamurl)
+        zstreamurl = 'http://zstream.to/embed-%s.html' % zstreamurl
+        progress.update( 50, "", "Loading ZStream", "Sending it to urlresolver")
+        video = urlresolver.resolve(zstreamurl)
+        if video:
+            progress.update( 80, "", "Loading ZStream", "Found the video" )
+            videourl = video
+
+    elif vidhost == 'Rapidvideo':
+        if sys.version_info < (2, 7, 9):
+            progress.close()
+            notify('Oh oh','Python version to old, update to Krypton')
+            return
+        progress.update( 40, "", "Loading Rapidvideo", "" )
+        rpvideourl = re.compile(r"(?://|\.)(?:rapidvideo|raptu)\.com/(?:embed/|e/|\?v=)?([0-9A-Za-z]+)", re.DOTALL | re.IGNORECASE).findall(videosource)
+        rpvideourl = chkmultivids(rpvideourl)
+        rpvideourl = 'http://www.raptu.com/embed/%s' % rpvideourl
+        progress.update( 50, "", "Loading Rapidvideo", "Sending it to urlresolver")
+        video = urlresolver.resolve(rpvideourl)
+        if video:
+            progress.update( 80, "", "Loading Rapidvideo", "Found the video" )
+            videourl = video
 
     elif vidhost == 'Direct Source':
         progress.update( 40, "", "Loading Direct source", "" )
@@ -936,3 +992,24 @@ def delKeyword(keyword):
     conn.commit()
     conn.close()
     xbmc.executebuiltin('Container.Refresh')
+
+
+def textBox(heading,announce):
+    class TextBox():
+        WINDOW=10147
+        CONTROL_LABEL=1
+        CONTROL_TEXTBOX=5
+        def __init__(self,*args,**kwargs):
+            xbmc.executebuiltin("ActivateWindow(%d)" % (self.WINDOW, ))
+            self.win=xbmcgui.Window(self.WINDOW)
+            xbmc.sleep(500)
+            self.setControls()
+        def setControls(self):
+            self.win.getControl(self.CONTROL_LABEL).setLabel(heading)
+            try: f=open(announce); text=f.read()
+            except: text=announce
+            self.win.getControl(self.CONTROL_TEXTBOX).setText(str(text))
+            return
+    TextBox()
+    while xbmc.getCondVisibility('Window.IsVisible(10147)'):
+        xbmc.sleep(500)

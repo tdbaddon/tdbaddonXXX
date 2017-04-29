@@ -45,7 +45,7 @@ def List(url):
     match = re.compile(r'<a href="([^"]+)[^>]+hRotator[^\']+\'([^\']+)[^"]+"([^"]+)[^<]+[^>]+><b>([0-9:]+)<', re.DOTALL | re.IGNORECASE).findall(response)
     for video, img, name, runtime in match:
         name = runtime + " - " + utils.cleantext(name)
-        utils.addDownLink(name, video, 507, img, '', noDownload=True)
+        utils.addDownLink(name, video, 507, img, '')
     currentpage = re.compile("class='pager'.*<span>([0-9]+)</span><a", re.DOTALL | re.IGNORECASE).findall(response)
     if currentpage:
        npage = int(currentpage[0]) + 1
@@ -59,24 +59,14 @@ def List(url):
     xbmcplugin.endOfDirectory(utils.addon_handle)
 
 
-@utils.url_dispatcher.register('507', ['url', 'name'])
-def Playvid(url, name):
+@utils.url_dispatcher.register('507', ['url', 'name'], ['download'])
+def Playvid(url, name, download=None):
     response = utils.getHtml(url)
     match = re.compile("file: '(http[^']+)", re.DOTALL | re.IGNORECASE).findall(response)
     if match:
-       videourl = match[0]
-       iconimage = xbmc.getInfoImage("ListItem.Thumb")
-       listitem = xbmcgui.ListItem(name, iconImage="DefaultVideo.png", thumbnailImage=iconimage)
-       listitem.setInfo('video', {'Title': name, 'Genre': 'Porn'})
-       listitem.setProperty("IsPlayable","true")
-       if int(sys.argv[1]) == -1:
-         pl = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-         pl.clear()
-         pl.add(videourl, listitem)
-         xbmc.Player().play(pl)
-       else:
-         listitem.setPath(str(videourl))
-         xbmcplugin.setResolvedUrl(utils.addon_handle, True, listitem)
+        utils.playvid(match[0], name, download)
+    else:
+        utils.notify('Oh oh','Couldn\'t find a video')
 
 @utils.url_dispatcher.register('508', ['url'])
 def Categories(url):

@@ -56,13 +56,7 @@ def MAIN_MENU():
         url='https://www.eporner.com' + url
         common.addDir(name + " - " + vids + " videos",url,241,icon,fanart)
 
-    kodi_name = common.GET_KODI_VERSION()
-
-    if kodi_name == "Jarvis":
-        xbmc.executebuiltin('Container.SetViewMode(50)')
-    elif kodi_name == "Krypton":
-        xbmc.executebuiltin('Container.SetViewMode(55)')
-    else: xbmc.executebuiltin('Container.SetViewMode(50)')
+    common.SET_VIEW('list')
 
 def GET_CONTENT(url):
 
@@ -104,7 +98,6 @@ def GET_CONTENT(url):
             np = 'https://www.eporner.com' + np
             common.addDir('[COLOR white]Next Page >>[/COLOR]',np,241,icon,fanart)       
         except: pass
-    kodi_name = common.GET_KODI_VERSION()
 
     common.SET_VIEW('thumbs')
 
@@ -162,17 +155,29 @@ def PLAY_URL(name,url,iconimage):
             streamurl.append(url)
             streamquality.append("[COLOR pink][B]" + quality + "[/B][/COLOR]")
 
-    streamquality.reverse();
-    select = dialog.select(name,streamquality)
-    if select < 0:
-        quit()
-    else:
-        url = "https://www.eporner.com/dload" + streamurl[select]
+    # streamquality.reverse();
+    # select = dialog.select(name,streamquality)
+    # if select < 0:
+        # quit()
+    # else:
+        # url = "https://www.eporner.com/dload" + streamurl[select]
     #url = re.compile('<a href="([^"]*)">Download',re.DOTALL).findall(result)[-1]
-    #url = 'https://www.eporner.com' + url
+    
+    if streamurl:
+        if len(streamurl) == 1: url = 'https://www.eporner.com/dload' + streamurl[0]
+        else: url = 'https://www.eporner.com/dload' + streamurl[-1]
+    else:
+        dialog.ok(AddonTitle, 'Sorry no playable link could be found.')
+        quit()
     url = url.replace("['",'').replace("']",'').replace('%3A%2F%2F','://').replace('%2F','/').replace('amp;','')
-    choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
 
+    dialog.ok("22", str(url))
+    auto_play = plugintools.get_setting("extras_setting")
+    
+    if auto_play == 'false':
+        choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
+    else: choice = 0
+    
     if choice == 1:
         a=open(FAVOURITES_FILE).read()
         b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<name>'+str(name)+'</name>\n<link>'+str(url)+'</link>\n<site>Eporner</site>\n<icon>'+str(iconimage)+'</icon>\n</item>\n')

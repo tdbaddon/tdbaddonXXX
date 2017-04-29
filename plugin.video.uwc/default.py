@@ -31,6 +31,7 @@ from resources.lib.sites import *
 
 socket.setdefaulttimeout(60)
 
+xbmcplugin.setContent(utils.addon_handle, 'movies')
 addon = xbmcaddon.Addon(id=utils.__scriptid__)
 
 progress = utils.progress
@@ -57,7 +58,8 @@ def INDEX():
 @utils.url_dispatcher.register('1')
 def INDEXS():
     utils.addDir('[COLOR hotpink]WatchXXXFree[/COLOR]','http://www.watchxxxfree.com/page/1/',10,os.path.join(imgDir, 'wxf.png'),'')
-    utils.addDir('[COLOR hotpink]PornTrex[/COLOR]','http://www.porntrex.com/videos?o=mr&page=1',50,os.path.join(imgDir, 'pt.png'),'')
+    if sys.version_info >= (2, 7, 9):
+        utils.addDir('[COLOR hotpink]PornTrex[/COLOR]','http://www.porntrex.com/videos?o=mr&page=1',50,os.path.join(imgDir, 'pt.png'),'')
     utils.addDir('[COLOR hotpink]PornAQ[/COLOR]','http://www.pornaq.com/page/1/',60,os.path.join(imgDir, 'paq.png'),'')
     utils.addDir('[COLOR hotpink]Porn00[/COLOR]','http://www.porn00.com/page/1/',64,os.path.join(imgDir, 'p00.png'),'')
     utils.addDir('[COLOR hotpink]Beeg[/COLOR]','http://beeg.com/page-1',80,os.path.join(imgDir, 'bg.png'),'')
@@ -77,14 +79,14 @@ def INDEXS():
     utils.addDir('[COLOR hotpink]XXX Streams (org)[/COLOR]','http://xxxstreams.org/',420,os.path.join(imgDir, 'xxxsorg.png'),'')
     utils.addDir('[COLOR hotpink]K18[/COLOR]','http://k18.co/',230,os.path.join(imgDir, 'k18.png'),'')
     utils.addDir('[COLOR hotpink]Sexix[/COLOR]','http://sexix.net/',450,os.path.join(imgDir, 'sexix.png'),'')
-    utils.addDir('[COLOR hotpink]HDPoz[/COLOR]','http://hdpoz.com/',510,'','')
+    utils.addDir('[COLOR hotpink]daftsex[/COLOR]','https://daftsex.com/',610,'','')
 
     utils.addDir('[COLOR hotpink]One list, to watch them all[/COLOR]','',5,'',1)
     xbmcplugin.endOfDirectory(utils.addon_handle, cacheToDisc=False)
 
 @utils.url_dispatcher.register('2')
 def INDEXM():
-    if int(utils.kodiver) >= 17:
+    if sys.version_info >= (2, 7, 9):
         utils.addDir('[COLOR hotpink]Xtheatre[/COLOR]','http://xtheatre.net/page/1/',20,os.path.join(imgDir, 'xt.png'),'')
     utils.addDir('[COLOR hotpink]Nudeflix[/COLOR]','http://www.nudeflix.com/browse?order=released&page=1',40,os.path.join(imgDir, 'nf.png'),'')
     utils.addDir('[COLOR hotpink]PornHive[/COLOR]','http://www.pornhive.tv/en/movies/all',70,os.path.join(imgDir, 'ph.png'),'')
@@ -149,6 +151,13 @@ def OpenDownloadFolder(url):
     xbmc.executebuiltin('ActivateWindow(Videos, '+url+')')
 
 
+def change():
+    if os.path.isfile(utils.uwcchange):
+        heading = '[B][COLOR hotpink]Whitecream[/COLOR] [COLOR white]Changelog[/COLOR][/B]'
+        utils.textBox(heading,utils.uwcchange)
+        os.remove(utils.uwcchange)
+
+
 if not addon.getSetting('uwcage') == 'true':
     age = dialog.yesno('WARNING: This addon contains adult material.','You may enter only if you are at least 18 years of age.', nolabel='Exit', yeslabel='Enter')
     if age:
@@ -166,4 +175,5 @@ def main(argv=None):
 
 if __name__ == '__main__':
     if age:
+        change()
         sys.exit(main())

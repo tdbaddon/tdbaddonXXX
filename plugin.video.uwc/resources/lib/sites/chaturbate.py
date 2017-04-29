@@ -168,7 +168,7 @@ def Playvid(url, name):
     listhtml = utils.getHtml(url, hdr=cbheaders)
     iconimage = xbmc.getInfoImage("ListItem.Thumb")
     
-    m3u8url = re.compile(r"loadHlsVideo\('([^']+)", re.DOTALL | re.IGNORECASE).findall(listhtml)
+    m3u8url = re.compile(r"jsplayer, '([^']+)", re.DOTALL | re.IGNORECASE).findall(listhtml)
     if m3u8url:
         m3u8stream = m3u8url[0]
         if chatslow == 1:

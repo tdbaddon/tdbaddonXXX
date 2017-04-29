@@ -178,8 +178,11 @@ def PLAY_URL(name,url,iconimage):
     url = re.compile("fileurl.+?'(.+?)';",re.DOTALL).findall(result)[0]
     url = url.replace("?fs=opencloud",'').replace("']",'').replace('%3A%2F%2F','://').replace('%2F','/')
 
-    choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
-
+    auto_play = plugintools.get_setting("extras_setting")
+    
+    if auto_play == 'false': choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
+    else: choice = 0
+    
     if choice == 1:
         a=open(FAVOURITES_FILE).read()
         b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<name>'+str(name)+'</name>\n<link>'+str(url)+'</link>\n<site>Motherless</site>\n<icon>'+str(iconimage)+'</icon>\n</item>\n')

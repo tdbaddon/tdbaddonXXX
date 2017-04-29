@@ -106,22 +106,40 @@ def GET_CONTENT(url):
     match = re.compile('class="video-listing two-in-row(.+?)<div class="pages">',re.DOTALL).findall(result)
     string = str(match)
     match2 = re.compile('<li(.+?)</li>',re.DOTALL).findall(string)
-    for item in match2:
-        try:
-            title=re.compile('<a href=".+?" title="(.+?)" class=".+?" >').findall(item)[0]
-            url=re.compile('<a href="(.+?)" title=".+?" class=".+?" >').findall(item)[0]
-            rating=re.compile('<span class="video-percent">(.+?)</span>').findall(item)[0]
-            video_views=re.compile('<span class="video-views">(.+?)</span>').findall(item)[0]
-            iconimage=re.compile('data-src="(.+?)"').findall(item)[0]
-            icon = "http:" + iconimage
-            url = "http://www.redtube.com" + str(url)
-            percent = "[COLOR red]" + rating + "[/COLOR]"
-            name = "[COLOR white] - " + title + "[/COLOR]"
-            views = "[COLOR grey] | [I]" + video_views + " Views[/I][/COLOR]"
-            name = common.CLEANUP(name)
-            url2 = name + '|SPLIT|' + url + '|SPLIT|' + icon
-            common.addLink(percent + name + views,url2,44,icon,fanart)
-        except: pass
+    
+    if len(match2) < 1:
+        match2 = re.compile('<div class="widget-video-holder">(.+?)<li class="widget-video-li">',re.DOTALL).findall(result)
+        for item in match2:
+            try:
+                title=re.compile('<a href=".+?" title="(.+?)"').findall(item)[0]
+                url=re.compile('<a href="(.+?)"').findall(item)[0]
+                rating=re.compile('<span class="widget-video-proc">(.+?)</span>').findall(item)[0]
+                video_views=re.compile('<span class="widget-video-views">(.+?)</span>').findall(item)[0]
+                icon=re.compile('src="(.+?)"').findall(item)[0]
+                url = "http://www.redtube.com" + str(url)
+                percent = "[COLOR red]" + rating + "[/COLOR]"
+                name = "[COLOR white] - " + title + "[/COLOR]"
+                views = "[COLOR grey] | [I]" + video_views + "[/I][/COLOR]"
+                name = common.CLEANUP(name)
+                url2 = name + '|SPLIT|' + url + '|SPLIT|' + icon
+                common.addLink(percent + name + views,url2,44,icon,fanart)
+            except: pass
+    else:
+        for item in match2:
+            try:
+                title=re.compile('<a href=".+?" title="(.+?)" class=".+?" >').findall(item)[0]
+                url=re.compile('<a href="(.+?)" title=".+?" class=".+?" >').findall(item)[0]
+                rating=re.compile('<span class="video-percent">(.+?)</span>').findall(item)[0]
+                video_views=re.compile('<span class="video-views">(.+?)</span>').findall(item)[0]
+                icon=re.compile('src="(.+?)"').findall(item)[0]
+                url = "http://www.redtube.com" + str(url)
+                percent = "[COLOR red]" + rating + "[/COLOR]"
+                name = "[COLOR white] - " + title + "[/COLOR]"
+                views = "[COLOR grey] | [I]" + video_views + "[/I][/COLOR]"
+                name = common.CLEANUP(name)
+                url2 = name + '|SPLIT|' + url + '|SPLIT|' + icon
+                common.addLink(percent + name + views,url2,44,icon,fanart)
+            except: pass
 
     if nextpage == 1:
         try:
@@ -173,13 +191,14 @@ def PLAY_URL(name,url,iconimage):
     ref_url = url
     dp = common.GET_LUCKY()
     result = common.open_url(url)
-    url = re.compile('<source src="//(.+?)" type="video/mp4">',re.DOTALL).findall(result)
-    a = str(url)
-    url = 'http://' + str(a)
+    url = re.compile('<source src="(.+?)"',re.DOTALL).findall(result)[0]
     url = url.replace("['",'').replace("']",'').replace('%3A%2F%2F','://').replace('%2F','/').replace('amp;','')
 
-    choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
-
+    auto_play = plugintools.get_setting("extras_setting")
+    
+    if auto_play == 'false': choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
+    else: choice = 0
+    
     if choice == 1:
         a=open(FAVOURITES_FILE).read()
         b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<name>'+str(name)+'</name>\n<link>'+str(url)+'</link>\n<site>RedTube</site>\n<icon>'+str(iconimage)+'</icon>\n</item>\n')

@@ -19,6 +19,7 @@
 
 import re
 import base64
+import urllib
 
 import xbmcplugin
 from resources.lib import utils
@@ -43,14 +44,30 @@ def List(url):
         return None
     match = re.compile("<main(.*?)</main", re.DOTALL | re.IGNORECASE).findall(listhtml)[0]
     match1 = re.compile('<a class="" href="([^"]+)" title="([^"]+)">\n<img src="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(match)
+    cookieString = getCookiesString()
     for videopage, name, img in match1:
         name = utils.cleantext(name)
+        img = img + "|Cookie=" + urllib.quote(cookieString) + "&User-Agent=" + urllib.quote(utils.USER_AGENT)
         utils.addDownLink(name, videopage, 352, img, '')
     try:
         nextp=re.compile(r'<span class="active">\d+</span></li><li><a href="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(listhtml)
         utils.addDir('Next Page', nextp[0], 351,'')
     except: pass
     xbmcplugin.endOfDirectory(utils.addon_handle)
+
+
+def getCookiesString():
+    cookieString=""
+    import cookielib
+    try:
+        cookieJar = cookielib.LWPCookieJar()
+        cookieJar.load(utils.cookiePath,ignore_discard=True)
+        for index, cookie in enumerate(cookieJar):
+            cookieString+=cookie.name + "=" + cookie.value +";"
+    except:
+        import sys,traceback
+        traceback.print_exc(file=sys.stdout)
+    return cookieString
 
 
 @utils.url_dispatcher.register('353', ['url'], ['keyword'])    

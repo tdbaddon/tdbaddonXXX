@@ -40,9 +40,9 @@ def SEARCH_HISTORY(name,url):
     search_on_off  = plugintools.get_setting("search_setting")
 
     setting = "search_setting|SPLIT|" + search_on_off
-    addDir('[COLOR deeppink]New Search...[/COLOR]','null',mode,icon,fanart)
-    addLink('[COLOR deeppink]Clear History[/COLOR]','url',108,icon,fanart)
-    addLink('[COLOR orangered]Disable Search History[/COLOR]',setting,109,icon,fanart)
+    addDir('[COLOR pink][B]New Search...[/B][/COLOR]','null',mode,icon,fanart)
+    addLink('[COLOR pink][B]Clear History[/B][/COLOR]','url',108,icon,fanart)
+    addLink('[COLOR pink][B]Disable Search History[/B][/COLOR]',setting,109,icon,fanart)
     addLink('################## Recent Searches #########################','url',999,icon,fanart)
 
     f = open(SEARCH_FILE,mode='r'); msg = f.read(); f.close()
@@ -50,7 +50,7 @@ def SEARCH_HISTORY(name,url):
     match = re.compile('<item>(.+?)</item>').findall(msg)
     for item in match:
         url=re.compile('<term>(.+?)</term>').findall(item)[0]
-        if not url in str(list): addDir('[COLOR pink]' + url + '[/COLOR]',url,mode,icon,fanart)
+        if not url in str(list): addDir('[COLOR white]' + url + '[/COLOR]',url,mode,icon,fanart)
         list.append(url)
 
     SET_VIEW('list')
@@ -107,13 +107,13 @@ def SET_VIEW(name):
             
 def GET_M3U_LIST(url):
 
-    req = urllib2.Request(url)
-    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36')
-    response = urllib2.urlopen(req)
-    link=response.read()
-    response.close()
-    link=link.replace('\n','').replace('\r','').replace('<fanart></fanart>','<fanart>x</fanart>').replace('<thumbnail></thumbnail>','<thumbnail>x</thumbnail>').replace('<utube>','<link>https://www.youtube.com/watch?v=').replace('</utube>','</link>')#.replace('></','>x</')
-    url = re.compile('<link>(.+?)</link>').findall(link)[0]
+    # req = urllib2.Request(url)
+    # req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36')
+    # response = urllib2.urlopen(req)
+    # link=response.read()
+    # response.close()
+    # link=link.replace('\n','').replace('\r','').replace('<fanart></fanart>','<fanart>x</fanart>').replace('<thumbnail></thumbnail>','<thumbnail>x</thumbnail>').replace('<utube>','<link>https://www.youtube.com/watch?v=').replace('</utube>','</link>')#.replace('></','>x</')
+    # url = re.compile('<link>(.+?)</link>').findall(link)[0]
 
     response = open_url(url)
     response = response.replace('#AAASTREAM:','#A:')
@@ -128,14 +128,24 @@ def GET_M3U_LIST(url):
         item_data = {"display_name": channel["display_name"], "url": channel["url"]}
         matches=re.compile(' (.+?)="(.+?)"',re.I+re.M+re.U+re.S).findall(channel["params"])
         for field, value in matches:
+            field = field.replace('-',''); field = field.lstrip(); field = field.rstrip()
             item_data[field.strip().lower().replace('-', '_')] = value.strip()
         m3u_list.append(item_data)
 
+    namelist = []; urllist = []; combinedlist = []
     for channel in sorted(m3u_list):
         name = GetEncodeString(channel["display_name"])
         url = GetEncodeString(channel["url"])
-        url = url.replace('\\n','').replace('\n','').replace('\\r','').replace('\\t','').replace('\r','').replace('\t','').replace(' ','').replace('m3u8','m3u8')
-        addLink('[COLOR pink]'+name.title()+'[/COLOR]',url,996,icon,fanart)
+        name = name.replace('-',''); name = name.strip(); name = name.rstrip(); name = re.sub('[^A-Za-z0-9 ]+', '', name)
+        name = name.lstrip(' ')
+        namelist.append(name)
+        urllist.append(url)
+        combinedlist = list(zip(namelist,urllist))
+
+    for name,url in sorted(combinedlist):
+        if not '=' in name:
+            if not 'http://exabytetv.info/exabytetv.mp4' in url:
+                addLink('[COLOR pink]'+name.title()+'[/COLOR]',url,996,icon,fanart)
 
 def GetEncodeString(str):
     try:

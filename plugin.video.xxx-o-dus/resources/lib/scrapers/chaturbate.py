@@ -21,6 +21,8 @@ import time
 import re
 from resources.lib.modules  import common
 from resources.lib.modules  import plugintools
+from resources.lib.modules  import kodi
+from resources.lib.modules  import log_utils
 import datetime
 
 #Default veriables
@@ -47,12 +49,16 @@ def MAIN_MENU():
 
     chat_on_off  = 'true'
     chat_on_off  = plugintools.get_setting("chaturbate_setting")
+    hd_on_odd  = plugintools.get_setting("chaturbate_hd")
 
-    if chat_on_off == 'true': common.addDir("[COLOR pink]View Monitored Performers[/COLOR]","url",24,icon,fanart)
-    else: common.addLink("[COLOR pink]Enable Performer Monitoring[/COLOR]","url",106,icon,fanart)
+    common.addLink("[COLOR pink][B]Search for Model[/B][/COLOR]","url",28,icon,fanart)
+    if chat_on_off == 'true': common.addDir("[COLOR pink][B]View Monitored Models[/B][/COLOR]","url",24,icon,fanart)
+    else: common.addLink("[COLOR pink][B]Enable Performer Monitoring[/B][/COLOR]","url",106,icon,fanart)
+    if hd_on_odd == 'true': common.addLink("[COLOR pink][B]Only Show HD Cams:[/B][/COLOR] [COLOR lime][B]ON[/B][/COLOR]","url",106,icon,fanart)
+    else: common.addLink("[COLOR pink][B]Only Show HD Cams:[/B][/COLOR] [COLOR orangered][B]OFF[/B][/COLOR]","url",106,icon,fanart)
     result = common.open_url(BASE)
     match = re.compile("<dd>(.+?)</dd>",re.DOTALL).findall(result)
-    common.addDir('[COLOR white]VIEW BY TAGS[/COLOR]','url',25,icon,fanart)
+    common.addDir('[COLOR white]View By Tags[/COLOR]','url',25,icon,fanart)
     for item in match:
         if not 'Tokens' in item:
             if 'title=' in item: section = re.compile('<a href=\"(.+?)\".+?>(.+?)</a>').findall(item)
@@ -64,7 +70,14 @@ def MAIN_MENU():
 
 def MONITORING():
 
-    common.addLink("[COLOR orangered]Disable Performer Monitoring[/COLOR]","url",106,icon,fanart)
+    dp = xbmcgui.DialogProgress()
+    
+    dp.create(AddonTitle,"[COLOR pink]Currently Checking......[/COLOR]" )
+    dp.update(0)
+    i = 0
+    common.addLink("[COLOR pink][B]Disable Model Monitoring[/B][/COLOR]","url",106,icon,fanart)
+    common.addLink("[COLOR pink][B]Add Model by Username[/B][/COLOR]","url",27,icon,fanart)
+    common.addLink("--------------------------------------------------------","url",999,icon,fanart)
 
     if os.path.exists(CHATURBATE_FILE):
         f = open(CHATURBATE_FILE,mode='r'); msg = f.read(); f.close()
@@ -73,24 +86,26 @@ def MONITORING():
         namelist = []; urllist = []; iconlist = []; countlist = []; combinedlists=[]
         msg = msg.replace('\n','')
         match = re.compile('<item>(.+?)</item>').findall(msg)
+        j = len(match)
         for item in match:
             title=re.compile('<name>(.+?)</name>').findall(item)[0]
             link=re.compile('<url>(.+?)</url>').findall(item)[0]
             iconimage=re.compile('<icon>(.+?)</icon>').findall(item)[0]
+            progress = 100 * int(i)/int(j)
+            dp.update(progress,"[COLOR pink]Currently Checking " + title + "[/COLOR]","[COLOR pink]Checked " + str(i) + " of " + str(j) + "[/COLOR]")
             try:
                 r = common.open_url(link)
-                if not '<p><strong>Room is currently offline</strong></p>' in r:
-                    try: 
-                        iconimg=re.compile("posterUrl.+?\'([^']+)").findall(r)[0]
-                        iconimg = iconimage + '1'
-                    except: iconimg = iconimage
+                if '.m3u8' in r:
                     namelist.append(title)
                     urllist.append(link)
-                    iconlist.append(iconimg)
+                    iconlist.append(iconimage)
                     countlist.append('0')
                     combinedlists = list(zip(countlist,namelist,urllist,iconlist))
                 else: 
-                    namelist.append(title)
+                    try: 
+                        last_seen=re.compile("<dt>Last Broadcast:<\/dt><dd>(.+?)<\/dd>").findall(r)[0]
+                    except: last_seen = "Unknown"
+                    namelist.append(title + '|SPLIT|' + last_seen)
                     urllist.append(link)
                     iconlist.append(iconimage)
                     countlist.append('1')
@@ -99,20 +114,106 @@ def MONITORING():
                 namelist.append(title)
                 urllist.append(link)
                 iconlist.append(iconimage)
-                countlist.append('1')
+                countlist.append('2')
                 combinedlists = list(zip(countlist,namelist,urllist,iconlist))
                 pass
+            i += 1
     else: common.addLink('[COLOR pink]No Performers beging Monitored.[/COLOR]','url',999,icon,fanart)
+
+    progress = 100 * int(i)/int(j)
+    dp.update(progress,"","[COLOR pink]Checked " + str(i) + " of " + str(j) + "[/COLOR]")
 
     if combinedlists: 
         tup = sorted(combinedlists, key=lambda x: int(x[0]),reverse=False)
         for count,title,url,iconimage in tup:
             if count == '0':
                 url2 = title + '|SPLIT|' + url + '|SPLIT|' + iconimage
+                log_utils.log(iconimage, log_utils.LOGNOTICE)
                 common.addLink('[COLOR pink][B]' + title + ' is online now![/B][/COLOR]',url2,23,iconimage,fanart)
-            else: common.addLink(title + ' is offline!','url',999,iconimage,fanart)
-
+            elif count == '1':
+                title,last_seen = title.split('|SPLIT|')
+                url2 = title + '|SPLIT|' + url + '|SPLIT|' + iconimage
+                common.addLink('[COLOR white][B]' + title + '[/B][/COLOR] - Offline! - Last Broadcast: ' + last_seen,url2,23,icon,fanart)
+            else: common.addLink('[COLOR white][B]' + title + '[/B][/COLOR] - Error Checking!',url2,23,icon,fanart)
+    
+    dp.close()
     common.SET_VIEW('list')
+
+def FOLLOW_USER():
+
+    string =''
+    keyboard = xbmc.Keyboard(string, 'Enter Username')
+    keyboard.doModal()
+    if keyboard.isConfirmed():
+        string = keyboard.getText()
+        if len(string)>1:
+            xbmc.executebuiltin("ActivateWindow(busydialog)")
+            a=open(CHATURBATE_FILE).read()
+            if not '#START' in a:
+                f = open(CHATURBATE_FILE,'w'); f.write('#START OF FILE#'); f.close()
+            a=open(CHATURBATE_FILE).read()
+            if '<name>'+string.lower()+'</name>' in a.lower():
+                dialog.ok(AddonTitle, string + ' is already being monitored.')
+                xbmc.executebuiltin("Dialog.Close(busydialog)")
+                quit()
+            url = 'https://chaturbate.com/' + urllib.quote_plus(string)
+            try:
+                r = common.open_url(url)
+            except:
+                dialog.ok(AddonTitle, 'We could not find any model matching the username ' + string + '. Please check the username and try again.')
+                xbmc.executebuiltin("Dialog.Close(busydialog)")
+                quit()
+            if not 'Bio and Free Webcam' in r:
+                dialog.ok(AddonTitle, 'We could not find any model matching the username ' + string + '. Please check the username and try again.')
+                xbmc.executebuiltin("Dialog.Close(busydialog)")
+                quit()
+            else:
+                iconimg = 'https://roomimg.stream.highwebmedia.com/ri/' + string + '.jpg'
+                a=open(CHATURBATE_FILE).read()
+                b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<name>'+str(string)+'</name>\n<url>'+str(url)+'</url>\n<icon>'+str(iconimg)+'</icon>\n</item>\n')
+                f= open(CHATURBATE_FILE, mode='w')
+                f.write(str(b))
+                f.close()
+                dialog.ok(AddonTitle, string + ' has been added to the monitor list.')
+                xbmc.executebuiltin("Dialog.Close(busydialog)")
+                xbmc.executebuiltin('Container.Refresh')
+                quit()
+        else:
+            dialog.ok(AddonTitle, 'No username entered. Please try again.')
+            xbmc.executebuiltin("Dialog.Close(busydialog)")
+            quit()
+
+def SEARCH():
+
+    string =''
+    keyboard = xbmc.Keyboard(string, 'Enter Username')
+    keyboard.doModal()
+    if keyboard.isConfirmed():
+        string = keyboard.getText()
+        if len(string)>1:
+            xbmc.executebuiltin("ActivateWindow(busydialog)")
+            url = 'https://chaturbate.com/' + urllib.quote_plus(string)
+            try:
+                r = common.open_url(url)
+            except:
+                dialog.ok(AddonTitle, 'We could not find any model matching the username ' + string + '. Please check the username and try again.')
+                xbmc.executebuiltin("Dialog.Close(busydialog)")
+                quit()
+            if not 'Bio and Free Webcam' in r:
+                dialog.ok(AddonTitle, 'We could not find any model matching the username ' + string + '. Please check the username and try again.')
+                xbmc.executebuiltin("Dialog.Close(busydialog)")
+                quit()
+            try: 
+                iconimg = re.compile("posterUrl.+?\'([^']+)").findall(r)[0]
+                iconimg = iconimg + '1'
+            except: iconimg = icon
+            url2 = string + '|SPLIT|' + url + '|SPLIT|' + iconimg
+            xbmc.executebuiltin("Dialog.Close(busydialog)")
+            PLAY_URL(string,url2,iconimg)
+        else:
+            dialog.ok(AddonTitle, 'No username entered. Please try again.')
+            xbmc.executebuiltin("Dialog.Close(busydialog)")
+            quit()
 
 def TAGS():
 
@@ -146,6 +247,8 @@ def GET_TAGS(url):
 
 def GET_CONTENT(url):
 
+    hd_on_odd  = plugintools.get_setting("chaturbate_hd")
+
     checker = url
     result = common.open_url(url)
     match = re.compile('<ul class="list">(.+?)<div class="banner">',re.DOTALL).findall(result)
@@ -164,7 +267,9 @@ def GET_CONTENT(url):
             elif 'label_c_new' in item: name = "[COLOR blue]NEW[/COLOR][COLOR white] - " + title + " - Age " + age + " - (" + stats + "viewers)[/COLOR]"
             else: name = "[COLOR white]" + title + " - Age " + age + " - (" + stats + "viewers)[/COLOR]"
             url2 = title + '|SPLIT|' + url + '|SPLIT|' + iconimage
-            common.addLink(name,url2,23,iconimage,fanart)
+            if hd_on_odd == 'true':
+                if 'thumbnail_label_c_hd">' in item: common.addLink(name,url2,23,iconimage,fanart)
+            else: common.addLink(name,url2,23,iconimage,fanart)
         except: pass
         
     try:
@@ -182,6 +287,7 @@ def PLAY_URL(name,url,iconimage):
     dp = common.GET_LUCKY()
 
     name,url,iconimage = url.split('|SPLIT|')
+    iconimage = iconimage.split('.jpg')[0]; iconimage += '.jpg'
     if not 'http' in url: orig_url = "http://www.chaturbate.com" + url
     else: orig_url = url
 
@@ -190,27 +296,66 @@ def PLAY_URL(name,url,iconimage):
     string = str(match).replace('\\','').replace('(','').replace(')','')
     url = "null"
     try:
-        url = re.compile("src='([^']+)'").findall(string)[0]
+        url = re.compile("source src='([^']+)'").findall(string)[0]
     except:
         if '<p><strong>Room is currently offline</strong></p>' in string:
-            dialog.ok(AddonTitle, "This room is currently offline.")
-            quit()
+            chat_on_off  = plugintools.get_setting("chaturbate_setting")
+            if chat_on_off == "true":
+                if not os.path.isfile(CHATURBATE_FILE):
+                    f = open(CHATURBATE_FILE,'w'); f.write('#START OF FILE#'); f.close()
+                a=open(CHATURBATE_FILE).read()
+                if '<name>' + str(name) not in a: choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR red]ROOM CURRENTLY OFFLINE[/COLOR]','[COLOR pink]Notify me when ' + str(name) + ' is online.[/COLOR]'])
+                else: choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR red]ROOM CURRENTLY OFFLINE[/COLOR]','[COLOR pink]Stop Notifications for ' + str(name) + '[/COLOR]'])
+                if choice == 1:
+                    if not str(name) in a:
+                        if not '#START' in a:
+                            f = open(CHATURBATE_FILE,'w'); f.write('#START OF FILE#'); f.close()
+                            a=open(CHATURBATE_FILE).read()
+                        b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<name>'+str(name)+'</name>\n<url>'+str(orig_url)+'</url>\n<icon>'+str(iconimage)+'</icon>\n</item>\n')
+                        f= open(CHATURBATE_FILE, mode='w')
+                        f.write(str(b))
+                        f.close()
+                        dp.close()
+                        dialog.ok(AddonTitle, "[COLOR pink]You will be notified when " + str(name) + " is online.[/COLOR]")
+                        quit()
+                    else:
+                        b=a.replace('<item>\n<name>'+str(name)+'</name>\n','<old>\n<name>disabled</name>\n')
+                        f= open(CHATURBATE_FILE, mode='w')
+                        f.write(str(b))
+                        f.close()
+                        dp.close()
+                        dialog.ok(AddonTitle, "[COLOR pink]Notifications for " + str(name) + " have been disabled.[/COLOR]")
+                        quit()
+                else: quit()
+            else:
+                dialog.ok(AddonTitle, "This room is currently offline.")
+                quit()
         else:
             dialog.ok(AddonTitle, "Sorry, we are unable to find a playable link.")
             quit()
     url2 = url + '|Referer=' + orig_url
 
+    subject = re.compile('default_subject:\s\"([^,]+)",').findall(result)[0]; subject = urllib.unquote_plus(subject)
     chat_on_off  = plugintools.get_setting("chaturbate_setting")
 
     if chat_on_off == "true":
         if not os.path.isfile(CHATURBATE_FILE):
             f = open(CHATURBATE_FILE,'w'); f.write('#START OF FILE#'); f.close()
         a=open(CHATURBATE_FILE).read()
-        if '<name>' + str(name) not in a: choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Stream[/COLOR]','[COLOR pink]Notify me when ' + str(name) + ' is online.[/COLOR]'])
-        else: choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Stream[/COLOR]','[COLOR pink]Stop Notifications for ' + str(name) + '[/COLOR]'])
+        if '<name>' + str(name) not in a: choice = dialog.select("[COLOR pink]" + subject + "[/COLOR]", ['[COLOR pink]Watch Stream[/COLOR]','[COLOR pink]View ' + str(name) + "'s Bio[/COLOR]",'[COLOR pink]Notify me when ' + str(name) + ' is online.[/COLOR]'])
+        else: choice = dialog.select("[COLOR pink]" + subject + "[/COLOR]", ['[COLOR pink]Watch Stream[/COLOR]','[COLOR pink]View ' + str(name) + "'s Bio[/COLOR]",'[COLOR pink]Stop Notifications for ' + str(name) + '[/COLOR]'])
     else: choice = 0
     
     if choice == 1:
+        try:
+            bio = re.compile('<h1>(.+?)</div>',re.DOTALL).findall(result)[0]; bio.replace('<dl style="margin: 0;padding: 0;">','')
+            bio = re.sub('<(.+?)>','',bio); bio = bio.replace(':', ': '); bio = bio.replace('Pics & Videos:', '')
+            a = common.CLEANUP(bio)
+            common.TextBoxes("%s" % a)
+        except: 
+            dialog.ok(AddonTitle, "Sorry we could not get the information at this time. Please try again later.")
+            quit()
+    elif choice == 2:
         if not str(name) in a:
             if not '#START' in a:
                 f = open(CHATURBATE_FILE,'w'); f.write('#START OF FILE#'); f.close()
@@ -223,6 +368,7 @@ def PLAY_URL(name,url,iconimage):
             dialog.ok(AddonTitle, "[COLOR pink]You will be notified when " + str(name) + " is online.[/COLOR]")
             quit()
         else:
+            a=open(CHATURBATE_FILE).read()
             b=a.replace('<item>\n<name>'+str(name)+'</name>\n','<old>\n<name>disabled</name>\n')
             f= open(CHATURBATE_FILE, mode='w')
             f.write(str(b))
@@ -232,8 +378,13 @@ def PLAY_URL(name,url,iconimage):
             quit()        
     elif choice == 0:
  
-        choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Play High Bandwidth Stream[/COLOR]','[COLOR pink]Play Low Bandwidth Stream[/COLOR]'])
-        if choice == 1: url2 = url2.replace('_fast_aac','_aac')
+        bandwidth = plugintools.get_setting("chaturbate_band")
+        if bandwidth == '0': url2 = url2.replace('_fast_aac','_aac')
+        elif bandwidth == '2':
+            choice = dialog.select("[COLOR pink]" + subject + "[/COLOR]", ['[COLOR pink]Play High Bandwidth Stream[/COLOR]','[COLOR pink]Play Low Bandwidth Stream[/COLOR]'])
+            if choice == 1: url2 = url2.replace('_fast_aac','_aac')
+            elif choice == 0: pass
+            else: quit()
         history_on_off  = plugintools.get_setting("history_setting")
         if history_on_off == "true":    
             date_now = datetime.datetime.now().strftime("%d-%m-%Y")
@@ -246,6 +397,18 @@ def PLAY_URL(name,url,iconimage):
         dp.close()
         liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
         xbmc.Player ().play(url2, liz, False)
+        notify_subject = plugintools.get_setting("chaturbate_subject")
+        if notify_subject == "true":
+            sleeper = plugintools.get_setting("chaturbate_subject_refresh")
+            i = 0
+            while not xbmc.Player().isPlayingVideo():
+                time.sleep(1)
+                i += 1
+                if i == 7: quit()
+            while xbmc.Player().isPlayingVideo():
+                subject = re.compile('default_subject:\s\"([^,]+)",').findall(result)[0]; subject = urllib.unquote_plus(subject)
+                kodi.notify(msg=subject, duration=8500, sound=True, icon_path=iconimage)
+                time.sleep(int(sleeper))
     else: 
         dp.close()
         quit()

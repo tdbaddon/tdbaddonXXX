@@ -35,7 +35,7 @@ def List(url):
     try:
         html = utils.getHtml(url, '')
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
+        
         return None
     match = re.compile('id="wrapper"(.*?)sayfala', re.DOTALL | re.IGNORECASE).findall(html)[0]
     match1 = re.compile('<div class="titleFilm"><a href="([^"]+)">([^<]+)<.*?src="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(match)

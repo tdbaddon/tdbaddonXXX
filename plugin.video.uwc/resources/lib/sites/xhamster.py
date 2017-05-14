@@ -40,7 +40,7 @@ def List(url):
     try:
         response = utils.getHtml(url, '', cookie)
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
+        
         return None
     match = re.compile(r'<a href="([^"]+)[^>]+hRotator[^\']+\'([^\']+)[^"]+"([^"]+)[^<]+[^>]+><b>([0-9:]+)<', re.DOTALL | re.IGNORECASE).findall(response)
     for video, img, name, runtime in match:

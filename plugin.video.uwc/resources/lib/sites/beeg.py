@@ -64,7 +64,7 @@ def BGList(url):
     try:
         listjson = utils.getHtml(url,'')
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
+        
         return None
 
     match = re.compile(r'\{"title":"([^"]+)","id":"([^"]+)"', re.DOTALL | re.IGNORECASE).findall(listjson)

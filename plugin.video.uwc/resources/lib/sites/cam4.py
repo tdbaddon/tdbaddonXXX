@@ -66,7 +66,7 @@ def List(url, page=1):
     try:
         listhtml = utils.getHtml(url, url)
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
+        
         return None
     match = re.compile('profileDataBox"> <a href="([^"]+)".*?src="([^"]+)" title="Chat Now Free with ([^"]+)"', re.DOTALL | re.IGNORECASE).findall(listhtml)
     for videourl, img, name in match:

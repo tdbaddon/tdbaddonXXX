@@ -41,7 +41,6 @@ def List(url):
     try:
         listhtml = utils.getHtml(url, '')
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
         return None
     match = re.compile('<a href="([^"]+)" title="([^"]+)".*?original="([^"]+)".*?duration">([^<]+)<', re.DOTALL | re.IGNORECASE).findall(listhtml)
     for videopage, name, img, duration in match:
@@ -80,7 +79,7 @@ def Cat(url):
 @utils.url_dispatcher.register('362', ['url', 'name'], ['download'])
 def Playvid(url, name, download=None):
     videopage = utils.getHtml(url, '')
-    videourl = re.compile("video_url: '([^']+)", re.DOTALL | re.IGNORECASE).findall(videopage)[0]
+    videourl = re.compile("'file': '([^']+)", re.DOTALL | re.IGNORECASE).findall(videopage)[-1]
     videourl = utils.getVideoLink(videourl, url)
     if download == 1:
         utils.downloadVideo(videourl, name)

@@ -40,7 +40,7 @@ def List(url):
     try:
         listhtml = utils.getHtml(url, '')
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
+        
         return None
     match = re.compile("<main(.*?)</main", re.DOTALL | re.IGNORECASE).findall(listhtml)[0]
     match1 = re.compile('<a class="" href="([^"]+)" title="([^"]+)">\n<img src="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(match)

@@ -41,7 +41,7 @@ def PHList(url):
     try:
         listhtml = utils.getHtml(url, '')
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
+        
         return None
     match = re.compile(r'anel-img">\s+<a href="([^"]+)">\s+<img.*?data-src="([^"]+)".*?alt="([^"]+)', re.DOTALL | re.IGNORECASE).findall(listhtml)
     for videopage, img, name in match:

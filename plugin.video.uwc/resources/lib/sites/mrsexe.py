@@ -42,13 +42,14 @@ def List(url):
     try:
         listhtml = utils.getHtml(url, '')
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
+        
         return None
     match = re.compile('thumb-list(.*?)<ul class="right pagination">', re.DOTALL | re.IGNORECASE).findall(listhtml)
     match1 = re.compile(r'<li class="[^"]*">\s<a class="thumbnail" href="([^"]+)">\n<script.+?</script>\n<figure>\n<img  id=".+?" src="([^"]+)".+?/>\n<figcaption>\n<span class="video-icon"><i class="fa fa-play"></i></span>\n<span class="duration"><i class="fa fa-clock-o"></i>([^<]+)</span>\n(.+?)\n', re.DOTALL | re.IGNORECASE).findall(match[0])
     for videopage, img, duration, name in match1:
+        if img.startswith('//'): img = 'http:' + img
         name = utils.cleantext(name) + ' [COLOR deeppink]' + duration + '[/COLOR]'
-        utils.addDownLink(name, 'http://www.mrsexe.com/' + videopage, 402, img, '')
+        utils.addDownLink(name, 'http://www.mrsexe.com' + videopage, 402, img, '')
     try:
         nextp=re.compile(r'<li class="arrow"><a href="(.+?)">suivant</li>').findall(listhtml)
         utils.addDir('Next Page', 'http://www.mrsexe.com/' + nextp[0], 401,'')
@@ -95,6 +96,7 @@ def Stars(url):
 
 @utils.url_dispatcher.register('402', ['url', 'name'], ['download'])
 def Playvid(url, name, download=None):
+    xbmc.log(url, xbmc.LOGNOTICE)
     print "mrsexe::Playvid " + url
     html = utils.getHtml(url, '')
     videourl = re.compile(r"src='(/inc/clic\.php\?video=.+?&cat=mrsex.+?)'").findall(html)
@@ -102,6 +104,7 @@ def Playvid(url, name, download=None):
     videourls = re.compile(r"'file': \"(.+?)\",.+?'label': '(.+?)'", re.DOTALL).findall(html)
     videourls = sorted(videourls, key=lambda tup: tup[1], reverse=True)
     videourl = videourls[0][0]
+    if videourl.startswith('//'): videourl = 'http:' + videourl
     if download == 1:
         utils.downloadVideo(videourl, name)
     else:    

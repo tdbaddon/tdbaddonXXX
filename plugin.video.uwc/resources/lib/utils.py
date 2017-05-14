@@ -22,7 +22,7 @@ __scriptname__ = "Ultimate Whitecream"
 __author__ = "Whitecream"
 __scriptid__ = "plugin.video.uwc"
 __credits__ = "Whitecream, Fr33m1nd, anton40, NothingGnome"
-__version__ = "1.1.53"
+__version__ = "1.1.54"
 
 import urllib
 import urllib2
@@ -602,9 +602,9 @@ def playvideo(videosource, name, download=None, url=None):
             notify('Oh oh','Python version to old, update to Krypton')
             return
         progress.update( 40, "", "Loading Rapidvideo", "" )
-        rpvideourl = re.compile(r"(?://|\.)(?:rapidvideo|raptu)\.com/(?:embed/|e/|\?v=)?([0-9A-Za-z]+)", re.DOTALL | re.IGNORECASE).findall(videosource)
+        rpvideourl = re.compile(r"(?://|\.)(?:rapidvideo|raptu)\.com/(?:embed/|[ev]/|\?v=)?([0-9A-Za-z]+)", re.DOTALL | re.IGNORECASE).findall(videosource)
         rpvideourl = chkmultivids(rpvideourl)
-        rpvideourl = 'http://www.raptu.com/embed/%s' % rpvideourl
+        rpvideourl = 'https://www.rapidvideo.com/embed/%s' % rpvideourl
         progress.update( 50, "", "Loading Rapidvideo", "Sending it to urlresolver")
         video = urlresolver.resolve(rpvideourl)
         if video:
@@ -686,28 +686,45 @@ def getHtml(url, referer='', hdr=None, NoCookie=None, data=None):
             data = cloudflare.solve(url,cj, USER_AGENT)
         else:
             raise urllib2.HTTPError()
+    except Exception as e:
+        if 'SSL23_GET_SERVER_HELLO' in str(e):
+            notify('Oh oh','Python version to old - update to Krypton or FTMC')
+            raise urllib2.HTTPError()
+        else:
+            notify('Oh oh','It looks like this website is down.')
+            raise urllib2.HTTPError()
+        return None
     return data
 
 
 def postHtml(url, form_data={}, headers={}, compression=True, NoCookie=None):
-    _user_agent = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.1 ' + \
-                  '(KHTML, like Gecko) Chrome/13.0.782.99 Safari/535.1'
-    req = urllib2.Request(url)
-    if form_data:
-        form_data = urllib.urlencode(form_data)
-        req = urllib2.Request(url, form_data)
-    req.add_header('User-Agent', _user_agent)
-    for k, v in headers.items():
-        req.add_header(k, v)
-    if compression:
-        req.add_header('Accept-Encoding', 'gzip')
-    response = urllib2.urlopen(req)
-    data = response.read()
-    if not NoCookie:
-        try:
-            cj.save(cookiePath)
-        except: pass
-    response.close()
+    try:
+        _user_agent = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.1 ' + \
+                      '(KHTML, like Gecko) Chrome/13.0.782.99 Safari/535.1'
+        req = urllib2.Request(url)
+        if form_data:
+            form_data = urllib.urlencode(form_data)
+            req = urllib2.Request(url, form_data)
+        req.add_header('User-Agent', _user_agent)
+        for k, v in headers.items():
+            req.add_header(k, v)
+        if compression:
+            req.add_header('Accept-Encoding', 'gzip')
+        response = urllib2.urlopen(req)
+        data = response.read()
+        if not NoCookie:
+            try:
+                cj.save(cookiePath)
+            except: pass
+        response.close()
+    except Exception as e:
+        if 'SSL23_GET_SERVER_HELLO' in str(e):
+            notify('Oh oh','Python version to old - update to Krypton or FTMC')
+            raise urllib2.HTTPError()
+        else:
+            notify('Oh oh','It looks like this website is down.')
+            raise urllib2.HTTPError()
+        return None
     return data
 
 

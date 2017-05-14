@@ -43,7 +43,7 @@ def List(url):
     try:
         listhtml = utils.getHtml(url, '')
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
+        
         return None
     match = re.compile('<li>\n.+?<a href="(.+?)" title="(.+?)">\n.+?<div class="thumb thumb-paged" data-screen-main="1">\n\n.+?<img src="(.+?)"').findall(listhtml)
     for videopage, name, img in match:

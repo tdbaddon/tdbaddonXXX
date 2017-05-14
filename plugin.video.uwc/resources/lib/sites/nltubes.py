@@ -44,7 +44,7 @@ def NLVIDEOLIST(url, page=1):
     try:
         link = utils.getHtml(url, '')
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
+        
         return None
     match = re.compile(r'<article([^>]*)>.*?href="([^"]+)".*?src="([^"]+)".*?<h3>([^<]+)<.*?duration">[^\d]+([^\s<]+)(?:\s|<)', re.DOTALL | re.IGNORECASE).findall(link)
     for hd, url, img, name, duration in match:

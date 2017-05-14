@@ -198,7 +198,7 @@ def List(channel, section, page=1):
     try:
         urldata = utils.getHtml("https://www.porndig.com/posts/load_more_posts", pdreferer, headers, data=data)
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
+        
         return None
     urldata = ParseJson(urldata)
     i = 0

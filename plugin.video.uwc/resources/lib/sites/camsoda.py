@@ -40,7 +40,7 @@ def List(url):
     try:
         response = utils.getHtml(url)
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
+        
         return None
     data = json.loads(response)
     for camgirl in data['results']:

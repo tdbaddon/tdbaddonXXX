@@ -39,7 +39,7 @@ def List(url):
     try:
         listhtml = utils.getHtml(url, '')
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
+        
         return None
     cookieString = getCookiesString()
     match = re.compile(r'class="content-list-thumb">\s+<a href="([^"]+)" title="([^"]+)">.*?src="([^"]+)"', re.DOTALL | re.IGNORECASE).findall(listhtml)

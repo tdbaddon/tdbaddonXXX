@@ -86,8 +86,7 @@ def WXFList(url, page=1, onelist=None):
         url = url + '?filtre=' + sort + '&display=extract'
     try:
         listhtml = utils.getHtml(url, '')
-    except:
-        utils.notify('Oh oh','It looks like this website is down.')
+    except Exception as e:
         return None
     match = re.compile('data-lazy-src="([^"]+)".*?<a href="([^"]+)" title="([^"]+)".*?<p>([^<]+)</p>', re.DOTALL | re.IGNORECASE).findall(listhtml)
     for img, videopage, name, desc in match:

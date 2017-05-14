@@ -40,7 +40,7 @@ def List(url):
     try:
         listhtml = utils.getHtml(url, '')
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
+        
         return None
     match = re.compile(r'<div class="item">\s*?<a href="([^"]+)" title="([^"]+)".*?><img.*?src="([^"]+)".*?<div class="runtime">([^<]+)??</div>', re.DOTALL | re.IGNORECASE).findall(listhtml)
     for videopage, name, img, runtime in match:

@@ -41,7 +41,6 @@ def List(url):
     try:
         listhtml = utils.getHtml(url, '')
     except:
-        utils.notify('Oh oh','It looks like this website is down.')
         return None
     match = re.compile('<li class="videoblock.+?<a href="([^"]+)" title="([^"]+)".+?<var class="duration">([^<]+)</var>(.*?)</div.*?data-mediumthumb="([^"]+)"', re.DOTALL).findall(listhtml)
     for videopage, name, duration, hd, img in match:
@@ -53,7 +52,7 @@ def List(url):
         name = name + hd + "[COLOR deeppink]" + duration + "[/COLOR]"
         utils.addDownLink(name, 'http://www.pornhub.com' + videopage, 392, img, '')
     try:
-        nextp=re.compile('<li class="page_next"><a href="(.+?)" class="orangeButton">Next</a></li>', re.DOTALL).findall(listhtml)
+        nextp=re.compile('<li class="page_next"><a href="(.+?)" class="orangeButton">Next', re.DOTALL).findall(listhtml)
         utils.addDir('Next Page', 'http://www.pornhub.com' + nextp[0].replace('&amp;','&'), 391,'')
     except: pass
     xbmcplugin.endOfDirectory(utils.addon_handle)

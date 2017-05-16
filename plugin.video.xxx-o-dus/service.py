@@ -19,7 +19,7 @@ chat_on_off  = plugintools.get_setting("chaturbate_setting")
 if chat_on_off != 'true': 
     log_utils.log('Chaturbate Monitoring Disabled, Exiting Script.', log_utils.LOGNOTICE)
     quit()
-else: time.sleep(30)
+else: time.sleep(10)
 
 log_utils.log('Started Chaturbate Monitoring!', log_utils.LOGNOTICE)
 
@@ -36,14 +36,18 @@ while not xbmc.abortRequested:
             for item in match:
                 title=re.compile('<name>(.+?)</name>').findall(item)[0]
                 link=re.compile('<url>(.+?)</url>').findall(item)[0]
-                iconimage=re.compile('<icon>(.+?)</icon>').findall(item)[0]
+                #iconimage=re.compile('<icon>(.+?)</icon>').findall(item)[0]
+                iconimage = 'https://roomimg.stream.highwebmedia.com/ri/%s.jpg' % title
                 if not os.path.exists(CHATURBATE_CACHE): f = open(CHATURBATE_CACHE,'w'); f.write('#START OF FILE#'); f.close()
                 a=open(CHATURBATE_CACHE).read()
                 if not title in a:
                     try:
                         r = common.open_url(link)
                         if '.m3u8' in r:
-                            kodi.notify(msg=title + ' is online!', duration=9000, sound=True, icon_path=iconimage)
+                            content = re.compile('default_subject:\s\"([^,]+)",').findall(r)[0]; content = urllib.unquote_plus(content)
+                            try: content=content.encode('utf-8')
+                            except: content=content
+                            kodi.notify(header=title + ' online!',msg=content, duration=9000, sound=True, icon_path=iconimage)
                             xbmc.sleep(3500)
                             #log_utils.log(title + ' is on Chaturbate now! Notification sent.', log_utils.LOGNOTICE)
                             b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<name>'+str(title)+'</name>\n</item>\n')

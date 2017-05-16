@@ -180,22 +180,22 @@ def PLAY_URL(name,url,iconimage):
     a = str(match)
     match = a.replace('\\','')
     try:
-        url1 = re.compile("1080_60.+?'(.+?)',").findall(match)[0]
+        url1 = re.compile('1080_60.+?"(.+?)"').findall(match)[0]
     except: url1 = "null"
     try:
-        url2 = re.compile("1080.+?'(.+?)',").findall(match)[0]
+        url2 = re.compile('1080.+?"(.+?)"').findall(match)[0]
     except:url2 = "null"
     try:
-        url3 = re.compile("720_60+?'(.+?)',").findall(match)[0]
+        url3 = re.compile('720_60+?"(.+?)"').findall(match)[0]
     except:url3 = "null"
     try:
-        url4 = re.compile("720.+?'(.+?)',").findall(match)[0]
+        url4 = re.compile('720.+?"(.+?)"').findall(match)[0]
     except: url4 = "null"
     try:
-        url5 = re.compile("480.+?'(.+?)',").findall(match)[0]
+        url5 = re.compile('480.+?"(.+?)"').findall(match)[0]
     except: url5 = "null"
     try:
-        url6 = re.compile("240.+?'(.+?)',").findall(match)[0]
+        url6 = re.compile('240.+?"(.+?)"').findall(match)[0]
     except: url6 = "null"
     
     if "http" in url1:

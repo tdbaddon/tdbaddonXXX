@@ -126,6 +126,7 @@ def MONITORING():
     if combinedlists: 
         tup = sorted(combinedlists, key=lambda x: int(x[0]),reverse=False)
         for count,title,url,iconimage in tup:
+            iconimage = 'https://roomimg.stream.highwebmedia.com/ri/%s.jpg' % title
             if count == '0':
                 url2 = title + '|SPLIT|' + url + '|SPLIT|' + iconimage
                 log_utils.log(iconimage, log_utils.LOGNOTICE)
@@ -147,6 +148,7 @@ def FOLLOW_USER():
     if keyboard.isConfirmed():
         string = keyboard.getText()
         if len(string)>1:
+            string = string.replace(' ','_')
             xbmc.executebuiltin("ActivateWindow(busydialog)")
             a=open(CHATURBATE_FILE).read()
             if not '#START' in a:
@@ -191,6 +193,7 @@ def SEARCH():
     if keyboard.isConfirmed():
         string = keyboard.getText()
         if len(string)>1:
+            string = string.replace(' ','_')
             xbmc.executebuiltin("ActivateWindow(busydialog)")
             url = 'https://chaturbate.com/' + urllib.quote_plus(string)
             try:
@@ -204,8 +207,7 @@ def SEARCH():
                 xbmc.executebuiltin("Dialog.Close(busydialog)")
                 quit()
             try: 
-                iconimg = re.compile("posterUrl.+?\'([^']+)").findall(r)[0]
-                iconimg = iconimg + '1'
+                iconimg = 'https://roomimg.stream.highwebmedia.com/ri/%s.jpg' % string
             except: iconimg = icon
             url2 = string + '|SPLIT|' + url + '|SPLIT|' + iconimg
             xbmc.executebuiltin("Dialog.Close(busydialog)")
@@ -287,7 +289,6 @@ def PLAY_URL(name,url,iconimage):
     dp = common.GET_LUCKY()
 
     name,url,iconimage = url.split('|SPLIT|')
-    iconimage = iconimage.split('.jpg')[0]; iconimage += '.jpg'
     if not 'http' in url: orig_url = "http://www.chaturbate.com" + url
     else: orig_url = url
 
@@ -295,6 +296,12 @@ def PLAY_URL(name,url,iconimage):
     match = re.compile('<head>(.+?)</html>',re.DOTALL).findall(result)
     string = str(match).replace('\\','').replace('(','').replace(')','')
     url = "null"
+
+    try:
+        un = orig_url.replace('http://www.chaturbate.com/','').replace('https://www.chaturbate.com/','').replace('https://chaturbate.com/','').replace('http://chaturbate.com/','')
+        un = un.rstrip('/')
+        iconimage = 'https://roomimg.stream.highwebmedia.com/ri/%s.jpg' % un
+    except: iconimage = icon    
     try:
         url = re.compile("source src='([^']+)'").findall(string)[0]
     except:

@@ -589,7 +589,7 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
 
 <addon id="plugin.video.youporn"
 	     name="YouPorn"
-	     version="2.01"
+	     version="2.02"
 	     provider-name="Echo Coder">
   <requires>
 	<import addon="xbmc.python" version="2.1.0" />

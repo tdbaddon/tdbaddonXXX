@@ -21,7 +21,9 @@ import time
 import base64
 import re
 from HTMLParser import HTMLParser
-from resources.lib.modules  import plugintools
+import plugintools
+import client
+import kodi
 
 AddonTitle     = "[COLOR red]XXX-O-DUS[/COLOR]"
 dialog         = xbmcgui.Dialog()
@@ -30,6 +32,75 @@ fanart         = xbmc.translatePath(os.path.join('special://home/addons/' + addo
 icon           = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'icon.png'))
 DATA_FOLDER    = xbmc.translatePath(os.path.join('special://profile/addon_data/' + addon_id))
 SEARCH_FILE    = xbmc.translatePath(os.path.join(DATA_FOLDER , 'search.xml'))
+
+def Sort_Links(s, single=None):
+
+    dialog.ok("22", str(s))
+    u = []
+    for i in s:
+        c = client.request(i, output='headers')
+        checks = ['video','mpegurl']
+        if any(f for f in checks if f in c['Content-Type']): u.append((i, int(c['Content-Length'])))
+
+    u = sorted(u, key=lambda x: x[1])[::-1]
+    if single == False:
+        return u
+    else:
+        u = client.request(u[0][0], output='geturl')
+        return u
+
+def Auto_Play(u,iconimage,sorted=None):
+
+    p = 0
+    timer = 0
+    
+    if sorted == True:
+        xbmc.executebuiltin("ActivateWindow(busydialog)")
+        while not xbmc.Player().isPlayingVideo():
+            try:
+                if timer == 0:
+                    liz = xbmcgui.ListItem(u[p][0],iconImage=iconimage, thumbnailImage=iconimage)
+                    url = u[p][0]
+                    liz.setPath(url)
+                    xbmc.Player().play(url, liz, False)
+                time.sleep(1)
+                timer += 1
+                if timer == 8:
+                    try: xbmc.Player.stop()
+                    except: pass
+                    kodi.notify(msg='Link %s failed. Trying next link.' % (str(p+1)), duration=2000, sound=True)
+                    timer = 0
+                    p += 1
+            except:
+                xbmc.executebuiltin("Dialog.Close(busydialog)")
+                kodi.notify(msg='Failed to play %s' % u[p][0], duration=5000, sound=True)
+                quit()
+        xbmc.executebuiltin("Dialog.Close(busydialog)")
+    else:
+        while not xbmc.Player().isPlayingVideo():
+            try:
+                xbmc.executebuiltin("ActivateWindow(busydialog)")
+                if timer == 0:
+                    url = u[p]
+                    import urlresolver
+                    if urlresolver.HostedMediaFile(url).valid_url(): 
+                        url = urlresolver.HostedMediaFile(url).resolve()
+                    liz = xbmcgui.ListItem(u[p],iconImage=iconimage, thumbnailImage=iconimage)
+                    liz.setPath(url)
+                    xbmc.Player().play(url, liz, False)
+                time.sleep(1)
+                timer += 1
+                if timer == 30:
+                    try: xbmc.Player.stop()
+                    except: pass
+                    kodi.notify(msg='Link %s failed. Trying next link.' % (str(p+1)), duration=2000, sound=True, icon_path=iconimage)
+                    timer = 0
+                    p += 1
+            except:
+                xbmc.executebuiltin("Dialog.Close(busydialog)")
+                kodi.notify(msg='Failed to play Link %s' % str(p), duration=5000, sound=True)
+                quit()
+        xbmc.executebuiltin("Dialog.Close(busydialog)")
 
 def SEARCH_HISTORY(name,url):
 

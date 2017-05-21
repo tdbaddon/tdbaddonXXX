@@ -77,57 +77,7 @@ def PLAY_URL(name,url,iconimage):
     url = re.compile('<iframe.+?(?:http)([^"]*)',re.I).findall(response)[0]; url = ('%s%s' % ('http',url))
 
     import urlresolver
-
-    choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR pink]Watch Video[/COLOR]','[COLOR pink]Add to Favourites[/COLOR]','[COLOR pink]Download Video[/COLOR]'])
-
-    if choice == 1:
-        a=open(FAVOURITES_FILE).read()
-        b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<name>'+str(name)+'</name>\n<link>'+str(url)+'</link>\n<site>Ultra-Vid</site>\n<icon>'+str(iconimage)+'</icon>\n</item>\n')
-        f= open(FAVOURITES_FILE, mode='w')
-        f.write(str(b))
-        f.close()
-        dp.close()
-        dialog.ok(AddonTitle, "[COLOR pink]" + name + " has been added to your favourites. You can access your favourites on the main menu.[/COLOR]")
-        quit()
-    
-    elif choice == 2:
-        try:
-            download_location   = plugintools.get_setting("download_location")
-            download_folder = xbmc.translatePath(download_location)
-            _in = url
-            name = name.replace(' ','_').replace('[COLOR','').replace('[/COLOR','').replace('[I]','').replace(']','').replace('|','').replace('%','').replace('-','').replace('[/I','').replace('[/B','').replace('[','').replace('/','').replace(':','')
-            _out = download_folder + name + '.mp4'
-            dp.close()
-            a=open(DOWNLOADS_FILE).read()
-            b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<name>'+str(_out)+'</name>\n<icon>'+str(iconimage)+'</icon>\n</item>\n')
-            f= open(DOWNLOADS_FILE, mode='w')
-            f.write(str(b))
-            f.close()
-            downloader.download(_in,_out,dp=None)
-            dialog.ok(AddonTitle, "[COLOR pink]Your video has been successfully downloaded and can be viewed from the Your Downloads section on the main menu.[/COLOR]") 
-        except: 
-            try:
-                os.remove(_out)
-            except: pass
-            dp.close()
-            dialog.ok(AddonTitle, "[COLOR pink]Sorry, there was an error trying to download the video.[/COLOR]")
-            quit()
-    
-    elif choice == 0:
-        history_on_off  = plugintools.get_setting("history_setting")
-        if history_on_off == "true":    
-            date_now = datetime.datetime.now().strftime("%d-%m-%Y")
-            time_now = datetime.datetime.now().strftime("%H:%M")
-            a=open(HISTORY_FILE).read()
-            b=a.replace('#START OF FILE#', '#START OF FILE#\n<item>\n<date>'+str(date_now)+'</date>\n<time>'+str(time_now)+'</time>\n<name>'+str(name)+'</name>\n<link>'+str(url)+'</link>\n<site>Ultra-Vid</site>\n<icon>'+str(iconimage)+'</icon>\n</item>\n')
-            f= open(HISTORY_FILE, mode='w')
-            f.write(str(b))
-            f.close()
-
-        url = urlresolver.HostedMediaFile(url).resolve()
-        liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
-        dp.close()
-        xbmc.Player ().play(url, liz, False)
-    else:
-        dp.close()
-        quit()
+    url = urlresolver.HostedMediaFile(url).resolve()
+    liz = xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
+    dp.close()
+    xbmc.Player ().play(url, liz, False)

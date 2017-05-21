@@ -517,7 +517,7 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
 
 <addon id="plugin.video.xxx-o-dus"
 	     name="XXX-O-DUS"
-	     version="1.36"
+	     version="1.37"
 	     provider-name="Echo Coder">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>

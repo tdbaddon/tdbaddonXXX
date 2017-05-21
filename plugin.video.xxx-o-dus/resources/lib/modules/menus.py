@@ -72,11 +72,16 @@ freeomovie_icon     = xbmc.translatePath(os.path.join('special://home/addons/' +
 freeomovie_fanart   = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/freeomovie/fanart.jpg'))
 overthumbs_icon     = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/overthumbs/icon.png'))
 overthumbs_fanart   = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/overthumbs/fanart.jpg'))
+pornheel_icon       = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/pornheel/icon.png'))
+pornheel_fanart     = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/pornheel/fanart.jpg'))
+fourtube_icon       = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/fourtube/icon.png'))
+fourtube_fanart     = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'resources/art/fourtube/fanart.jpg'))
 
 def SEARCH():
 
     common.addDir("[COLOR white]SEARCH ALL WESBITES[/COLOR]","null",99,icon,fanart)
     common.addLink("[COLOR darkgray]#################################[/COLOR]","url",999,icon,fanart)
+    common.addDir("[COLOR white]Search 4tube[/COLOR]",'null',324,fourtube_icon,fourtube_fanart)
     common.addDir("[COLOR white]Search Eporner[/COLOR]",'null',244,eporner_icon,eporner_fanart)
     common.addDir("[COLOR white]Search Just Porno TV[/COLOR]","null",234,justporno_icon,justporno_fanart)
     common.addDir("[COLOR white]Search MadThumbs[/COLOR]","null",284,madthumbs_icon,madthumbs_fanart)
@@ -102,6 +107,7 @@ def SEARCH():
     
 def VIDEOS():
 
+    common.addDir("[COLOR white]4tube.com[/COLOR]",'url',320,fourtube_icon,fourtube_fanart)
     common.addDir("[COLOR white]Eporner.com[/COLOR]",'url',240,eporner_icon,eporner_fanart)
     common.addDir("[COLOR white]JustPorno.TV[/COLOR]",'url',230,justporno_icon,justporno_fanart)
     common.addDir("[COLOR white]Madthumbs.com[/COLOR]",'url',280,madthumbs_icon,madthumbs_fanart)
@@ -134,6 +140,7 @@ def LIVE():
     
 def FILMS():
 
+    common.addDir("[COLOR white]Porn Heel Movies[/COLOR]",'http://www.pornheel.com/category/all-sex-movies/',730,pornheel_icon,pornheel_fanart)
     common.addDir("[COLOR white]Ultra-Vid[/COLOR]",'None',710,ultravid_icon,ultravid_fanart)
     common.addDir("[COLOR white]Freeomovie[/COLOR]",'None',720,freeomovie_icon,freeomovie_fanart)
 

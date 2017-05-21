@@ -7,6 +7,7 @@ from resources.lib.modules  import checker
 from resources.lib.modules  import cache
 from resources.lib.modules  import downloader
 from resources.lib.modules  import extract
+from resources.lib.modules  import client
 from resources.lib.modules  import kodi
 from resources.lib.modules  import log_utils
 from resources.lib.scrapers import live
@@ -33,6 +34,8 @@ from resources.lib.scrapers import madthumbs
 from resources.lib.scrapers import ultravid
 from resources.lib.scrapers import freeomovie
 from resources.lib.scrapers import overthumbs
+from resources.lib.scrapers import pornheel
+from resources.lib.scrapers import fourtube
 
 addon_id            = 'plugin.video.xxx-o-dus'
 AddonTitle          = '[COLOR orangered]XXX-O-DUS[/COLOR]'
@@ -69,8 +72,29 @@ DOWNLOAD_FOLDER = xbmc.translatePath(download_location)
 SEND_TO_CHECK = REPO_FOLDER + '|SPLIT|' + REPO_INFO
 checker.check(SEND_TO_CHECK)
 
+def RESOLVER_CHECK():
+
+    try:
+        r=client.request(base64.b64decode('aHR0cDovL2VjaG9jb2Rlci5vZmZzaG9yZXBhc3RlYmluLmNvbS9hZGRvbnMveHh4b2R1cy9yZXNvbHZlci54bWw='))
+        r = re.compile('<link>(.+?)</link>').findall(r)[0]
+        supported=client.request(r)
+        file = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id , 'resources/lib/modules/adultresolver.py'))
+        if not os.path.isfile(file): f = open(file,'w'); f.close()
+        if len(supported)>1:
+            comparefile = file
+            r = open(comparefile)
+            compfile = r.read()       
+            if compfile == supported:pass
+            else:
+                text_file = open(comparefile, "w")
+                text_file.write(supported)
+                text_file.close()
+                kodi.notify(msg='Adult Resolver Updated.', duration=7500, sound=True)
+    except: pass
+    
 def GetMenu():
 
+    RESOLVER_CHECK()
     history_on_off  = plugintools.get_setting("history_setting")
     common.addDir("[COLOR white]Search...[/COLOR]","url",1,icon,fanart)
     common.addDir("[COLOR white]Live Channels[/COLOR]",'http://exabytetv.info/XXX.m3u',995,icon,fanart)
@@ -106,7 +130,7 @@ def SEARCH_DECIDE():
 def SEARCH_HOME(url):
 
     term = url
-    total = 20
+    total = 21
     i = 0
     if term == "null":
         string =''
@@ -294,6 +318,14 @@ def SEARCH_HOME(url):
         dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]OverThumbs[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
         try:
             overthumbs.GET_CONTENT(url)
+        except: pass
+        url = "https://www.4tube.com/search?q=" + string.lower()
+        url = 'split|'+url
+        i = i + 1
+        progress = 100 * int(i)/int(total)
+        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]4Tube[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        try:
+            fourtube.GET_CONTENT(url)
         except: pass
         dp.close()
     except:
@@ -860,11 +892,19 @@ elif mode==311:perfectgirls.GET_CONTENT(url)
 elif mode==312:perfectgirls.SEARCH(url)
 elif mode==313:perfectgirls.PLAY_URL(name,url,iconimage)
 elif mode==314:perfectgirls.SEARCH_DECIDE()
+elif mode==320:fourtube.MAIN_MENU()
+elif mode==321:fourtube.GET_CONTENT(url)
+elif mode==322:fourtube.SEARCH(url)
+elif mode==323:fourtube.PLAY_URL(name,url,iconimage)
+elif mode==324:fourtube.SEARCH_DECIDE()
 elif mode==700:live.LIVE_CHANNELS()
 elif mode==710:ultravid.MENU(url)
 elif mode==711:ultravid.PLAY_URL(name,url,iconimage)
 elif mode==720:freeomovie.MENU(url)
 elif mode==721:freeomovie.PLAY_URL(name,url,iconimage)
+elif mode==722:freeomovie.CATS(url)
+elif mode==730:pornheel.MENU(url)
+elif mode==731:pornheel.PLAY_URL(name,url,iconimage)
 elif mode==800:PLAYER(name,url,iconimage)
 elif mode==900:PARENTAL_CONTROLS()
 elif mode==901:PARENTAL_CONTROLS_PIN()

@@ -23,8 +23,10 @@ import re
 from resources.lib.modules  import client
 from resources.lib.modules  import dom_parser2
 from resources.lib.modules  import kodi
-from resources.lib.modules  import adultresolver
-adultresolver = adultresolver.streamer()
+try:
+    from resources.lib.modules  import adultresolver
+    adultresolver = adultresolver.streamer()
+except: pass
 from resources.lib.modules  import common
 from resources.lib.modules  import downloader
 from resources.lib.modules  import plugintools

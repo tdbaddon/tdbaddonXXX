@@ -75,21 +75,26 @@ checker.check(SEND_TO_CHECK)
 def RESOLVER_CHECK():
 
     try:
-        r=client.request(base64.b64decode('aHR0cDovL2VjaG9jb2Rlci5vZmZzaG9yZXBhc3RlYmluLmNvbS9hZGRvbnMveHh4b2R1cy9yZXNvbHZlci54bWw='))
-        r = re.compile('<link>(.+?)</link>').findall(r)[0]
-        supported=client.request(r)
         file = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id , 'resources/lib/modules/adultresolver.py'))
-        if not os.path.isfile(file): f = open(file,'w'); f.close()
+        if not os.path.isfile(file):
+            f = open(file,'w'); f.close()
+            r = client.request(base64.b64decode('aHR0cDovL2VjaG9jb2Rlci5vZmZzaG9yZXBhc3RlYmluLmNvbS9hZGRvbnMveHh4b2R1cy9yZXNvbHZlci54bWw='))
+        else:
+            r = cache.get(client.request, 1, base64.b64decode('aHR0cDovL2VjaG9jb2Rlci5vZmZzaG9yZXBhc3RlYmluLmNvbS9hZGRvbnMveHh4b2R1cy9yZXNvbHZlci54bWw='))
+        r = re.compile('<link>(.+?)</link>').findall(r)[0]
+        dialog.ok("22", str(r))
+        supported=cache.get(client.request, 1, r)
         if len(supported)>1:
-            comparefile = file
-            r = open(comparefile)
-            compfile = r.read()       
-            if compfile == supported:pass
-            else:
-                text_file = open(comparefile, "w")
-                text_file.write(supported)
-                text_file.close()
-                kodi.notify(msg='Adult Resolver Updated.', duration=7500, sound=True)
+            if 'import' in supported:
+                comparefile = file
+                r = open(comparefile)
+                compfile = r.read()       
+                if compfile == supported:pass
+                else:
+                    text_file = open(comparefile, "w")
+                    text_file.write(supported)
+                    text_file.close()
+                    kodi.notify(msg='Adult Resolver Updated.', duration=7500, sound=True)
     except: pass
     
 def GetMenu():

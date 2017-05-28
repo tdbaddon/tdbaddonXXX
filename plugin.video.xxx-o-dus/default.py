@@ -82,7 +82,6 @@ def RESOLVER_CHECK():
         else:
             r = cache.get(client.request, 1, base64.b64decode('aHR0cDovL2VjaG9jb2Rlci5vZmZzaG9yZXBhc3RlYmluLmNvbS9hZGRvbnMveHh4b2R1cy9yZXNvbHZlci54bWw='))
         r = re.compile('<link>(.+?)</link>').findall(r)[0]
-        dialog.ok("22", str(r))
         supported=cache.get(client.request, 1, r)
         if len(supported)>1:
             if 'import' in supported:

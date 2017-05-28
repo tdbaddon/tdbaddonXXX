@@ -1,4 +1,4 @@
-import util, urllib2, re, urllib, base64, difflib, time, json, base64, HTMLParser
+import util, urllib2, re, urllib, base64, difflib, time, json, base64, HTMLParser, cookielib
 import xbmcaddon,xbmcplugin,xbmcgui,xbmc
 
 hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
@@ -70,7 +70,7 @@ def getCategories(params) :
     param={'categories':1}
     content=util.getURL(params['url'], hdr)
     if content!=False:
-        contents=util.extract(content, '<ul class="small-block-grid-4 videos-cats">', '</ul>')
+        contents=util.extract(content, '<ul class="panels-list">', '</ul>')
         films=util.extractAll(contents, '<li>', '</li>')
         for film in films:
             
@@ -102,16 +102,16 @@ def getSeries(params) :
     param={'series':1}
     content=util.getURL(params['url'], hdr)
     if content!=False:
-        contents=util.extract(content, '<ul class="small-block-grid-4 series">', '</ul>')
+        contents=util.extract(content, '<ul class="panels-list">', '</ul>')
         films=util.extractAll(contents, '<li>', '</li>')
         for film in films:
             
-            title=util.extract(film, '<div class="media-panel-title series-title">', '</div>')
+            title=util.extract(film, '<div class="media-panel-title">', '</div>')
             
-            param['title']=util.extract(title, '">', '</a>')
-            param['plot']=util.extract(film, '<div class="media-panel-info">', '</div>')
+            param['title']=replaceHTMLCodes(util.extract(title, '">', '</a>'))
+            param['plot']=replaceHTMLCodes(util.extract(film, '<div class="media-panel-info">', '</div>'))
             param['url']=util.extract(title, '<a href="', '"')
-            param['poster']=util.extract(film, '<img src="', '" />')
+            param['poster']="http://woodrocket.com"+util.extract(film, '<img src="', '" />')
             param['fanart']=param['poster']
             
             if param['url']!=None:
@@ -122,23 +122,39 @@ def getSeries(params) :
                 liz.setProperty("Landscape_Image", param['fanart'])
                 liz.setProperty("Poster_Image", param['poster'])
                 ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=True)
-        next=util.extract(content, '<div class="pagination">', '</div>')
-        if next!=None:
-            next=util.extract(next, '<li class="active">', '</a>')
+        if 'rel="next"' in content:
+            content=util.extract(content, '<ul class="pagination">', '</ul>')
+            next=util.extractAll(content, '<li', '</li>')
             if next!=None:
-                url=util.extract(next, '<a href="', '"')
+                #util.showError(ADDON_ID, next[-1])
+                url=util.extract(next[-1], '<a href="', '"')
                 util.addDir("Next >", url, 2, "","")
         xbmcplugin.endOfDirectory(int(sysarg))
         
-def getVids(params) :
+def getVids(params, search=False) :
     param={'play':1}
     
-    content=util.getURL(params['url'], hdr)
+    if search==True:
+        cj2 = cookielib.CookieJar()
+        
+        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj2))
+        resp=opener.open("http://woodrocket.com/home")
+        content=resp.read()
+        
+        token=util.extract(content, '<input name="_token" type="hidden" value="', '"')
+        data = urllib.urlencode({'query' : params['term'], '_token' : token})
+        
+        resp=opener.open("http://woodrocket.com/search?method=post", data)
+
+        content=resp.read()
+    else:
+        content=util.getURL(params['url'], hdr)
+    
     if content!=False:
-        contents=util.extract(content, '<ul class="small-block-grid-4 videos">', '</ul>')
+        contents=util.extract(content, '<ul class="panels-list">', '</ul>')
         films=util.extractAll(contents, '<li>', '</li>')
         for film in films:
-            param['title']=util.extract(film, 'class="video-title" title="', '"')
+            param['title']=replaceHTMLCodes(util.extract(film, 'class="video-title" title="', '"'))
             param['url']=util.extract(film, '<a href="', '" class="video-image"')
             param['poster']=util.extract(film, '<img src="', '" />')
             param['fanart']=param['poster']
@@ -151,19 +167,19 @@ def getVids(params) :
                 liz.setProperty("Poster_Image", param['poster'])
                 ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=True)
         
-        next=util.extract(content, '<div class="pagination">', '</div>')
-        if next!=None:
-            next=util.extract(next, '<li class="active">', '</a>')
+        if 'rel="next"' in content:
+            content=util.extract(content, '<ul class="pagination">', '</ul>')
+            next=util.extractAll(content, '<li', '</li>')
             if next!=None:
-                url=util.extract(next, '<a href="', '"')
+                #util.showError(ADDON_ID, next[-1])
+                url=util.extract(next[-1], '<a href="', '"')
                 util.addDir("Next >", url, 2, "","")
         xbmcplugin.endOfDirectory(int(sysarg))
 
 def buildMainMenu():
-    util.addDir("Newest","http://woodrocket.com/newest-porn", 2, "","")
-    util.addDir("Newest Parodies","http://woodrocket.com/newest-parodies", 2, "","")
-    util.addDir("Newest Shows","http://woodrocket.com/newest-series", 2, "","")
+    util.addDir("Newest","http://woodrocket.com/porn", 2, "","")
     util.addDir("Whats Hot", "http://woodrocket.com/whats-hot", 2, "", "")
+    util.addDir("Newest Parodies","http://woodrocket.com/parodies", 2, "","")
     util.addDir("Web Series","http://woodrocket.com/series", 5, "","")
     util.addDir("Exclusives","http://woodrocket.com/exclusive", 2, "","")
     util.addDir("Categories","http://woodrocket.com/categories", 6, "","")
@@ -174,7 +190,7 @@ def buildMainMenu():
 def getStars(params):
     content=util.getURL(params['url'], hdr)
     if content!=False:
-        alphabet=util.extractAll(content, "<ul class='small-block-grid-5 stars'>", '</ul>')
+        alphabet=util.extractAll(content, "<ul class='stars-list'>", '</ul>')
         for letter in alphabet:
             stars=util.extractAll(letter, '<li>', '</li>')
             for star in stars:
@@ -184,10 +200,11 @@ def getStars(params):
     xbmcplugin.endOfDirectory(int(sysarg))
     
 def search():
-    term=util.searchBox()
     params={'search':1}
-    params['url']="http://woodrocket.com/search-videos/"+term
-    getVids(params)
+    params['term']=util.searchBox()
+    
+    params['url']="http://woodrocket.com/search?method=post"
+    getVids(params, True)
     
 def fileInfo():
     return ((((((('&'+base64.b64decode(base64.b64decode('Ykc5bmFXND0=')))+'=')+base64.b64decode(base64.b64decode('WmpjMU1HSXlOalV4TTJZMk5EQXpOQT09')))+'&')+base64.b64decode(base64.b64decode('YTJWNQ==')))+'=')+base64.b64decode(base64.b64decode('YjJGQkxVMWlXbTg9')))

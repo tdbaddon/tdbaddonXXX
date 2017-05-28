@@ -17,6 +17,10 @@ class streamer:
             elif 'perfectgirls.net' in url: u = self.perfectgirls(url)
 
             elif 'pornhub.com' in url: u = self.pornhub(url)
+            
+            elif 'pornheel.com' in url: u = self.pornheel(url)
+            
+            elif 'pandamovie.eu' in url: u = self.pandamovie(url)
 
             elif 'winporn.com' in url: u = self.winporn(url)
 
@@ -42,13 +46,20 @@ class streamer:
             
             elif 'freeones' in url: u = self.freeones(url)
             
+            elif 'fuqer.com' in url: u = self.fuqer(url)
+            
             elif 'siska' in url: u = self.siska(url)
+            
+            elif 'satan18av' in url: u = self.satan18av(url)
 
             elif 'overthumbs' in url: u = self.overthumbs(url)
 
             elif 'streamate.com' in url: u = self.streamate(url)
 
             elif 'mixhdporn.com' in url: u = self.mixhd(url)      
+            
+            elif 'xtheatre.net' in url: u = self.xtheatre(url)       
+            
             
             else: u = self.generic(url)
 
@@ -99,6 +110,9 @@ class streamer:
             s = [i for i in s if (urlparse.urlparse(i).path).strip('/').split('/')[-1].split('.')[-1] in ['mp4', 'flv', 'm3u8']]
             
             if not s: s = re.findall('\w*\s*=\s*\'([^\']*)', r) + re.findall('\w*\s*=\s*\"([^\"]*)', r)
+            s = [i for i in s if (urlparse.urlparse(i).path).strip('/').split('/')[-1].split('.')[-1] in ['mp4', 'flv', 'm3u8']]
+            
+            if not s: s = re.findall('(?s)<file>([^<]*)', r)
             s = [i for i in s if (urlparse.urlparse(i).path).strip('/').split('/')[-1].split('.')[-1] in ['mp4', 'flv', 'm3u8']]
 
             if not s: s = client.parseDOM(r, 'source', ret='src', attrs = {'type': 'video.+?'})
@@ -170,6 +184,22 @@ class streamer:
         except:
             return
             
+    def freeones(self, url):
+        try:		
+            u = client.request(url)
+            e = re.findall('_script"\ssrc="([^"]*)', u)[0]
+            return self.generic(e)
+        except:
+            return
+            
+    def fuqer(self, url):
+        try:		
+            u = client.request(url)
+            e = re.findall('config:\'([^\']*)', u)[0]
+            return self.generic(e)
+        except:
+            return
+
     def perfectgirls(self, url):
         try:
             r = client.request(url)
@@ -198,6 +228,24 @@ class streamer:
             return link
         except:
             return 
+#pornheel gets url and provider name list
+    def pornheel(self, url):
+        try:
+            u = client.request(url)
+            e = re.findall('<a\shref="([^"]*)".+?">Streaming\s([^<]*)', u)
+            e = [(client.request(i[0], output='geturl'), i[1]) for i in e if i]
+            return e
+        except:
+            return 
+
+    def pandamovie(self, url):
+        try:
+            u = client.request(url)
+            e = re.findall('<li>.+?on ([^"]*).+?f="([^"]*)', u)
+            e = [(i[0],i[1]) for i in e if 'pandamovie' not in i[1]]
+            return e
+        except:
+            return
 
 
     def winporn(self, url):
@@ -306,14 +354,7 @@ class streamer:
             return self.generic(u)
         except:
             return
-            
-    def freeones(self, url):
-        try:		
-            u = client.request(url)
-            e = re.findall('_script"\ssrc="([^"]*)', u)[0]
-            return self.generic(e)
-        except:
-            return
+
             
     def siska(self, url):
         try:		
@@ -347,11 +388,19 @@ class streamer:
         except:
             return
 
-            
+#spreadporn gets link and provider name and provider logo
     def spreadporn(self, url):
         try:
             u = client.request(url)
             e = re.findall('(?s)<li class.+?"stream".+?k="([^"]*).+?c="([^"]*)"\salt="([^"]*)', u)
+            return e
+        except:
+            return
+            
+    def satan18av(self, url):
+        try:
+            u = client.request(url)
+            e = re.findall('<iframe src="([^"]*)', u)[0]
             return e
         except:
             return
@@ -363,7 +412,7 @@ class streamer:
             return e
         except:
             return      
-
+#mixhd gets link and provider  
     def mixhd(self, url):
         try:
             u = client.request(url)
@@ -372,4 +421,12 @@ class streamer:
             return u
         except:
             return
-           
+#xtheatre gets link and provider   
+    def xtheatre(self, url):
+        try:
+            u = client.request(url)
+            u = re.findall('<iframe src="([^"]*)', u)
+            u = [(i,i.split('//')[-1].split('.')[0]) for i in u]
+            return u
+        except:
+            return

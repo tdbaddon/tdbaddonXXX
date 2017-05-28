@@ -512,7 +512,7 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
   </extension>
 </addon>
 
-<addon id="plugin.video.woodrocket" name="Wood Rocket" version="0.4" provider-name="ptom">
+<addon id="plugin.video.woodrocket" name="Wood Rocket" version="0.5" provider-name="ptom">
 	<extension point="xbmc.python.pluginsource" library="default.py">
 		<provides>video</provides>
 	</extension>
@@ -525,6 +525,10 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
 		<platform>all</platform>
 		<language>en</language>
 		<email>ptom98@gmail.com</email>
+        <news>
+        v0.5 26/05/2017
+        - Fixed issues after website got updated
+        </news>
 	</extension>
 </addon>
 
@@ -569,7 +573,7 @@ Follow us on twitter: [COLOR blue]Whitecream_UWC[/COLOR]</description>
 
 <addon id="plugin.video.xxx-o-dus"
 	     name="XXX-O-DUS"
-	     version="1.38"
+	     version="1.39"
 	     provider-name="Echo Coder">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>

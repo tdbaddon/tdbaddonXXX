@@ -811,7 +811,7 @@ Skin and code for skin by Demonstratorz</description>
 	</extension>
 </addon>
 
-<addon id="repository.xxxecho" name="ECHO XXX Repository" version="2.01" provider-name="Echo Coder">
+<addon id="repository.xxxecho" name="Echo Coder XXX Repository" version="2.02" provider-name="Echo Coder">
     <extension point="xbmc.addon.repository" name="Echo Coder XXX Repository">
         <dir>
             <info compressed="false">https://offshoregit.com/tvaresolvers/tva-common-repository/raw/master/addons.xml</info>
@@ -824,9 +824,18 @@ Skin and code for skin by Demonstratorz</description>
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary>The official Echo Coder XXX Repository.</summary>
-        <description>Support available at https://www.tvaddons.ag</description>
-        <disclaimer>None</disclaimer>
+        <description>Addons in this repository include:
+XXX-O-DUS
+and more.......</description>
+        <disclaimer>Support available at https://www.tvaddons.ag</disclaimer>
         <platform>all</platform>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+            <screenshot>screenshots/screenshot-01.png</screenshot>
+            <screenshot>screenshots/screenshot-02.png</screenshot>
+            <screenshot>screenshots/screenshot-03.png</screenshot>
+        </assets>
     </extension>
 </addon>
 

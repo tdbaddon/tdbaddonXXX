@@ -7,8 +7,8 @@ you, the user can have as much content as you need.
 However, it is incredibly clear that numerous people exist to take content and pass it off as their own. PLEASE do not do that
 if you are going to borrow code, then please ensure you credit those involved.
 
-Author: oneil from Ninjasys - @oneilxm_uk
-Git: github.com/fr0stxm
+Author: oneil from Ninjasys - @oneilxm_uk / Golaith_Evolve
+Git: github.com/Goliath-Evolve
 Addon: Les-Be-Friends
 Thank you / Acknowledgement: Those that exist in the Kodi telegram groups & Kodification for clean_name.py, ][ for his lack of help, Dandymedia for his insight.
 '''

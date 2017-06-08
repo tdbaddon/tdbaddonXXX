@@ -116,6 +116,21 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
 	</extension>
 </addon>
 
+<addon id="plugin.video.empflix" name="Empflix" version="2.0.12" provider-name="xbmc-adult">
+    <requires>
+        <import addon="xbmc.python" version="2.1.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="addon.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>Stream adult videos from empflix.com</summary>
+        <description>Empflix.com features a variety of adult videos. This addon contains explicit adult material. You may only view this addon if you are at least 18 years of age, or at least the age of majority in the jurisdiction where you reside or from which you access this content. If you do not meet these requirements, then you do not have permission to use this addon.  All content is hosted by empflix.com.</description>
+        <disclaimer>The author does not host or distribute any of the content displayed by this addon. The author does not have any affiliation with the content provider.</disclaimer>
+    <platform>all</platform>
+    </extension>
+</addon>
+
 <addon id="plugin.video.fantasticc"
        name="Fantasti.cc"
        version="2.3.37"
@@ -187,7 +202,7 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
 	</extension>
 </addon>
 
-<addon id="plugin.video.jfh" name="Just For Him" version="0.0.6" provider-name="oneil">
+<addon id="plugin.video.jfh" name="Just For Him" version="0.0.7" provider-name="oneil/Goliath_Evolve">
 <requires>
 <import addon="xbmc.python" version="2.1.0"/>
 <import addon="script.module.urlresolver"  version="2.10.0"/>
@@ -318,7 +333,7 @@ Internet [COLOR red]adult TV and videos [COLOR white]from various sources.
   </extension>
 </addon>
 
-<addon id="plugin.video.onlesbefriends" name="Les-be-Friends" version="0.0.1" provider-name="oneil">
+<addon id="plugin.video.onlesbefriends" name="Les-be-Friends" version="0.0.2" provider-name="oneil/Goliath_Evolve">
 <requires>
 <import addon="xbmc.python" version="2.1.0"/>
 <import addon="script.module.urlresolver"  version="2.10.0"/>
@@ -748,15 +763,16 @@ Skin and code for skin by Demonstratorz</description>
 	</extension>
 </addon>
 
-<addon id="repository.slimevolve" name="Slims Repository" version="1.2" provider-name="@Slim_Evolve">
-	<extension point="xbmc.addon.repository" name="Slims Repository">
-		<info compressed="false">http://slimsrepo.uk/Plugins/addons.xml</info>
-		<checksum>http://slimsrepo.uk/Plugins/addons.xml.md5</checksum>
-		<datadir zip="true">http://slimsrepo.uk/Plugins/</datadir>
+<addon id="repository.riostv" name="Mauricio repository" version="0.0.2" provider-name="Mauricio">
+	<extension point="xbmc.addon.repository" name="Mauricio Add-on Repository">
+		<info compressed="false">http://raw.github.com/xmbcrios/riostv/master/addons.xml</info>
+		<checksum>http://raw.github.com/xmbcrios/riostv/master/addons.xml.md5</checksum>
+		<datadir zip="true">http://raw.github.com/xmbcrios/riostv/master/repo/</datadir>
 	</extension>
 	<extension point="xbmc.addon.metadata">
-		<summary>Repository Of Slim From Team Evolve</summary>
-		<description>Slims Addons</description>
+		<summary>Mauricio Addon</summary>
+		<description>Official Repository Riostv</description>
+		<disclaimer></disclaimer>
 		<platform>all</platform>
 	</extension>
 </addon>

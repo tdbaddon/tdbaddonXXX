@@ -7,8 +7,8 @@ you, the user can have as much content as you need.
 However, it is incredibly clear that numerous people exist to take content and pass it off as their own. PLEASE do not do that
 if you are going to borrow code, then please ensure you credit those involved.
 
-Author: oneil from Ninjasys - @oneilxm_uk
-Git: github.com/fr0stxm
+Author: oneil from Ninjasys - @oneilxm_uk/ Goliath_Evolve
+Git: github.com/Goliath-Evolve
 Addon: Just For Him
 Thank you / Acknowledgement: The Kodi community, Wizard from Sanctuary/Kodification for his adjustments
 '''

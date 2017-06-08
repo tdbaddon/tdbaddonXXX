@@ -1,4 +1,4 @@
-<addon id="plugin.video.onlesbefriends" name="Les-be-Friends" version="0.0.1" provider-name="oneil">
+<addon id="plugin.video.onlesbefriends" name="Les-be-Friends" version="0.0.2" provider-name="oneil/Goliath_Evolve">
 <requires>
 <import addon="xbmc.python" version="2.1.0"/>
 <import addon="script.module.urlresolver"  version="2.10.0"/>

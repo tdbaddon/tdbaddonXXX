@@ -23,6 +23,7 @@ from resources.lib.modules  import common
 from resources.lib.modules  import plugintools
 from resources.lib.modules  import kodi
 from resources.lib.modules  import log_utils
+from resources.lib.modules  import client
 import datetime
 
 #Default veriables
@@ -51,11 +52,11 @@ def MAIN_MENU():
     chat_on_off  = plugintools.get_setting("chaturbate_setting")
     hd_on_odd  = plugintools.get_setting("chaturbate_hd")
 
-    common.addLink("[COLOR pink][B]Search for Model[/B][/COLOR]","url",28,icon,fanart)
-    if chat_on_off == 'true': common.addDir("[COLOR pink][B]View Monitored Models[/B][/COLOR]","url",24,icon,fanart)
-    else: common.addLink("[COLOR pink][B]Enable Performer Monitoring[/B][/COLOR]","url",106,icon,fanart)
-    if hd_on_odd == 'true': common.addLink("[COLOR pink][B]Only Show HD Cams:[/B][/COLOR] [COLOR lime][B]ON[/B][/COLOR]","url",106,icon,fanart)
-    else: common.addLink("[COLOR pink][B]Only Show HD Cams:[/B][/COLOR] [COLOR orangered][B]OFF[/B][/COLOR]","url",106,icon,fanart)
+    common.addLink("[COLOR white][B]Search for Model[/B][/COLOR]","url",28,icon,fanart)
+    if chat_on_off == 'true': common.addDir("[COLOR white][B]View Monitored Models[/B][/COLOR]","url",24,icon,fanart)
+    else: common.addLink("[COLOR white][B]Enable Performer Monitoring[/B][/COLOR]","url",106,icon,fanart)
+    if hd_on_odd == 'true': common.addLink("[COLOR white][B]Only Show HD Cams:[/B][/COLOR] [COLOR white][B]ON[/B][/COLOR]","url",106,icon,fanart)
+    else: common.addLink("[COLOR white][B]Only Show HD Cams:[/B][/COLOR] [COLOR white][B]OFF[/B][/COLOR]","url",106,icon,fanart)
     result = common.open_url(BASE)
     match = re.compile("<dd>(.+?)</dd>",re.DOTALL).findall(result)
     common.addDir('[COLOR white]View By Tags[/COLOR]','url',25,icon,fanart)
@@ -71,66 +72,68 @@ def MAIN_MENU():
 def MONITORING():
 
     dp = xbmcgui.DialogProgress()
-    
-    dp.create(AddonTitle,"[COLOR pink]Currently Checking......[/COLOR]" )
+    combinedlists=[]
+    dp.create(AddonTitle,"[COLOR white]Currently Checking......[/COLOR]" )
     dp.update(0)
     i = 0
-    common.addLink("[COLOR pink][B]Disable Model Monitoring[/B][/COLOR]","url",106,icon,fanart)
-    common.addLink("[COLOR pink][B]Add Model by Username[/B][/COLOR]","url",27,icon,fanart)
+    common.addLink("[COLOR white][B]Disable Model Monitoring[/B][/COLOR]","url",106,icon,fanart)
+    common.addLink("[COLOR white][B]Add Model by Username[/B][/COLOR]","url",27,icon,fanart)
     common.addLink("--------------------------------------------------------","url",999,icon,fanart)
 
     if os.path.exists(CHATURBATE_FILE):
         f = open(CHATURBATE_FILE,mode='r'); msg = f.read(); f.close()
         if not '<item>' in msg:
-            common.addLink('[COLOR pink]No Performers beging Monitored.[/COLOR]','url',999,icon,fanart)
-        namelist = []; urllist = []; iconlist = []; countlist = []; combinedlists=[]
-        msg = msg.replace('\n','')
-        match = re.compile('<item>(.+?)</item>').findall(msg)
-        j = len(match)
-        for item in match:
-            title=re.compile('<name>(.+?)</name>').findall(item)[0]
-            link=re.compile('<url>(.+?)</url>').findall(item)[0]
-            iconimage=re.compile('<icon>(.+?)</icon>').findall(item)[0]
-            progress = 100 * int(i)/int(j)
-            dp.update(progress,"[COLOR pink]Currently Checking " + title + "[/COLOR]","[COLOR pink]Checked " + str(i) + " of " + str(j) + "[/COLOR]")
-            try:
-                r = common.open_url(link)
-                if '.m3u8' in r:
+            common.addLink('[COLOR white]No Performers beging Monitored.[/COLOR]','url',999,icon,fanart)
+        else:
+            namelist = []; urllist = []; iconlist = []; countlist = []
+            msg = msg.replace('\n','')
+            match = re.compile('<item>(.+?)</item>').findall(msg)
+            j = len(match)
+            for item in match:
+                title=re.compile('<name>(.+?)</name>').findall(item)[0]
+                link=re.compile('<url>(.+?)</url>').findall(item)[0]
+                iconimage=re.compile('<icon>(.+?)</icon>').findall(item)[0]
+                progress = 100 * int(i)/int(j)
+                dp.update(progress,"[COLOR white]Currently Checking " + title + "[/COLOR]","[COLOR white]Checked " + str(i) + " of " + str(j) + "[/COLOR]")
+                try:
+                    r = common.open_url(link)
+                    if '.m3u8' in r:
+                        namelist.append(title)
+                        urllist.append(link)
+                        iconlist.append(iconimage)
+                        countlist.append('0')
+                        combinedlists = list(zip(countlist,namelist,urllist,iconlist))
+                    else: 
+                        try: 
+                            last_seen=re.compile("<dt>Last Broadcast:<\/dt><dd>(.+?)<\/dd>").findall(r)[0]
+                        except: last_seen = "Unknown"
+                        namelist.append(title + '|SPLIT|' + last_seen)
+                        urllist.append(link)
+                        iconlist.append(iconimage)
+                        countlist.append('1')
+                        combinedlists = list(zip(countlist,namelist,urllist,iconlist))
+                except: 
                     namelist.append(title)
                     urllist.append(link)
                     iconlist.append(iconimage)
-                    countlist.append('0')
+                    countlist.append('2')
                     combinedlists = list(zip(countlist,namelist,urllist,iconlist))
-                else: 
-                    try: 
-                        last_seen=re.compile("<dt>Last Broadcast:<\/dt><dd>(.+?)<\/dd>").findall(r)[0]
-                    except: last_seen = "Unknown"
-                    namelist.append(title + '|SPLIT|' + last_seen)
-                    urllist.append(link)
-                    iconlist.append(iconimage)
-                    countlist.append('1')
-                    combinedlists = list(zip(countlist,namelist,urllist,iconlist))
-            except: 
-                namelist.append(title)
-                urllist.append(link)
-                iconlist.append(iconimage)
-                countlist.append('2')
-                combinedlists = list(zip(countlist,namelist,urllist,iconlist))
-                pass
-            i += 1
-    else: common.addLink('[COLOR pink]No Performers beging Monitored.[/COLOR]','url',999,icon,fanart)
-
-    progress = 100 * int(i)/int(j)
-    dp.update(progress,"","[COLOR pink]Checked " + str(i) + " of " + str(j) + "[/COLOR]")
+                    pass
+                i += 1
+    else: common.addLink('[COLOR white]No Performers beging Monitored.[/COLOR]','url',999,icon,fanart)
 
     if combinedlists: 
+
+        progress = 100 * int(i)/int(j)
+        dp.update(progress,"","[COLOR white]Checked " + str(i) + " of " + str(j) + "[/COLOR]")
+
         tup = sorted(combinedlists, key=lambda x: int(x[0]),reverse=False)
         for count,title,url,iconimage in tup:
             iconimage = 'https://roomimg.stream.highwebmedia.com/ri/%s.jpg' % title
             if count == '0':
                 url2 = title + '|SPLIT|' + url + '|SPLIT|' + iconimage
                 log_utils.log(iconimage, log_utils.LOGNOTICE)
-                common.addLink('[COLOR pink][B]' + title + ' is online now![/B][/COLOR]',url2,23,iconimage,fanart)
+                common.addLink('[COLOR white][B]' + title + ' is online now![/B][/COLOR]',url2,23,iconimage,fanart)
             elif count == '1':
                 title,last_seen = title.split('|SPLIT|')
                 url2 = title + '|SPLIT|' + url + '|SPLIT|' + iconimage
@@ -265,13 +268,29 @@ def GET_CONTENT(url):
             except: age = "Unknown"
             try: stats=re.compile('<li class="cams">(.+?)vi').findall(item)[0]
             except: stats = '? mins, ?'
-            if 'thumbnail_label_c_hd">' in item: name = "[COLOR pink]HD[/COLOR][COLOR white] - " + title + " - Age " + age + " - (" + stats + "viewers)[/COLOR]"
+            if 'thumbnail_label_c_hd">' in item: name = "[COLOR white]HD[/COLOR][COLOR white] - " + title + " - Age " + age + " - (" + stats + "viewers)[/COLOR]"
             elif 'label_c_new' in item: name = "[COLOR blue]NEW[/COLOR][COLOR white] - " + title + " - Age " + age + " - (" + stats + "viewers)[/COLOR]"
             else: name = "[COLOR white]" + title + " - Age " + age + " - (" + stats + "viewers)[/COLOR]"
             url2 = title + '|SPLIT|' + url + '|SPLIT|' + iconimage
+            try: part1 = re.compile('<li title=".+?">(.+?)</li>').findall(item)[0].encode('utf-8')
+            except: part1 = ''
+            try: part2 = re.compile('<li class=".+?">(.+?)</li>').findall(item)[0]
+            except: part2 = ''
+            try:
+                part1 = re.sub(r'<.+?>','',part1)
+                part1 = part1.replace('\\x','REPL').replace('\\','')
+                part1 = re.sub("""REPL[0-f][0-f]""",'',str(part1)) 
+                part2 = re.sub(r'<.+?>','',part2)
+                part2 = part2.replace('\\x','REPL')
+                part2 = re.sub("""REPL[0-f][0-f]""",'',str(part2))
+            except: pass
+            try:
+                part3,part4 = stats.split(',')
+                description = ('Location: %s\nOnline: %s\nViewers: %s\n\n%s' % (part2,part3,part4,part1))
+            except: description = ''
             if hd_on_odd == 'true':
-                if 'thumbnail_label_c_hd">' in item: common.addLink(name,url2,23,iconimage,fanart)
-            else: common.addLink(name,url2,23,iconimage,fanart)
+                if 'thumbnail_label_c_hd">' in item: common.addLink(name,url2,23,iconimage,fanart,description)
+            else: common.addLink(name,url2,23,iconimage,fanart,description)
         except: pass
         
     try:
@@ -279,10 +298,10 @@ def GET_CONTENT(url):
         for item in np:
             next=re.compile('<li><a href="(.+?)" class="next endless_page_link">next</a></li>').findall(item)[0]
             url = "http://chaturbate.com" + str(next)
-            common.addDir('[COLOR pink]Next Page >>[/COLOR]',url,21,next_icon,fanart)       
+            common.addDir('[COLOR white]Next Page >>[/COLOR]',url,21,next_icon,fanart)       
     except:pass
 
-    common.SET_VIEW('thumbs')
+    common.SET_VIEW('list')
 
 def PLAY_URL(name,url,iconimage):
     
@@ -311,8 +330,8 @@ def PLAY_URL(name,url,iconimage):
                 if not os.path.isfile(CHATURBATE_FILE):
                     f = open(CHATURBATE_FILE,'w'); f.write('#START OF FILE#'); f.close()
                 a=open(CHATURBATE_FILE).read()
-                if '<name>' + str(name) not in a: choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR red]ROOM CURRENTLY OFFLINE[/COLOR]','[COLOR pink]Notify me when ' + str(name) + ' is online.[/COLOR]'])
-                else: choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR red]ROOM CURRENTLY OFFLINE[/COLOR]','[COLOR pink]Stop Notifications for ' + str(name) + '[/COLOR]'])
+                if '<name>' + str(name) not in a: choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR red]ROOM CURRENTLY OFFLINE[/COLOR]','[COLOR white]Notify me when ' + str(name) + ' is online.[/COLOR]'])
+                else: choice = dialog.select("[COLOR red]Please select an option[/COLOR]", ['[COLOR red]ROOM CURRENTLY OFFLINE[/COLOR]','[COLOR white]Stop Notifications for ' + str(name) + '[/COLOR]'])
                 if choice == 1:
                     if not str(name) in a:
                         if not '#START' in a:
@@ -323,7 +342,7 @@ def PLAY_URL(name,url,iconimage):
                         f.write(str(b))
                         f.close()
                         dp.close()
-                        dialog.ok(AddonTitle, "[COLOR pink]You will be notified when " + str(name) + " is online.[/COLOR]")
+                        dialog.ok(AddonTitle, "[COLOR white]You will be notified when " + str(name) + " is online.[/COLOR]")
                         quit()
                     else:
                         b=a.replace('<item>\n<name>'+str(name)+'</name>\n','<old>\n<name>disabled</name>\n')
@@ -331,7 +350,7 @@ def PLAY_URL(name,url,iconimage):
                         f.write(str(b))
                         f.close()
                         dp.close()
-                        dialog.ok(AddonTitle, "[COLOR pink]Notifications for " + str(name) + " have been disabled.[/COLOR]")
+                        dialog.ok(AddonTitle, "[COLOR white]Notifications for " + str(name) + " have been disabled.[/COLOR]")
                         quit()
                 else: quit()
             else:
@@ -349,8 +368,8 @@ def PLAY_URL(name,url,iconimage):
         if not os.path.isfile(CHATURBATE_FILE):
             f = open(CHATURBATE_FILE,'w'); f.write('#START OF FILE#'); f.close()
         a=open(CHATURBATE_FILE).read()
-        if '<name>' + str(name) not in a: choice = dialog.select("[COLOR pink]" + subject + "[/COLOR]", ['[COLOR pink]Watch Stream[/COLOR]','[COLOR pink]View ' + str(name) + "'s Bio[/COLOR]",'[COLOR pink]Notify me when ' + str(name) + ' is online.[/COLOR]'])
-        else: choice = dialog.select("[COLOR pink]" + subject + "[/COLOR]", ['[COLOR pink]Watch Stream[/COLOR]','[COLOR pink]View ' + str(name) + "'s Bio[/COLOR]",'[COLOR pink]Stop Notifications for ' + str(name) + '[/COLOR]'])
+        if '<name>' + str(name) not in a: choice = dialog.select("[COLOR white]" + subject + "[/COLOR]", ['[COLOR white]Watch Stream[/COLOR]','[COLOR white]View ' + str(name) + "'s Bio[/COLOR]",'[COLOR white]Notify me when ' + str(name) + ' is online.[/COLOR]'])
+        else: choice = dialog.select("[COLOR white]" + subject + "[/COLOR]", ['[COLOR white]Watch Stream[/COLOR]','[COLOR white]View ' + str(name) + "'s Bio[/COLOR]",'[COLOR white]Stop Notifications for ' + str(name) + '[/COLOR]'])
     else: choice = 0
     
     if choice == 1:
@@ -372,7 +391,7 @@ def PLAY_URL(name,url,iconimage):
             f.write(str(b))
             f.close()
             dp.close()
-            dialog.ok(AddonTitle, "[COLOR pink]You will be notified when " + str(name) + " is online.[/COLOR]")
+            dialog.ok(AddonTitle, "[COLOR white]You will be notified when " + str(name) + " is online.[/COLOR]")
             quit()
         else:
             a=open(CHATURBATE_FILE).read()
@@ -381,14 +400,14 @@ def PLAY_URL(name,url,iconimage):
             f.write(str(b))
             f.close()
             dp.close()
-            dialog.ok(AddonTitle, "[COLOR pink]Notifications for " + str(name) + " have been disabled.[/COLOR]")
+            dialog.ok(AddonTitle, "[COLOR white]Notifications for " + str(name) + " have been disabled.[/COLOR]")
             quit()        
     elif choice == 0:
  
         bandwidth = plugintools.get_setting("chaturbate_band")
         if bandwidth == '0': url2 = url2.replace('_fast_aac','_aac')
         elif bandwidth == '2':
-            choice = dialog.select("[COLOR pink]" + subject + "[/COLOR]", ['[COLOR pink]Play High Bandwidth Stream[/COLOR]','[COLOR pink]Play Low Bandwidth Stream[/COLOR]'])
+            choice = dialog.select("[COLOR white]" + subject + "[/COLOR]", ['[COLOR white]Play High Bandwidth Stream[/COLOR]','[COLOR white]Play Low Bandwidth Stream[/COLOR]'])
             if choice == 1: url2 = url2.replace('_fast_aac','_aac')
             elif choice == 0: pass
             else: quit()

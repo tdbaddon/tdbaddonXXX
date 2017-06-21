@@ -31,9 +31,9 @@ def LIVE_CHANNELS():
 
     if combinedlists:
         for name,url in sorted(combinedlists):
-            common.addLink('[COLOR pink]'+ name.title() +'[/COLOR]',url,996,icon,fanart)
+            common.addLink('[COLOR white]'+ name.title() +'[/COLOR]',url,996,icon,fanart)
     else: 
-        common.addLink('[COLOR pink][B]No channels at this time.[/B][/COLOR]','url',999,icon,fanart)
-        common.addLink('[COLOR pink][B]Please try again later.[/B][/COLOR]','url',999,icon,fanart)
+        common.addLink('[COLOR white][B]No channels at this time.[/B][/COLOR]','url',999,icon,fanart)
+        common.addLink('[COLOR white][B]Please try again later.[/B][/COLOR]','url',999,icon,fanart)
 
     common.SET_VIEW('list')

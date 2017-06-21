@@ -140,7 +140,7 @@ def LIVE():
     
 def FILMS():
 
-    common.addDir("[COLOR white]Porn Heel Movies[/COLOR]",'http://www.pornheel.com/category/all-sex-movies/',730,pornheel_icon,pornheel_fanart)
+    #common.addDir("[COLOR white]Porn Heel Movies[/COLOR]",'http://www.pornheel.com/category/all-sex-movies/',730,pornheel_icon,pornheel_fanart)
     common.addDir("[COLOR white]Ultra-Vid[/COLOR]",'None',710,ultravid_icon,ultravid_fanart)
     common.addDir("[COLOR white]Freeomovie[/COLOR]",'None',720,freeomovie_icon,freeomovie_fanart)
 

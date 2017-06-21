@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.xxx-o-dus" 
 	     name="XXX-O-DUS" 
-	     version="1.39" 
-	     provider-name="Echo Coder">
+	     version="2.01" 
+	     provider-name="Orion">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.urlresolver"/>
@@ -14,10 +14,10 @@
   </extension> 
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
-    <summary lang="en">Twitter: @EchoCoder</summary>
+    <summary lang="en">The AIO XXX Addon for Kodi</summary>
     <description lang="en">[COLOR white]XXX-O-DUS scrapes many websites to bring you hundreds of thousands of videos. Features of the addon include, history monitoring, favourites, downloadable videos, parental controls and more![/COLOR]
 
-[COLOR red]Websites Include: [/COLOR][COLOR pink]Porn.com, PornHD.com, Chaturbate.com, RedTube.com, Xhamster.com, YouPorn.com, PornFun.com, Motherless.com,Porn00.org, Spankbang.com, Virtualpornstars.com, Watchxxxfree.com, Perfectgirls.net, XNXX.com and many more.[/COLOR]</description>
+[COLOR white]Websites Include: Porn.com, PornHD.com, Chaturbate.com, RedTube.com, Xhamster.com, YouPorn.com, PornFun.com, Motherless.com,Porn00.org, Spankbang.com, Virtualpornstars.com, Watchxxxfree.com, Perfectgirls.net, XNXX.com and many more.[/COLOR]</description>
     <disclaimer lang="en">The pages of this addon are designed for ADULTS only and may include pictures and materials that some viewers may find offensive. If you are under the age of 18, if such material offends you or if it is illegal to view such material in your community please exit the addon.</disclaimer>
     <language></language>
     <platform>all</platform>

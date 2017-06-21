@@ -58,6 +58,7 @@ TERMS               = xbmc.translatePath(os.path.join(ADDON_FOLDER , 'resources/
 INFO                = xbmc.translatePath(os.path.join(ADDON_FOLDER , 'resources/information.txt'))
 REPO_INFO           = xbmc.translatePath(os.path.join(ADDON_FOLDER , 'resources/repository.txt'))
 RESET_NOTICE        = xbmc.translatePath(os.path.join(ADDON_FOLDER , 'resources/reset.txt'))
+SCRAPERS_DIR        = xbmc.translatePath(os.path.join(ADDON_FOLDER , 'resources/lib/scrapers'))
 I_AGREE             = xbmc.translatePath(os.path.join(DATA_FOLDER , 'agreed.txt'))
 HISTORY_FILE        = xbmc.translatePath(os.path.join(DATA_FOLDER , 'history.xml'))
 FAVOURITES_FILE     = xbmc.translatePath(os.path.join(DATA_FOLDER , 'favourites.xml'))
@@ -100,23 +101,23 @@ def GetMenu():
 
     RESOLVER_CHECK()
     history_on_off  = plugintools.get_setting("history_setting")
-    common.addDir("[COLOR white]Search...[/COLOR]","url",1,icon,fanart)
-    common.addDir("[COLOR white]Live Channels[/COLOR]",'http://exabytetv.info/XXX.m3u',995,icon,fanart)
-    common.addDir("[COLOR white]Chaturbate[/COLOR]","url",20,icon,fanart)
-    common.addDir("[COLOR white]Films[/COLOR]","url",7,icon,fanart)
-    common.addDir("[COLOR white]Videos[/COLOR]","url",2,icon,fanart)
-    common.addDir("[COLOR white]Photos[/COLOR]","url",4,icon,fanart)
-    common.addDir("[COLOR white]Stories[/COLOR]","url",5,icon,fanart)
-    if not os.path.exists(PARENTAL_FILE): common.addDir("[COLOR pink]Parental Controls - [COLOR orangered]OFF[/COLOR][/COLOR]","url",900,icon,fanart)
-    else: common.addDir("[COLOR pink]Parental Controls - [COLOR lime]ON[/COLOR][/COLOR]","url",900,icon,fanart)
-    if history_on_off == "true": common.addDir("[COLOR pink]Your History[/COLOR] - [COLOR lime]ON[/COLOR]",BASE,101,icon,fanart)
-    else: common.addDir("[COLOR pink]Your History[/COLOR] - [COLOR red]OFF[/COLOR]",BASE,101,icon,fanart)
-    common.addDir("[COLOR pink]Your Favourites[/COLOR]",BASE,102,icon,fanart)
-    common.addDir("[COLOR pink]Your Downloads[/COLOR]",BASE,105,icon,fanart)
-    common.addLink("[COLOR pink]Your Settings[/COLOR]",BASE,106,icon,fanart)
-    common.addLink("[COLOR white]View Disclaimer[/COLOR]",TERMS,998,icon,fanart)
-    common.addLink("[COLOR white]View Addon Information[/COLOR]",INFO,998,icon,fanart)
-    common.addLink("[COLOR pink][B]RESET XXX-O-DUS[/B][/COLOR]",'url',997,icon,fanart)
+    common.addDir("[COLOR white]Search...[/COLOR]","url",1,icon,fanart,'Search XXX-O-DUS')
+    common.addDir("[COLOR white]Live Channels[/COLOR]",'http://exabytetv.info/XXX.m3u',995,icon,fanart,'Live Channels')
+    common.addDir("[COLOR white]Chaturbate[/COLOR]","url",20,icon,fanart,'Chaturbate')
+    common.addDir("[COLOR white]Films[/COLOR]","url",7,icon,fanart,'Films')
+    common.addDir("[COLOR white]Videos[/COLOR]","url",2,icon,fanart,'Videos')
+    common.addDir("[COLOR white]Photos[/COLOR]","url",4,icon,fanart,'Photos')
+    common.addDir("[COLOR white]Stories[/COLOR]","url",5,icon,fanart,'Stories')
+    if not os.path.exists(PARENTAL_FILE): common.addDir("[COLOR white]Parental Controls[/COLOR]","url",900,icon,fanart,'View/Change Parental Control Settings.')
+    else: common.addDir("[COLOR white]Parental Controls[/COLOR]","url",900,icon,fanart,'View/Change Parental Control Settings.')
+    if history_on_off == "true": common.addDir("[COLOR white]Your History[/COLOR]",BASE,101,icon,fanart,'View Your History.')
+    else: common.addDir("[COLOR white]Your History[/COLOR]",BASE,101,icon,fanart,'View Your History.')
+    common.addDir("[COLOR white]Your Favourites[/COLOR]",BASE,102,icon,fanart,'View Your Favourites.')
+    common.addDir("[COLOR white]Your Downloads[/COLOR]",BASE,105,icon,fanart,'View Your Downloads.')
+    common.addLink("[COLOR white]Your Settings[/COLOR]",BASE,106,icon,fanart,'View/Change Addon Settings.')
+    common.addLink("[COLOR white]View Disclaimer[/COLOR]",TERMS,998,icon,fanart,'View XXX-O-DUS Disclaimer.')
+    common.addLink("[COLOR white]View Addon Information[/COLOR]",INFO,998,icon,fanart,'View XXX-O-DUS Information.')
+    common.addLink("[COLOR white][B]RESET XXX-O-DUS[/B][/COLOR]",'url',997,icon,fanart,'Reset XXX-O-DUS to Factory Settings.')
  
     common.SET_VIEW('list')
 
@@ -156,185 +157,206 @@ def SEARCH_HOME(url):
         f= open(SEARCH_FILE, mode='w')
         f.write(str(b))
 
-    try:
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.create(AddonTitle, '[COLOR white]Searching: [/COLOR] [COLOR orangered]YouPorn[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        url = "http://www.youporn.com/search/?query=" + string.lower()
-        url = 'split|'+url
-        dp.update(progress)
-        try:
-            youporn.GET_CONTENT(url)
-        except: pass
-        url = "http://www.xnxx.com/?k=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]XNXX[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            xnxx.GET_CONTENT(url)
-        except: pass
-        url = "https://xhamster.com/search.php?from=&new=&q=" + string.lower() + "&qcat=video"
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Xhamster[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            xhamster.GET_CONTENT(url)
-        except: pass
-        url = "https://www.pornhd.com/search?search=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]PornHD[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            pornhd.GET_CONTENT(url)
-        except: pass
-        url = "https://www.porn.com/videos/search?q=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Porn.com[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            porncom.GET_CONTENT(url)
-        except: pass
-        url = "https://www.redtube.com/?search=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]RedTube[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            redtube.GET_CONTENT(url)
-        except: pass
-        url = "https://pornfun.com/search/?q=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]PornFun[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            pornfun.GET_CONTENT(url)
-        except: pass
-        url = "http://spankbang.com/s/" + string.lower() + "/"
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Spankbang[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            spankbang.GET_CONTENT(url)
-        except: pass
-        url = "http://www.porn00.org/?s=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Porn00[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            porn00.GET_CONTENT('none',url,'none')
-        except: pass
-        url = "http://virtualpornstars.com/?s=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Virtual Porn Stars[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            virtualpornstars.GET_CONTENT(url)
-        except: pass
-        url = "https://watchxxxfree.com/?s=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Watch XXX Free[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            watchxxxfree.GET_CONTENT(url)
-        except: pass
-        string = string.replace('+','%20')
-        url = "http://www.perfectgirls.net/search/" + string.lower() + '/'
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Perfect Girls[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            perfectgirls.GET_CONTENT(url)
-        except: pass
-        string = string.replace('+','%20')
-        url = "http://motherless.com/term/" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Motherless[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            motherless.GET_CONTENT(url)
-        except: pass
-        string = string.replace('+','%20')
-        url = "http://justporno.tv/search?query=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Just Porno TV[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            justporno.GET_CONTENT(url)
-        except: pass
-        string = string.replace('+','-')
-        url = "https://www.eporner.com/search/" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Eporner[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            eporner.GET_CONTENT(url)
-        except: pass
-        url = "http://pornxs.com/search.php?s=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]PornXS[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            pornxs.GET_CONTENT(url)
-        except: pass
-        url = "http://www.xvideos.com/?k=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Xvideos[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            xvideos.GET_CONTENT(url)
-        except: pass
-        stringnx = string.replace('+','-')
-        url = "http://www.nxgx.com/search/" + stringnx.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]NXGX[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            nxgx.GET_CONTENT(url)
-        except: pass
-        url = "http://www.madthumbs.com/search?q=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]MadThumbs[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            madthumbs.GET_CONTENT(url)
-        except: pass
-        url = "http://overthumbs.com/search/?q=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]OverThumbs[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            overthumbs.GET_CONTENT(url)
-        except: pass
-        url = "https://www.4tube.com/search?q=" + string.lower()
-        url = 'split|'+url
-        i = i + 1
-        progress = 100 * int(i)/int(total)
-        dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]4Tube[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR pink]' + str(i) + ' of '+  str(total) + '[/COLOR]')
-        try:
-            fourtube.GET_CONTENT(url)
-        except: pass
-        dp.close()
-    except:
-        dialog.ok(AddonTitle, '[COLOR pink]Sorry, there was an error searching for ' + string.lower() + ' please try again later.[/COLOR]')
-        quit()
+    i = 0
+    for root,dirs,files in os.walk(SCRAPERS_DIR):
+        total = len(files)
+        for f in files:
+            try:
+                scraper = f.split('.')[0]
+                type = scraper.searchable
+                dialog.ok('22', str(type))
+                i += 1
+                progress = 100 * int(i)/int(total)
+                dp.create(AddonTitle, '[COLOR white]Searching: [/COLOR] [COLOR orangered]YouPorn[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+                url = "http://www.youporn.com/search/?query=" + string.lower()
+                url = 'split|'+url
+                dp.update(progress)
+                try:
+                    youporn.GET_CONTENT(url)
+                except: pass
+                url = "http://www.xnxx.com/?k=" + string.lower()
+                url = 'split|'+url
+                dp.close()
+            except: pass
+    # try:
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.create(AddonTitle, '[COLOR white]Searching: [/COLOR] [COLOR orangered]YouPorn[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # url = "http://www.youporn.com/search/?query=" + string.lower()
+        # url = 'split|'+url
+        # dp.update(progress)
+        # try:
+            # youporn.GET_CONTENT(url)
+        # except: pass
+        # url = "http://www.xnxx.com/?k=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]XNXX[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # xnxx.GET_CONTENT(url)
+        # except: pass
+        # url = "https://xhamster.com/search.php?from=&new=&q=" + string.lower() + "&qcat=video"
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Xhamster[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # xhamster.GET_CONTENT(url)
+        # except: pass
+        # url = "https://www.pornhd.com/search?search=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]PornHD[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # pornhd.GET_CONTENT(url)
+        # except: pass
+        # url = "https://www.porn.com/videos/search?q=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Porn.com[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # porncom.GET_CONTENT(url)
+        # except: pass
+        # url = "https://www.redtube.com/?search=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]RedTube[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # redtube.GET_CONTENT(url)
+        # except: pass
+        # url = "https://pornfun.com/search/?q=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]PornFun[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # pornfun.GET_CONTENT(url)
+        # except: pass
+        # url = "http://spankbang.com/s/" + string.lower() + "/"
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Spankbang[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # spankbang.GET_CONTENT(url)
+        # except: pass
+        # url = "http://www.porn00.org/?s=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Porn00[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # porn00.GET_CONTENT('none',url,'none')
+        # except: pass
+        # url = "http://virtualpornstars.com/?s=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Virtual Porn Stars[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # virtualpornstars.GET_CONTENT(url)
+        # except: pass
+        # url = "https://watchxxxfree.com/?s=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Watch XXX Free[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # watchxxxfree.GET_CONTENT(url)
+        # except: pass
+        # string = string.replace('+','%20')
+        # url = "http://www.perfectgirls.net/search/" + string.lower() + '/'
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Perfect Girls[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # perfectgirls.GET_CONTENT(url)
+        # except: pass
+        # string = string.replace('+','%20')
+        # url = "http://motherless.com/term/" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Motherless[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # motherless.GET_CONTENT(url)
+        # except: pass
+        # string = string.replace('+','%20')
+        # url = "http://justporno.tv/search?query=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Just Porno TV[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # justporno.GET_CONTENT(url)
+        # except: pass
+        # string = string.replace('+','-')
+        # url = "https://www.eporner.com/search/" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Eporner[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # eporner.GET_CONTENT(url)
+        # except: pass
+        # url = "http://pornxs.com/search.php?s=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]PornXS[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # pornxs.GET_CONTENT(url)
+        # except: pass
+        # url = "http://www.xvideos.com/?k=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]Xvideos[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # xvideos.GET_CONTENT(url)
+        # except: pass
+        # stringnx = string.replace('+','-')
+        # url = "http://www.nxgx.com/search/" + stringnx.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]NXGX[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # nxgx.GET_CONTENT(url)
+        # except: pass
+        # url = "http://www.madthumbs.com/search?q=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]MadThumbs[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # madthumbs.GET_CONTENT(url)
+        # except: pass
+        # url = "http://overthumbs.com/search/?q=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]OverThumbs[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # overthumbs.GET_CONTENT(url)
+        # except: pass
+        # url = "https://www.4tube.com/search?q=" + string.lower()
+        # url = 'split|'+url
+        # i = i + 1
+        # progress = 100 * int(i)/int(total)
+        # dp.update(progress, '[COLOR white]Searching: [/COLOR] [COLOR orangered]4Tube[/COLOR]','[COLOR white]Term: [/COLOR][COLOR deeppink]' + term.lower() + '[/COLOR]','[COLOR white]Source: [/COLOR][COLOR white]' + str(i) + ' of '+  str(total) + '[/COLOR]')
+        # try:
+            # fourtube.GET_CONTENT(url)
+        # except: pass
+        # dp.close()
+    # except:
+        # dialog.ok(AddonTitle, '[COLOR white]Sorry, there was an error searching for ' + string.lower() + ' please try again later.[/COLOR]')
+        # quit()
 
     common.SET_VIEW('thumbs')
 
@@ -381,12 +403,12 @@ def GET_HISTORY():
             site=re.compile('<site>(.+?)</site>').findall(item)[0]
             iconimage=re.compile('<icon>(.+?)</icon>').findall(item)[0]
             url = title + '|SPLIT|' + url + '|SPLIT|' + site + '|SPLIT|' + iconimage + '|SPLIT|' + url
-            if not url in str(list): common.addLink('[COLOR pink]' + date + ' | ' + '[/COLOR][COLOR deeppink]' + time + '[/COLOR] - [COLOR orangered]' + site + '[/COLOR][COLOR pink] - ' + title + '[/COLOR]',url,800,iconimage,fanart)
+            if not url in str(list): common.addLink('[COLOR white]' + date + ' | ' + '[/COLOR][COLOR deeppink]' + time + '[/COLOR] - [COLOR orangered]' + site + '[/COLOR][COLOR white] - ' + title + '[/COLOR]',url,800,iconimage,fanart)
             list.append(url)
     else: 
         common.addLink('[COLOR orangered]Enable History Monitoring[/COLOR]',setting,109,icon,fanart)
         common.addLink('############################################',BASE,999,icon,fanart)
-        common.addLink('[COLOR pink]History monitoring is currently disabled.[/COLOR]',setting,109,icon,fanart)
+        common.addLink('[COLOR white]History monitoring is currently disabled.[/COLOR]',setting,109,icon,fanart)
 
     common.SET_VIEW('list')
 
@@ -404,7 +426,7 @@ def GET_FAVOURITES():
         site=re.compile('<site>(.+?)</site>').findall(item)[0]
         iconimage=re.compile('<icon>(.+?)</icon>').findall(item)[0]
         url = title + '|SPLIT|' + url + '|SPLIT|' + site + '|SPLIT|' + iconimage + '|SPLIT|' + url
-        common.addLink('[COLOR orangered]' + site + '[/COLOR][COLOR pink] - ' + title + '[/COLOR]',url,103,iconimage,fanart)
+        common.addLink('[COLOR orangered]' + site + '[/COLOR][COLOR white] - ' + title + '[/COLOR]',url,103,iconimage,fanart)
 
     common.SET_VIEW('list')
 
@@ -415,7 +437,7 @@ def DECIDE_FAVOURITES(name,url,iconimage):
     
     string = '\n<item>\n<name>'+a+'</name>\n<link>'+b+'</link>\n<site>'+c+'</site>\n<icon>'+d+'</icon>\n</item>\n'
 
-    choice = dialog.select("[COLOR orangered][B]Please select an option[/B][/COLOR]", ['[COLOR pink][B]Watch Video[/B][/COLOR]','[COLOR pink][B]Remove from Favourites[/B][/COLOR]'])
+    choice = dialog.select("[COLOR orangered][B]Please select an option[/B][/COLOR]", ['[COLOR white][B]Watch Video[/B][/COLOR]','[COLOR white][B]Remove from Favourites[/B][/COLOR]'])
 
     if choice == 0:
         PLAYER(name,original,iconimage)
@@ -433,7 +455,7 @@ def DECIDE_DOWNLOAD(name,url,iconimage):
     original = url
     a,b,c,d,url = url.split('|SPLIT|')
 
-    choice = dialog.select("[COLOR orangered][B]Please select an option[/B][/COLOR]", ['[COLOR pink][B]Watch Video[/B][/COLOR]','[COLOR pink][B]Delete Download[/B][/COLOR]'])
+    choice = dialog.select("[COLOR orangered][B]Please select an option[/B][/COLOR]", ['[COLOR white][B]Watch Video[/B][/COLOR]','[COLOR white][B]Delete Download[/B][/COLOR]'])
 
     if choice == 0:
         PLAYER(name,original,iconimage)
@@ -491,7 +513,7 @@ def GET_DOWNLOADS():
                     url2 = file + '|SPLIT|' + url + '|SPLIT|Downloaded|SPLIT|' + iconimage + '|SPLIT|' + url
                 else:
                     url2 = file + '|SPLIT|' + url + '|SPLIT|Downloaded|SPLIT|None|SPLIT|' + url
-                common.addLink('[COLOR pink]' + file + '[/COLOR]',url2,107,iconimage,fanart)
+                common.addLink('[COLOR white]' + file + '[/COLOR]',url2,107,iconimage,fanart)
 
     common.SET_VIEW('thumbs')
 
@@ -523,7 +545,7 @@ def PLAYER(name,url,iconimage):
         iconimage = icon
 
     if "highwebmedia" in url:
-        dialog.ok(AddonTitle, '[COLOR pink]Chaturbate links are taken at the time of broadcasting. If this broadcast has ended the link will no longer play. [/COLOR]')
+        dialog.ok(AddonTitle, '[COLOR white]Chaturbate links are taken at the time of broadcasting. If this broadcast has ended the link will no longer play. [/COLOR]')
     import urlresolver
     if urlresolver.HostedMediaFile(url).valid_url(): 
         url = urlresolver.HostedMediaFile(url).resolve()

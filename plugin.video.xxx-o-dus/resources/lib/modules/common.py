@@ -111,9 +111,9 @@ def SEARCH_HISTORY(name,url):
     search_on_off  = plugintools.get_setting("search_setting")
 
     setting = "search_setting|SPLIT|" + search_on_off
-    addDir('[COLOR pink][B]New Search...[/B][/COLOR]','null',mode,icon,fanart)
-    addLink('[COLOR pink][B]Clear History[/B][/COLOR]','url',108,icon,fanart)
-    addLink('[COLOR pink][B]Disable Search History[/B][/COLOR]',setting,109,icon,fanart)
+    addDir('[COLOR snow][B]New Search...[/B][/COLOR]','null',mode,icon,fanart)
+    addLink('[COLOR snow][B]Clear History[/B][/COLOR]','url',108,icon,fanart)
+    addLink('[COLOR snow][B]Disable Search History[/B][/COLOR]',setting,109,icon,fanart)
     addLink('################## Recent Searches #########################','url',999,icon,fanart)
 
     f = open(SEARCH_FILE,mode='r'); msg = f.read(); f.close()
@@ -216,7 +216,7 @@ def GET_M3U_LIST(url):
     for name,url in sorted(combinedlist):
         if not '=' in name:
             if not 'http://exabytetv.info/exabytetv.mp4' in url:
-                addLink('[COLOR pink]'+name.title()+'[/COLOR]',url,996,icon,fanart)
+                addLink('[COLOR white]'+name.title()+'[/COLOR]',url,996,icon,fanart)
 
 def GetEncodeString(str):
     try:
@@ -287,25 +287,25 @@ def GET_LUCKY():
     dp = xbmcgui.DialogProgress()
     
     if lucky == 1:
-        dp.create(AddonTitle,"[COLOR yellow]Please wait.[/COLOR]",'[COLOR pink]We are getting the moisturiser.[/COLOR]','[COLOR azure]Do you have the wipes ready?[/COLOR]' )
+        dp.create(AddonTitle,"[COLOR blue]Please wait.[/COLOR]",'[COLOR snow]We are getting the moisturiser.[/COLOR]','[COLOR whitesmoke]Do you have the wipes ready?[/COLOR]' )
     elif lucky == 2:
-        dp.create(AddonTitle,"[COLOR yellow]Please wait.[/COLOR]",'[COLOR pink]I am just taking off my pants.[/COLOR]','[COLOR azure]Darn belt![/COLOR]' )
+        dp.create(AddonTitle,"[COLOR blue]Please wait.[/COLOR]",'[COLOR snow]I am just taking off my pants.[/COLOR]','[COLOR whitesmoke]Darn belt![/COLOR]' )
     elif lucky == 3:
-        dp.create(AddonTitle,"[COLOR yellow]Please wait.[/COLOR]",'[COLOR pink]Are the curtains closed?[/COLOR]','[COLOR azure]Oh baby its cold outside![/COLOR]' )
+        dp.create(AddonTitle,"[COLOR blue]Please wait.[/COLOR]",'[COLOR snow]Are the curtains closed?[/COLOR]','[COLOR whitesmoke]Oh baby its cold outside![/COLOR]' )
     elif lucky == 4:
-        dp.create(AddonTitle,"[COLOR yellow]Please wait.[/COLOR]",'[COLOR pink]This is my fifth time today.[/COLOR]','[COLOR azure]How about you?[/COLOR]' )
+        dp.create(AddonTitle,"[COLOR blue]Please wait.[/COLOR]",'[COLOR snow]This is my fifth time today.[/COLOR]','[COLOR whitesmoke]How about you?[/COLOR]' )
     elif lucky == 5:
-        dp.create(AddonTitle,"[COLOR yellow]Please wait.[/COLOR]",'[COLOR pink]Please no buffer, please no buffer![/COLOR]')
+        dp.create(AddonTitle,"[COLOR blue]Please wait.[/COLOR]",'[COLOR snow]Please no buffer, please no buffer![/COLOR]')
     elif lucky == 6:
-        dp.create(AddonTitle,"[COLOR yellow]Please wait.[/COLOR]",'[COLOR pink]I think I am going blind :-/[/COLOR]','[COLOR azure]Oh no, just something in my eye.[/COLOR]' )
+        dp.create(AddonTitle,"[COLOR blue]Please wait.[/COLOR]",'[COLOR snow]I think I am going blind :-/[/COLOR]','[COLOR whitesmoke]Oh no, just something in my eye.[/COLOR]' )
     elif lucky == 7:
-        dp.create(AddonTitle,"[COLOR yellow]Please wait.[/COLOR]",'[COLOR pink]Did I turn the oven off?[/COLOR]','[COLOR azure]It can wait![/COLOR]' )
+        dp.create(AddonTitle,"[COLOR blue]Please wait.[/COLOR]",'[COLOR snow]Did I turn the oven off?[/COLOR]','[COLOR whitesmoke]It can wait![/COLOR]' )
     elif lucky == 8:
-        dp.create(AddonTitle,"[COLOR yellow]Please wait.[/COLOR]",'[COLOR pink]Your video is coming. Are you?[/COLOR]','[COLOR azure]Do you get it?[/COLOR]' )
+        dp.create(AddonTitle,"[COLOR blue]Please wait.[/COLOR]",'[COLOR snow]Your video is coming. Are you?[/COLOR]','[COLOR whitesmoke]Do you get it?[/COLOR]' )
     elif lucky == 9:
-        dp.create(AddonTitle,"[COLOR yellow]Please wait.[/COLOR]",'[COLOR pink]Kodi does not save your browsing history :-D[/COLOR]','[COLOR azure]Thats lucky isnt it :-)[/COLOR]' )
+        dp.create(AddonTitle,"[COLOR blue]Please wait.[/COLOR]",'[COLOR snow]Kodi does not save your browsing history :-D[/COLOR]','[COLOR whitesmoke]Thats lucky isnt it :-)[/COLOR]' )
     else:
-        dp.create(AddonTitle,"[COLOR yellow]Please wait.[/COLOR]",'[COLOR pink]There are more XXX addons by ECHO.[/COLOR]','[COLOR azure]Just so you know.[/COLOR]' )
+        dp.create(AddonTitle,"[COLOR blue]Please wait.[/COLOR]",'[COLOR snow]There are more XXX addons by ECHO.[/COLOR]','[COLOR whitesmoke]Just so you know.[/COLOR]' )
 
     return dp
 
@@ -320,22 +320,28 @@ def open_url(url):
     response.close()
     return link
 
-def addDir(name,url,mode,iconimage,fanartimage):
+def addDir(name,url,mode,iconimage,fanart,description=None):
 
-    u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)+"&fanartimage="+urllib.quote_plus(fanartimage)
+    if description == None: description = ''
+    description = '[COLOR white]' + description + '[/COLOR]'
+    u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)+"&fanart="+urllib.quote_plus(fanart)
     ok=True
     liz=xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
-    liz.setProperty( "fanart_Image", fanartimage )
+    liz.setInfo( type="Video", infoLabels={ "Title": name, "Plot": description } )
+    liz.setProperty( "fanart_Image", fanart )
     liz.setProperty( "icon_Image", iconimage )
     ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=True)
     return ok
 
-def addLink(name,url,mode,iconimage,fanartimage):
+def addLink(name, url, mode, iconimage, fanart, description=None):
 
-    u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)+"&fanartimage="+urllib.quote_plus(fanartimage)
+    if description == None: description = ''
+    description = '[COLOR white]' + description + '[/COLOR]'
+    u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)+"&fanart="+urllib.quote_plus(fanart)
     ok=True
     liz=xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
-    liz.setProperty( "fanart_Image", fanartimage )
+    liz.setInfo( type="Video", infoLabels={ "Title": name, "Plot": description } )
+    liz.setProperty( "fanart_Image", fanart )
     liz.setProperty( "icon_Image", iconimage )
     ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=False)
     return ok

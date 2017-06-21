@@ -26,6 +26,7 @@ from resources.lib.modules  import plugintools
 import datetime
 
 #Default veriables
+searchable        = 1
 AddonTitle        = "[COLOR red]XXX-O-DUS[/COLOR]"
 dialog            = xbmcgui.Dialog()
 addon_id          = 'plugin.video.xxx-o-dus'

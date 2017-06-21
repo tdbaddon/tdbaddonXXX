@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category label="[COLOR dodgerblue]GENERAL[/COLOR]">
+        <setting type="lsep" label="[COLOR=red]OPTIONS[/COLOR]"/>
+        <setting type="lsep" label="[COLOR=blue]By default XXX-O-DUS gives the option to Watch/Favourite/Download All Videos.[/COLOR]"/>
+        <setting type="lsep" label="[COLOR=blue]You can enable/disalbe this prompt below.[/COLOR]"/>
+        <setting id="extras_setting" type="bool" label="[COLOR white]Auto Play (Default=False):[/COLOR]" default="false"/>
+        <setting type="lsep" label="[COLOR=red]MONITORING[/COLOR]"/>
+        <setting id="search_setting" type="bool" label="[COLOR white]Search History:[/COLOR]" default="true"/>
+        <setting id="history_setting" type="bool" label="[COLOR white]Log History:[/COLOR]" default="true"/>
+        <setting type="lsep" label="[COLOR=red]DOWNLOAD LOCATION[/COLOR]"/>
+        <setting id="download_location" type="folder" label="[COLOR white]Download Location:[/COLOR]" default="special://home\userdata\addon_data\plugin.video.xxx-o-dus\Downloads\"/>
+        <setting type="lsep" label="[COLOR=red]VIEW MODES[/COLOR]"/>
+        <setting id="list_view" label="Default List View" type="number" default="0" visible="true"/>
+        <setting id="thumb_view" label="Default Thumbnail View" type="number" default="0" visible="true"/>     
+    </category>        
+    <category label="[COLOR dodgerblue]CHATURBATE[/COLOR]">
+        <setting id="chaturbate_hd" type="bool" label="[COLOR white]Only Show HD Cams:[/COLOR]" default="false"/>
+        <setting id="chaturbate_setting" type="bool" label="[COLOR white]Chaturbate Model Monitoring:[/COLOR]" default="true"/>
+        <setting id="chaturbate_subject" type="bool" label="[COLOR white]Show Room Subject Notifications:[/COLOR]" default="true"/>
+        <setting id="chaturbate_subject_refresh" label="[COLOR white]Refresh and Display Room Subect Every (Seconds):[/COLOR]" type="number" default="60" visible="true"/>     
+        <setting id="chaturbate_band" type="enum" values="Low Bandwidth|High Bandwidth|Always Ask" label="[COLOR white]Default Stream Bandwidth[/COLOR]" default="0"/>
+    </category>
+    <category label="[COLOR dodgerblue]FILMS[/COLOR]">
+        <setting id="film_auto" type="bool" label="[COLOR white]Auto Play:[/COLOR]" default="false"/>
+    </category>
+</settings>

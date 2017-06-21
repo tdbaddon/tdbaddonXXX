@@ -1,0 +1,47 @@
+def GET_CONTENT(url):
+
+    hd_on_odd  = plugintools.get_setting("chaturbate_hd")
+
+    checker = url
+    result = client.request(url)
+    match = re.compile('<ul class="list">(.+?)<div class="banner">',re.DOTALL).findall(result)
+    string = str(match)
+    match2 = re.compile('<li>(.+?)ewers',re.DOTALL).findall(string)
+    for item in match2:
+        try:
+            title=re.compile('<a href=".+?"> (.+?)</a>').findall(item)[0]
+            url=re.compile('<a href="(.+?)">.+?</a>').findall(item)[0]
+            iconimage=re.compile('<img src="(.+?)"').findall(item)[0]
+            try: age=re.compile('<span class="age gender.+?">(.+?)</span>').findall(item)[0]
+            except: age = "Unknown"
+            try: stats=re.compile('<li class="cams">(.+?)vi').findall(item)[0]
+            except: stats = '? mins, ?'
+            if 'thumbnail_label_c_hd">' in item: name = "[COLOR white]HD[/COLOR][COLOR white] - " + title + " - Age " + age + " - (" + stats + "viewers)[/COLOR]"
+            elif 'label_c_new' in item: name = "[COLOR blue]NEW[/COLOR][COLOR white] - " + title + " - Age " + age + " - (" + stats + "viewers)[/COLOR]"
+            else: name = "[COLOR white]" + title + " - Age " + age + " - (" + stats + "viewers)[/COLOR]"
+            url2 = title + '|SPLIT|' + url + '|SPLIT|' + iconimage
+            try: part1 = re.compile('<li title=".+?">(.+?)</li>').findall(item)[0]
+            except: part1 = ''
+            part1 = re.sub('<.+?>','',part1)
+            try: part2 = re.compile('<li class=".+?">(.+?)</li>').findall(item)[0]
+            except: part2 = ''
+            part1 = re.sub(r'[^\x00-\x7F]+',' ',part1)
+            part2 = re.sub(r'[^\x00-\x7F]+',' ',part2)
+            try:
+                part3,part4 = stats.split(',')
+                description = ('Location: %s\nOnline: %s\nViewers: %s\n\n%s' % (part2,part3,part4,part1))
+            except: description = ''
+            if hd_on_odd == 'true':
+                if 'thumbnail_label_c_hd">' in item: common.addLink(name,url2,23,iconimage,fanart,description)
+            else: common.addLink(name,url2,23,iconimage,fanart,description)
+        except: pass
+        
+    try:
+        np=re.compile('<ul class="paging">(.+?)</ul>',re.DOTALL).findall(result)
+        for item in np:
+            next=re.compile('<li><a href="(.+?)" class="next endless_page_link">next</a></li>').findall(item)[0]
+            url = "http://chaturbate.com" + str(next)
+            common.addDir('[COLOR white]Next Page >>[/COLOR]',url,21,next_icon,fanart)       
+    except:pass
+
+    common.SET_VIEW('thumbs')
